@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.tsoft.sign.mapper.admin.FormMapper">
+
+    <select id="selectFormList" parameterType="HashMap" resultType="HashMap">
+        /** [SIGN].[FormMapper.selectFileList] */
+
+        select B.* from (
+        SELECT A.*
+        <![CDATA[
+				,(@row_number := @row_number + 1) RN
+				]]>
+        FROM (SELECT
+        FILE_SEQ
+        ,FILE_TP
+        ,CONTRC_NO
+        ,FORM_NM
+        ,ORG_FILE_NM
+        ,SAV_FILE_NM
+        ,FILE_PATH
+        ,USE_YN
+        ,REG_DATE
+        ,REG_ID
+        ,MOD_DATE
+        ,MOD_ID
+        FROM file_mgmt
+        <![CDATA[
+							  ,(SELECT @row_number := 0) AA
+						]]>
+        <if test="searchWord != null and searchWord != ''">
+            WHERE FORM_NM LIKE CONCAT('%',#{searchWord},'%')
+        </if>
+        <if test="FILE_TYPE != null and FILE_TYPE != ''">
+            AND FILE_TYPE = #{FILE_TYPE}
+        </if>
+        ORDER BY FILE_SEQ desc
+        ) A
+        ) B
+        <![CDATA[
+		WHERE B.RN >= #{pagingVO.start}
+		  AND B.RN <= #{pagingVO.end}	  
+		]]>
+    </select>
+
+
+    <select id="countSelectFormList" resultType="int">
+        SELECT COUNT(*) FROM file_mgmt
+        <if test="searchWord != null and searchWord != ''">
+            WHERE FORM_NM LIKE CONCAT('%',#{searchWord},'%')
+        </if>
+    </select>
+
+    <!-- 원본서식 pdf -->
+    <select id="selectContrcFormInfo" resultType="HashMap">
+        select fm.FILE_TP
+             , fm.FORM_NM
+             , fm.SAV_FILE_NM
+             , fm.ORG_FILE_NM
+             , fm.FILE_PATH
+        from file_mgmt fm
+        where fm.FILE_SEQ = (select FILE_SEQ from contrc_mgmt cm where CONTRC_NO = #{contrcNo} and USE_YN = 'Y')
+          and FILE_TP = #{fileType}
+    </select>
+
+    <!-- 계약결과 pdf -->
+    <select id="selectContrcResultList" resultType="HashMap">
+        select *
+        from file_mgmt
+        where CONTRC_NO = #{contrcNo}
+          and FILE_TP = #{fileType}
+    </select>
+</mapper>

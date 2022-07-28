@@ -1,0 +1,1228 @@
+@charset "utf-8";
+/*
+    Layout.css
+*/
+
+/***** layout *****/
+body {
+    min-width: 320px;
+    background: #f6f6f6;
+    color: #666;
+    font-family: 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    -webkit-text-size-adjust: none;
+    -webkit-overflow-scrolling: touch;
+    word-wrap: break-word;
+    word-break: keep-all;
+    white-space: normal;
+    overflow-y: scroll;
+}
+
+body.pop {
+    background: #fff;
+}
+
+body.bg {
+    background: #189AAD;
+}
+
+body.bg #wrap {
+    background: #189AAD;
+}
+
+#wrap {
+    position: relative;
+    width: 100%;
+    max-width: 770px;
+    margin: 0 auto;
+    background: #fff;
+    overflow: hidden;
+}
+
+/*** Header ***/
+header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: 770px;
+    height: 50px;
+    background: #189AAD;
+    z-index: 10;
+}
+
+header:before {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    content: "";
+}
+
+header .logo {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: url(/resources/sign/images/layout/logo.png) 15px center /252px 49px no-repeat;
+    text-indent: -9999px;
+    overflow: hidden;
+}
+
+header .logo_s {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: url(/resources/sign/images/layout/list_logo.png) 15px center /25px 25px no-repeat;
+    text-indent: -9999px;
+    overflow: hidden;
+}
+
+header .title {
+    position: relative;
+    padding: 0;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 50px;
+    text-align: center;
+}
+
+header .btn_back {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50px;
+    height: 50px;
+    background: url(/resources/sign/images/layout/btn_back.png) center / 100% 100% no-repeat;
+    text-indent: -9999px;
+    overflow: hidden;
+    z-index: 2;
+}
+
+header .btn_close {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50px;
+    height: 50px;
+    background: url(/resources/sign/images/layout/btn_close.png) center / 100% 100% no-repeat;
+    text-indent: -9999px;
+    overflow: hidden;
+    z-index: 2;
+}
+
+header .txt_app {
+    position: absolute;
+    right: 15px;
+    top: 0;
+    width: 70%;
+    height: 100%;
+    background: url(/resources/sign/images/layout/txt_app.png) right center /120px 9px no-repeat;
+    text-indent: -9999px;
+    overflow: hidden;
+}
+
+@media all and (min-width: 770px) {
+    header {
+        left: calc(50% - 385px);
+    }
+}
+
+
+/*** container ***/
+#container {
+    position: relative;
+    padding-top: 50px;
+    min-height: 400px;
+}
+
+#container.dep {
+    padding-top: 109px;
+}
+
+/** step_loc **/
+.step_loc {
+    position: fixed;
+    left: 0;
+    top: 53px;
+    width: 100%;
+    max-width: 770px;
+    height: 56px;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box;
+    font-size: 0;
+    text-align: center;
+    z-index: 10;
+}
+
+.step_loc ol {
+    display: inline-block;
+    position: relative;
+}
+
+.step_loc li {
+    display: inline-block;
+    position: relative;
+    height: 55px;
+    margin: 0 5px;
+    padding-left: 22px;
+    color: #00b3df;
+    font-size: 17px;
+    font-weight: 900;
+    line-height: 55px;
+    vertical-align: top;
+}
+
+.step_loc li i {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 22px;
+    height: 22px;
+    margin-top: -11px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 100%;
+    box-sizing: border-box;
+    color: #555;
+    font-style: normal;
+    font-size: 13px;
+    text-align: center;
+    line-height: 20px;
+    transition: all 0.4s;
+}
+
+.step_loc li em {
+    display: none;
+    margin-right: -10px;
+    padding: 0 15px 0 10px;
+    background: #fff;
+}
+
+.step_loc li:first-child {
+    margin-left: 0;
+}
+
+.step_loc li:last-child {
+    margin-right: 0;
+}
+
+.step_loc li.act i {
+    background: #00b3df;
+    border-color: #00b3df;
+    color: #fff;
+}
+
+.step_loc li.act em {
+    display: inline-block;
+}
+
+.step_loc ol:before {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+    background: #ccc;
+    content: "";
+}
+
+@media all and (min-width: 770px) {
+    .step_loc {
+        left: calc(50% - 385px);
+    }
+}
+
+
+/** cont_area **/
+.cont_area {
+    position: relative;
+    padding: 30px 15px 50px 15px;
+}
+
+.cont {
+    margin-bottom: 36px;
+}
+
+.cont:last-child {
+    margin-bottom: 0;
+}
+
+.t_tit {
+    margin-bottom: 13px;
+    color: #000;
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 22px;
+}
+
+.t_tit em {
+    display: block;
+    position: relative;
+    float: right;
+    margin-top: 5px;
+    padding-left: 15px;
+    color: #189AAD;
+    font-size: 12px;
+    line-height: 12px;
+}
+
+.t_tit em:before {
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 11px;
+    height: 11px;
+    background: url(/resources/sign/images/layout/ico_txt_msg_box.png) center /100% 100% no-repeat;
+    content: "";
+}
+
+.t_tit:after {
+    display: block;
+    clear: both;
+    height: 0;
+    content: "";
+    overflow: hidden;
+}
+
+.t_text {
+    margin-top: 10px;
+    color: #999;
+}
+
+.t_color {
+    color: #189AAD
+}
+
+.form_box.sub {
+    margin-top: 53px;
+}
+
+.form_box.sub .btn_t {
+    padding-right: 90px;
+}
+
+.form_box.sub .btn_t02 {
+    padding-right: 0;
+}
+
+.form_box.sub .btn_t .btn {
+    position: absolute;
+    right: 0;
+    top: -5px;
+    width: 80px;
+    height: 40px;
+    box-sizing: border-box;
+    font-size: 14px;
+    line-height: 38px;
+    text-align: center;
+}
+
+.form_box.sub .btn_t02 .btn {
+    position: absolute;
+    right: 0;
+    top: -5px;
+    width: 80px;
+    height: 40px;
+    box-sizing: border-box;
+    font-size: 14px;
+    line-height: 38px;
+    text-align: center;
+}
+
+.form_box.sub .time {
+    position: absolute;
+    right: 0;
+    bottom: 10px;
+    color: #189AAD;
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 900
+}
+
+.form_box.sub .pin {
+    padding-top: 45px;
+}
+
+.form_box.sub .pin .mc_tit {
+    padding-bottom: 30px
+}
+
+
+/** page tab **/
+.page_tab {
+    height: 53px;
+    border-bottom: 2px solid #f0f0f0;
+    background: #fff
+}
+
+.page_tab ul {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 55px;
+    overflow: hidden;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch
+}
+
+.page_tab ul::-webkit-scrollbar {
+    width: 0px;
+    display: none;
+}
+
+.page_tab ul::-webkit-scrollbar-thumb {
+    background: transparent
+}
+
+.page_tab ul li {
+    flex: 0 0 auto;
+    width: auto;
+    height: 53px;
+    border-bottom: 2px solid transparent;
+}
+
+.page_tab ul li:first-child a {
+    padding-left: 15px
+}
+
+.page_tab ul li:last-child a {
+    padding-right: 15px
+}
+
+.page_tab ul li a {
+    padding: 0 10px;
+    font-size: 15px;
+    color: #696c6e;
+    font-weight: 900;
+    line-height: 20px;
+    display: block
+}
+
+.page_tab ul li.actived {
+    border-bottom-color: #189AAD
+}
+
+.page_tab ul li.actived a {
+    color: #189AAD;
+}
+
+.page_tab.main {
+    border-bottom: 2px solid rgba(205, 205, 205, 0.3);
+    background: #189AAD
+}
+
+.page_tab.main ul li a {
+    color: #c3d1e4;
+}
+
+.page_tab.main ul li.actived a {
+    color: #fff;
+    border-bottom-color: #fff
+}
+
+.page_tab.page_tab {
+}
+
+.page_tab.page_tab ul {
+    position: relative;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    overflow-x: hidden
+}
+
+.page_tab.page_tab ul li {
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.page_tab.page_tab ul li a {
+    padding: 0
+}
+
+.page_tab.page_tab ul li:first-child a {
+    padding-left: 0
+}
+
+.page_tab.page_tab ul li:last-child a {
+    padding-right: 0
+}
+
+
+/** main_cont_area **/
+.main_cont_area {
+    position: relative;
+    min-height: 400px;
+    padding: 22px 15px 50px 15px;
+    background: #189AAD;
+    box-sizing: border-box;
+    color: #fff;
+}
+
+.main_cont_area .input_ty {
+    border-color: #fff;
+    color: #fff;
+}
+
+.main_cont_area ::-webkit-input-placeholder {
+    color: #71aaef;
+}
+
+.main_cont_area ::-moz-placeholder {
+    color: #71aaef;
+}
+
+.main_cont_area :-ms-input-placeholder {
+    color: #71aaef;
+}
+
+.main_cont_area ::placeholder {
+    color: #71aaef;
+}
+
+.main_cont_area .input_ty:focus {
+    border-color: #71aaef;
+}
+
+.main_cont_area .mc_tit {
+    font-size: 24px;
+    font-weight: 100;
+    line-height: 32px;
+}
+
+.main_cont_area .mc_tit .sm_t {
+    font-size: 18px;
+    font-weight: 100;
+    line-height: 32px;
+}
+
+.main_cont_area .mc_tit strong {
+    font-weight: 600;
+}
+
+.main_cont_area .form_box {
+    margin-top: 53px;
+}
+
+.main_cont_area .form_box .list dt {
+    color: #fff;
+}
+
+.main_cont_area .btn_t {
+    padding-right: 90px;
+}
+
+.main_cont_area .btn_t02 {
+    padding-right: 0;
+}
+
+.main_cont_area .btn_t .btn {
+    position: absolute;
+    right: 0;
+    top: -5px;
+    width: 80px;
+    height: 40px;
+    box-sizing: border-box;
+    font-size: 14px;
+    line-height: 38px;
+    text-align: center;
+}
+
+.main_cont_area .btn_t02 .btn {
+    position: absolute;
+    right: 0;
+    top: -5px;
+    width: 80px;
+    height: 40px;
+    box-sizing: border-box;
+    font-size: 14px;
+    line-height: 38px;
+    text-align: center;
+}
+
+.main_cont_area .time {
+    position: absolute;
+    right: 0;
+    bottom: 10px;
+    color: #189AAD;
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 900
+}
+
+.main_cont_area.pin {
+    padding-top: 45px;
+}
+
+.main_cont_area.pin .mc_tit {
+    padding-bottom: 30px
+}
+
+
+/* btn_app */
+.app_cont {
+    position: relative;
+    height: calc(100vh - 174px);
+    min-height: 500px;
+}
+
+.app_cont .mc_tit {
+    font-size: 20px;
+    line-height: 30px;
+}
+
+.app_cont .info {
+    margin-top: 23px;
+    font-weight: 100;
+}
+
+@media all and (max-width: 350px) {
+    .app_cont .mc_tit {
+        font-size: 18px;
+        line-height: 28px;
+    }
+}
+
+.btn_app {
+    margin-top: 95px;
+}
+
+.btn_app li {
+    margin-top: 15px;
+}
+
+.btn_app li:first-child {
+    margin-top: 0;
+}
+
+.btn_app li.s1 a {
+    background: url(/resources/sign/images/layout/btn_app_ios.png) center /120px 60px no-repeat;
+}
+
+.btn_app li.s2 a {
+    background: url(/resources/sign/images/layout/btn_app_android.png) center /120px 60px no-repeat;
+}
+
+.btn_app a {
+    display: block;
+    height: 60px;
+    border: 1px solid #83a9db;
+    box-sizing: border-box;
+    line-height: 58px;
+    text-align: center;
+    text-indent: -9999px;
+    overflow: hidden;
+    transition: all 0.4s;
+}
+
+.btn_app a:focus {
+    border-color: #fff;
+}
+
+
+/*** Footer ***/
+footer {
+    position: relative;
+    padding: 25px 15px;
+    background: #f6f6f6;
+    box-sizing: border-box;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+footer .copyright {
+    margin: -5px 0;
+}
+
+footer .btn_pc_view {
+    display: block;
+    height: 40px;
+    margin-top: 17px;
+    background: #fff;
+    border: 1px solid #ddd;
+    color: #999;
+    font-size: 14px;
+    line-height: 38px;
+    text-align: center;
+    transition: all 0.4s;
+    box-sizing: border-box;
+}
+
+footer .btn_pc_view:focus {
+    border-color: #000;
+    color: #000;
+}
+
+footer.app_footer {
+    position: relative;
+    height: 51px;
+    padding: 0;
+    background: #189AAD url(/resources/sign/images/layout/txt_footer_app.png) center/220px 50px no-repeat;
+}
+
+footer.app_footer:before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    content: "";
+}
+
+footer.app_footer p {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+}
+
+footer .lang_select {
+    padding-bottom: 7px;
+    text-align: center;
+}
+
+footer .lang_select select {
+    display: inline-block;
+    width: 65px;
+    height: 23px;
+    font-size: 11px;
+    line-height: 23px;
+    color: #999;
+    font-weight: 500;
+    padding: 0 0 0 15px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background: #fff url(/resources/sign/images/layout/lang_select_arrow.png) right 13px center no-repeat;
+    background-size: 8px auto;
+    line-height: 1;
+}
+
+footer .lang_select a {
+    position: relative;
+    display: inline-block;
+    font-size: 11px;
+    color: #999;
+    font-weight: 300;
+    padding: 0 5px;
+    margin: 5px 7px 0 0;
+    line-height: 12px;
+    height: 12px;
+}
+
+footer .lang_select a:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: block;
+    width: 1px;
+    height: 10px;
+    margin-top: -5px;
+    background: #ddd;
+}
+
+footer .lang_select a:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    display: block;
+    width: 1px;
+    height: 10px;
+    margin-top: -5px;
+    background: #ddd;
+}
+
+
+/* layer pop */
+.pop_wrap {
+    position: fixed;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 500;
+    background: #fff;
+    transition: top 0.45s ease-out;
+}
+
+.pop_wrap.open {
+    top: 0;
+}
+
+.pop_wrap .pop_con {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    margin: 50px auto auto auto;
+    overflow-y: auto;
+}
+
+.pop_wrap .pop_detail {
+    max-width: 770px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+#content_pop header {
+    position: absolute;
+}
+
+/* 상단 컨트롤바 */
+#controls {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 49px;
+    padding: 12px 15px;
+    z-index: 10000;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+.controls_wrap {
+    position: relative;
+    height: 25px;
+}
+
+.controls_wrap:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.page_control {
+    float: left;
+    overflow: hidden;
+}
+
+.page_control .btn_control_first {
+    float: left;
+    display: block;
+    width: 13px;
+    height: 25px;
+    background: url(/resources/sign/images/layout/btn_top_ui_first.png) left center no-repeat;
+    background-size: 13px auto;
+}
+
+.page_control .btn_control_prev {
+    float: left;
+    display: block;
+    width: 13px;
+    height: 25px;
+    background: url(/resources/sign/images/layout/btn_top_ui_prev.png) left center no-repeat;
+    background-size: 13px auto;
+    margin-left: 10px;
+}
+
+.page_control .btn_control_next {
+    float: left;
+    display: block;
+    width: 13px;
+    height: 25px;
+    background: url(/resources/sign/images/layout/btn_top_ui_next.png) left center no-repeat;
+    background-size: 13px auto;
+    margin-right: 10px;
+}
+
+.page_control .btn_control_last {
+    float: left;
+    display: block;
+    width: 13px;
+    height: 25px;
+    background: url(/resources/sign/images/layout/btn_top_ui_last.png) left center no-repeat;
+    background-size: 13px auto;
+}
+
+.page_control .page_num {
+    float: left;
+    margin: 4px 10px 0 10px;
+    display: block;
+    padding: 0 6px;
+    height: 17px;
+    font-size: 11px;
+    color: #fff;
+    line-height: 17px;
+    border-radius: 4px;
+    background: #666;
+}
+
+.action_control {
+    float: right;
+    overflow: hidden;
+}
+
+.action_control > p,
+.action_control > a {
+    float: left;
+}
+
+.action_control .scale select {
+    padding: 0 20px 0 6px;
+    margin: 2px 0 0 0;
+    font-size: 11px;
+    border: 1px solid #666;
+    height: 21px;
+    background: url(/resources/sign/images/layout/icon_top_ui_arrow.png) right center no-repeat;
+    background-size: 13px auto;
+}
+
+.action_control .btn_print {
+    margin-left: 5px;
+    display: block;
+    width: 49px;
+    height: 25px;
+    font-size: 12px;
+    line-height: 25px;
+    font-weight: 900;
+    text-align: center;
+    background: #666;
+    color: #fff;
+}
+
+.action_control .btn_send {
+    margin-left: 5px;
+    display: block;
+    width: 49px;
+    height: 25px;
+    font-size: 12px;
+    line-height: 25px;
+    font-weight: 900;
+    text-align: center;
+    background: #189AAD;
+    color: #fff;
+}
+
+.action_control .btn_close {
+    display: block;
+    width: 13px;
+    height: 25px;
+    background: url(/resources/sign/images/layout/btn_top_ui_close.png) left center no-repeat;
+    background-size: 13px auto;
+    margin-left: 10px;
+}
+
+
+@media screen and (max-width: 360px) {
+    .page_tab ul li a {
+        font-size: 13px;
+        line-height: 15px;
+    }
+}
+
+
+/** box_ty **/
+.box_ty {
+    position: relative;
+    padding: 15px;
+    background: #f8f8f8;
+    border-top: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.box_ty .list li {
+    position: relative;
+    margin-top: 15px;
+    padding-right: 55px;
+}
+
+.box_ty .list li:first-child {
+    margin-top: 0;
+}
+
+.box_ty .list li .btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.box_ty .list li .btn a {
+    display: block;
+    width: 50px;
+    height: 20px;
+    border: 1px solid #999;
+    box-sizing: border-box;
+    color: #888;
+    font-size: 11px;
+    line-height: 18px;
+    text-align: center;
+}
+
+.box_ty .list li .agree_chk {
+    display: block;
+    position: relative;
+    width: 50px;
+    height: 20px;
+    background: #888;
+    box-sizing: border-box;
+    color: #fff;
+    font-size: 11px;
+    line-height: 20px;
+    text-align: center;
+    transition: all 0.4s;
+}
+
+.box_ty .list li .agree_chk.chk_on {
+    background: #189AAD;
+}
+
+.box_ty .list li .agree_chk label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.box_ty .list li .agree_chk .ez-checkbox {
+    opacity: 0;
+}
+
+.box_ty .list .scroll_data {
+    margin-right: -55px;
+}
+
+.scroll_data {
+    position: relative;
+    padding: 8px 10px;
+    margin-top: 15px;
+    font-size: 12px;
+    color: #000;
+    line-height: 19px;
+    text-align: left;
+    border: 1px solid #ddd;
+    background: #fff;
+    max-height: 105px;
+    overflow-y: auto;
+    display: none;
+}
+
+/*** Btn ***/
+/** btn_area **/
+.btn_area {
+    margin: 25px -5px 0 -5px;
+    font-size: 0;
+}
+
+.btn_area a {
+    width: calc(50% - 10px);
+    margin: 0 5px;
+}
+
+.btn_area a:only-child {
+    display: block;
+    width: calc(100% - 10px);
+    margin: 0 5px;
+}
+
+.btn_area button:only-child {
+    display: block;
+    width: calc(100% - 10px);
+    margin: 0 5px;
+}
+
+/** btn_area_s **/
+.btn_area_s {
+    margin-top: 15px;
+    font-size: 0;
+}
+
+.btn_area_s .left {
+    float: left;
+}
+
+.btn_area_s .left a {
+    margin-right: 10px;
+}
+
+.btn_area_s .right {
+    float: right;
+}
+
+.btn_area_s .right a {
+    margin-left: 10px;
+}
+
+.btn_area_s:after {
+    display: block;
+    clear: both;
+    height: 0;
+    content: "";
+    overflow: hidden;
+}
+
+.btn_user_agree {
+    display: inline-block;
+    font-size: 12px;
+    color: #666;
+    font-weight: 300;
+    padding-right: 10px;
+    background: url(/resources/sign/images/layout/icon_arrow_right_black.png) right center no-repeat;
+    background-size: 5px auto;
+}
+
+
+/* Btn Size */
+.btn_s {
+    display: inline-block;
+    padding: 0 15px;
+    height: 30px;
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 28px;
+    text-align: center;
+}
+
+.btn_m {
+    display: inline-block;
+    width: 100%;
+    height: 50px;
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 50px;
+    text-align: center;
+}
+
+.btn_s02 {
+    display: inline-block;
+    width: 100%;
+    height: 30px;
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 28px;
+    text-align: center;
+}
+
+.btn_s03 {
+    display: inline-block;
+    vertical-align: top;
+    padding: 3px;
+    font-size: 13px;
+    font-weight: 900;
+    text-align: center;
+}
+
+/* Btn Color */
+.btn_ty {
+    background: #fff;
+    color: #189AAD;
+    transition: all 0.4s;
+}
+
+.btn_ty:disabled {
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+
+.btn_ty01 {
+    background: #999;
+    color: #fff;
+    transition: all 0.4s;
+}
+
+.btn_ty01:focus {
+    background: #333;
+}
+
+.btn_ty01:disabled {
+    background: #fff;
+}
+
+.btn_ty02 {
+    background: #189AAD;
+    color: #fff;
+    transition: all 0.4s;
+}
+
+.btn_ty02:focus {
+    background: #333;
+}
+
+.btn_ty02:disabled {
+    background: #fff;
+}
+
+.btn_ty03 {
+    background: #fff;
+    border: 1px solid #189AAD;
+    box-sizing: border-box;
+    color: #189AAD;
+    transition: all 0.4s;
+}
+
+.btn_ty03:focus {
+    background: #333;
+    border-color: #333;
+}
+
+.btn_ty04 {
+    background: #fff;
+    border: 1px solid #555;
+    box-sizing: border-box;
+    color: #555;
+    transition: all 0.4s;
+}
+
+.btn_ty04:focus {
+    border-color: #222;
+    color: #222;
+}
+
+.btn_ty05 {
+    background: #333;
+    border: 1px solid #fff;
+    color: #fff;
+    transition: all 0.4s;
+}
+
+
+/* 정렬 */
+.overflow {
+    overflow: hidden
+}
+
+.overflow .f_l {
+    float: left
+}
+
+.overflow .f_r {
+    float: right
+}
+
+.mt01 {
+    margin-top: 5px
+}
+
+.mt02 {
+    margin-top: 10px
+}
+
+.mb01 {
+    margin-bottom: 5px
+}
+
+.mb02 {
+    margin-bottom: 10px
+}

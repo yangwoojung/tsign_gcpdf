@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.tsoft.sign.mapper.admin.ContrcMapper">
+
+    <!-- 계약 리스트 조회(페이징 포함) -->
+    <select id="selectContrcList" parameterType="HashMap" resultType="HashMap">
+        /** [SIGN].[ContrcMapper.selectContrcList] */
+
+        select B.* from (
+        SELECT A.*
+        <![CDATA[
+					,(@row_number := @row_number + 1) RN
+					]]>
+        FROM (SELECT
+        A.CONTRC_SEQ
+        ,A.CONTRC_NO
+        ,A.FILE_SEQ
+        ,A.PIN_NO
+        ,A.USER_NM
+        ,A.CELL_NO
+        ,A.EMAIL
+        ,A.SIGN_DUE_SDATE
+        ,A.SIGN_DUE_EDATE
+        ,A.IN_SIGN_DATE
+        ,A.USE_YN
+        ,A.REG_DATE
+        ,B.FORM_NM
+        FROM
+        <![CDATA[
+							(SELECT @row_number := 0) AA
+							]]>
+        ,contrc_mgmt A
+        left join file_mgmt B
+        on A.FILE_SEQ = B.FILE_SEQ
+        and B.USE_YN = 'Y'
+        <if test="searchWord != null and searchWord != ''">
+            WHERE USER_NM LIKE CONCAT('%',#{searchWord},'%')
+        </if>
+        ORDER BY A.REG_DATE desc
+        ) A
+        ) B
+        <![CDATA[
+		WHERE B.RN >= #{pagingVO.start}
+		  AND B.RN <= #{pagingVO.end}	  
+		]]>
+    </select>
+
+    <!-- 계약 전체 리스트 수 조회 -->
+    <select id="countSelectContrcList" resultType="int">
+        SELECT COUNT(*) FROM contrc_mgmt
+        <if test="searchWord != null and searchWord != ''">
+            WHERE USER_NM LIKE CONCAT('%',#{searchWord},'%')
+        </if>
+    </select>
+
+    <!-- 계약 단건 조회 -->
+    <select id="selectContrcInfo" parameterType="HashMap" resultType="HashMap">
+        /** [SIGN].[ContrcMapper.selectContrcInfo] */
+        SELECT CONTRC_SEQ
+             , CONTRC_NO
+             , FILE_SEQ
+             , PIN_NO
+             , USER_NM
+             , CELL_NO
+             , EMAIL
+             , SIGN_DUE_SDATE
+             , SIGN_DUE_EDATE
+             , IN_SIGN_DATE
+             , USE_YN
+        FROM contrc_mgmt
+        WHERE CONTRC_NO = #{CONTRC_NO}
+    </select>
+
+    <!-- 해당 계약건에 완료된 계약서, 추적표 조회 -->
+    <select id="selectCompleteContr" parameterType="HashMap" resultType="HashMap">
+        /** [SIGN].[ContrcMapper.selectCompleteContr] */
+        select *
+        from file_mgmt
+        WHERE CONTRC_NO = #{CONTRC_NO}
+          and USE_YN = 'Y'
+    </select>
+
+    <!-- 계약 저장 -->
+    <insert id="insertContrcReg" parameterType="HashMap">
+        /** [SIGN].[ContrcMapper.insertContrcReg] */
+        insert into contrc_mgmt
+        ( CONTRC_NO
+        , FILE_SEQ
+        , USER_NM
+        , CELL_NO
+        , EMAIL
+        , SIGN_DUE_SDATE
+        , SIGN_DUE_EDATE
+        , REG_ID
+        , MOD_ID)
+        values ( #{CONTRC_NO}
+               , #{FILE_SEQ}
+               , #{USER_NM}
+               , #{CELL_NO}
+               , #{EMAIL}
+               , #{SIGN_DUE_SDATE}
+               , #{SIGN_DUE_EDATE}
+               , #{REG_ID}
+               , #{MOD_ID})
+    </insert>
+
+    <!-- 계약 pin번호 업데이트 -->
+    <update id="updateContrcPin" parameterType="HashMap">
+        /** [SIGN].[ContrcMapper.updateContrcPin] */
+        update contrc_mgmt
+        set PIN_NO = #{PIN_NO}
+          , MOD_ID = #{MOD_ID}
+        where CONTRC_NO = #{CONTRC_NO}
+
+    </update>
+</mapper>

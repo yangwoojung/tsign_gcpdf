@@ -1,0 +1,1683 @@
+@charset "utf-8";
+/*
+    Template.css
+*/
+
+/*** Form Common Style ***/
+/* input */
+.input_ty {
+    width: 100%;
+    height: 50px;
+    padding: 0;
+    background: none;
+    border: solid #000;
+    border-width: 0 0 1px 0;
+    box-sizing: border-box;
+    color: #000;
+    font-family: 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    vertical-align: top;
+    transition: all 0.4s;
+}
+
+.input_ty.center {
+    text-align: center;
+}
+
+.input_ty.right {
+    text-align: right;
+}
+
+input.input_ty[type=number]::-webkit-inner-spin-button,
+input.input_ty[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+::-webkit-input-placeholder {
+    color: #ccc;
+    font-size: 14px;
+}
+
+::-moz-placeholder {
+    color: #ccc;
+    font-size: 14px;
+}
+
+:-ms-input-placeholder {
+    color: #ccc;
+    font-size: 14px;
+}
+
+::placeholder {
+    color: #ccc;
+    font-size: 14px;
+}
+
+.input_ty:focus {
+    outline-style: none;
+    border-color: #189AAD;
+}
+
+/* button */
+button {
+    font-family: 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: default;
+}
+
+button:focus {
+    outline-style: none;
+}
+
+/* select */
+select {
+    width: 100%;
+    height: 50px;
+    padding: 0;
+    background: url(/resources/sign/images/layout/ico_select.png) right center /6px 3px no-repeat;
+    border: solid #000;
+    border-width: 0 0 1px 0;
+    box-sizing: border-box;
+    color: #000;
+    font-family: 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    vertical-align: top;
+    transition: all 0.4s;
+}
+
+select:focus {
+    outline-style: none;
+    border-color: #189AAD;
+}
+
+/* ezMark jQuery Plugin */
+.radio_ty {
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    vertical-align: top;
+}
+
+.chk_ty {
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    vertical-align: top;
+}
+
+.ez-hide {
+    opacity: 0;
+}
+
+.ez-checkbox {
+    display: inline-block;
+    margin: -3px 2px 0 0;
+    background: url(/resources/sign/images/layout/bg_checkbox.png) center /18px 18px no-repeat;
+    vertical-align: middle;
+    transition: background 0.4s;
+}
+
+.chk_on .ez-checkbox {
+    background: url(/resources/sign/images/layout/bg_checkbox_on.png) no-repeat 0% 50% / 18px 18px !important;
+}
+
+.ez-radio {
+    display: inline-block;
+    margin: -3px 2px 0 0;
+    background: url(/resources/sign/images/layout/bg_radio.png) center /18px 18px no-repeat;
+    vertical-align: middle;
+    transition: background 0.4s;
+}
+
+.ez-checkbox, .ez-radio {
+    zoom: 1;
+    *display: inline;
+    line-height: 18px;
+}
+
+.ez-checked {
+    background: url(/resources/sign/images/layout/bg_checkbox_on.png) 0% center /18px 18px no-repeat !important;
+}
+
+.ez-selected {
+    background: url(/resources/sign/images/layout/bg_radio_on.png) center /18px 18px no-repeat;
+}
+
+.ez-checks {
+    position: relative;
+    display: inline-block;
+}
+
+.ez-checks input[type="checkbox"] {
+    position: absolute;
+    display: block;
+    height: 1px;
+    padding-right: 10px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+    z-index: 10
+}
+
+.ez-checks input[type="checkbox"] + label {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    font-family: 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 600;
+    z-index: 9
+}
+
+.ez-checks input[type="checkbox"] + label:before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    margin: 0 5px 0 0;
+    text-align: center;
+    vertical-align: top;
+    background: url('/resources/sign/images/layout/bg_checkbox.png') no-repeat 50% 50% / 18px;
+}
+
+.ez-checks input[type="checkbox"]:checked {
+    z-index: 0
+}
+
+.ez-checks input[type="checkbox"]:checked + label:before {
+    background: url('/resources/sign/images/layout/bg_checkbox_on.png') no-repeat 50% 50% / 18px;
+}
+
+.ez-checks input[type="checkbox"]:checked + label {
+    color: #666
+}
+
+
+.ez-checks input[type="radio"] {
+    position: absolute;
+    display: block;
+    height: 1px;
+    padding-right: 10px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+    z-index: 10
+}
+
+.ez-checks input[type="radio"] + label {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    font-family: 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 600;
+    z-index: 9
+}
+
+.ez-checks input[type="radio"] + label:before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    margin: 0 5px 0 0;
+    text-align: center;
+    vertical-align: top;
+    background: url('/resources/sign/images/layout/bg_radio.png') no-repeat 50% 50% / 18px;
+}
+
+.ez-checks input[type="radio"]:checked {
+    z-index: 0
+}
+
+.ez-checks input[type="radio"]:checked + label:before {
+    background: url('/resources/sign/images/layout/bg_radio_on02.png') no-repeat 50% 50% / 18px;
+}
+
+.ez-checks input[type="radio"]:checked + label {
+    color: #666
+}
+
+.ez-checks.mr {
+    margin-right: 30px
+}
+
+.all_check {
+    padding: 8px 10px;
+    box-sizing: border-box;
+    background: #189AAD;
+    color: #fff;
+    transition: all 0.4s;
+}
+
+.all_check.on {
+    background: #eee;
+    color: #666
+}
+
+.all_check .ez-checks input[type="checkbox"]:checked + label:before {
+    background: url('/resources/sign/images/layout/bg_checkbox_on.png') no-repeat 50% 50% / 18px !important
+}
+
+.all_check .ez-checks input[type="checkbox"]:checked + label {
+    color: #666 !important
+}
+
+/*** Common ***/
+/* Font */
+.t_point {
+    color: #189AAD;
+}
+
+/* txt_msg */
+.txt_msg {
+    color: #000;
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 22px;
+}
+
+/* txt_msg_box */
+.txt_msg_box {
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.txt_msg_box dt {
+    font-size: 15px;
+    line-height: 22px;
+}
+
+.txt_msg_box dt strong {
+    color: #000;
+}
+
+.txt_msg_box dd {
+    margin-top: 8px;
+}
+
+.txt_msg_box li {
+    position: relative;
+    margin-top: 4px;
+    padding-left: 10px;
+    color: #189AAD;
+    font-size: 13px;
+    line-height: 18px;
+}
+
+.txt_msg_box li:first-child {
+    margin-top: 0;
+}
+
+.txt_msg_box li:before {
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 6px;
+    height: 11px;
+    no-repeat;
+    content: "*";
+}
+
+.txt_msg_box .num_list {
+    margin-bottom: 5px;
+}
+
+.txt_msg_box .num_list li {
+    padding-left: 20px;
+    color: #666;
+}
+
+.txt_msg_box .num_list li em {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.txt_msg_box .num_list li:before {
+    display: none;
+}
+
+/* txt_bg_box */
+.txt_bg_box {
+    padding: 15px;
+    background: #f5f5f5;
+    border-top: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.txt_bg_box.mg {
+    margin-top: 10px
+}
+
+html.fix {
+    overflow-y: hidden
+}
+
+/* txt_info */
+.txt_info {
+    padding: 15px;
+    background: #f8f8f8;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.txt_info li {
+    position: relative;
+    margin-top: 8px;
+    padding-left: 8px;
+}
+
+.txt_info li:before {
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 3px;
+    height: 1px;
+    background: #555;
+    content: "";
+}
+
+.txt_info li:first-child {
+    margin-top: 0;
+}
+
+
+/*** Contents ***/
+/** Accordion_ty :18.08.30 수정 **/
+.accordion_ty {
+    position: relative;
+}
+
+.accordion_ty.mt {
+    position: relative;
+    margin-top: 23px;
+}
+
+.accordion_ty .list {
+    position: relative;
+    margin-top: 15px;
+    border: 1px solid #ccc;
+}
+
+.accordion_ty .list:first-child {
+    margin-top: 0;
+}
+
+.accordion_ty .front {
+    position: relative;
+    display: table;
+    width: 100%;
+    transition: all 0.4s;
+}
+
+.accordion_ty .front:after {
+    display: block;
+    clear: both;
+    height: 0;
+    content: "";
+    overflow: hidden;
+}
+
+.accordion_ty .tit {
+    display: table-cell;
+    height: 60px;
+    padding: 5px 135px 7px 54px;
+    box-sizing: border-box;
+    color: #000;
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 19px;
+    vertical-align: middle;
+}
+
+.accordion_ty .tit .btn_add {
+    position: absolute;
+    left: 17px;
+    top: 50%;
+    width: 25px;
+    height: 25px;
+    margin-top: -13px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    text-indent: -9999px;
+    overflow: hidden;
+    transition: all 0.4s;
+}
+
+.accordion_ty .tit .btn_add:before {
+    position: absolute;
+    left: 5px;
+    top: 11px;
+    width: 13px;
+    height: 1px;
+    background: #d5d5d5;
+    content: "";
+    transition: all 0.4s;
+}
+
+.accordion_ty .tit .btn_add:after {
+    position: absolute;
+    left: 11px;
+    top: 5px;
+    width: 1px;
+    height: 13px;
+    background: #d5d5d5;
+    content: "";
+    transition: all 0.4s;
+}
+
+.accordion_ty .tit .btn_delete {
+    position: absolute;
+    left: 42px;
+    top: 50%;
+    width: 25px;
+    height: 25px;
+    margin-top: -13px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    text-indent: -9999px;
+    overflow: hidden;
+    transition: all 0.4s;
+}
+
+.accordion_ty .tit .btn_delete:before {
+    position: absolute;
+    left: 5px;
+    top: 11px;
+    width: 13px;
+    height: 1px;
+    background: #d5d5d5;
+    content: "";
+    transition: all 0.4s;
+}
+
+.accordion_ty .file {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    margin-top: -17px;
+}
+
+.accordion_ty .file li {
+    float: left;
+    margin-left: 10px;
+    background: #888;
+    box-sizing: border-box;
+}
+
+.accordion_ty .file li.btn_camera {
+    background: #888 url(/resources/sign/images/layout/btn_ico_camera.png) center /100% 100% no-repeat;
+}
+
+.accordion_ty .file li.btn_file {
+    background: #888 url(/resources/sign/images/layout/btn_ico_file.png) center /100% 100% no-repeat;
+}
+
+.accordion_ty .btn_file_up {
+    width: 50px;
+    height: 30px;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.accordion_ty .btn_area {
+    position: relative;
+    overflow: hidden;
+}
+
+.accordion_ty .btn_area .btn01 {
+    float: left;
+    width: 70%
+}
+
+.accordion_ty .btn_area .btn02 {
+    float: right;
+    width: 29%;
+}
+
+.accordion_ty .li_on {
+    display: block
+}
+
+.accordion_ty .li_off {
+    display: none
+}
+
+/* view */
+.accordion_ty .view {
+    display: none;
+    position: relative;
+    margin: 15px;
+    animation: fade both 0.4s 0.2s;
+}
+
+.accordion_ty .view .img {
+    text-align: center;
+}
+
+.accordion_ty .view .img img {
+    width: 100%;
+    max-width: 450px;
+}
+
+.accordion_ty .view .txt {
+    color: #888;
+    text-align: center;
+}
+
+.accordion_ty .btn_view_delete {
+    position: absolute;
+    right: -15px;
+    top: -55px;
+    width: 50px;
+    height: 50px;
+    background: url(/resources/sign/images/layout/btn_view_delete.png) center /15px 15px no-repeat;
+    text-indent: -9999px;
+    overflow: hidden;
+}
+
+/* Active */
+.accordion_ty .on .front {
+    background: #ccc;
+}
+
+.accordion_ty .on .tit .btn_add {
+    border-color: #666;
+}
+
+.accordion_ty .on .tit .btn_add:before {
+    background: #787878;
+}
+
+.accordion_ty .on .tit .btn_add:after {
+    background: #787878;
+}
+
+.accordion_ty .on .file li {
+    background: #ccc;
+    border: 1px solid #666;
+}
+
+.accordion_ty .on .file li.btn_camera {
+    background: #ccc url(/resources/sign/images/layout/btn_ico_camera_on.png) center /100% 100% no-repeat;
+}
+
+.accordion_ty .on .file li.btn_file {
+    background: #ccc url(/resources/sign/images/layout/btn_ico_file_on.png) center /100% 100% no-repeat;
+}
+
+.accordion_ty .on .view {
+    display: block;
+}
+
+/* 2단 */
+.accordion_ty .dep .list {
+    margin-top: 0;
+    border-width: 1px 0 0 0;
+}
+
+.accordion_ty .dep .tit {
+    padding-left: 79px;
+}
+
+.accordion_ty .on .dep .front {
+    background: #fff;
+}
+
+.accordion_ty .on .dep .tit .btn_add {
+    border-color: #ccc;
+}
+
+.accordion_ty .on .dep .tit .btn_add:before {
+    background: #d5d5d5;
+}
+
+.accordion_ty .on .dep .tit .btn_add:after {
+    background: #d5d5d5;
+}
+
+.accordion_ty .on .dep .file li {
+    background: #888;
+    border: 1px solid #888;
+}
+
+.accordion_ty .on .dep .file li.btn_camera {
+    background: #888 url(/resources/sign/images/layout/btn_ico_camera.png) center /100% 100% no-repeat;
+}
+
+.accordion_ty .on .dep .file li.btn_file {
+    background: #888 url(/resources/sign/images/layout/btn_ico_file.png) center /100% 100% no-repeat;
+}
+
+.accordion_ty .on .dep .view {
+    display: none;
+}
+
+.accordion_ty .dep .on .front {
+    background: #ccc;
+}
+
+.accordion_ty .dep .on .tit .btn_delete {
+    border-color: #666;
+}
+
+.accordion_ty .dep .on .tit .btn_delete:before {
+    background: #787878;
+}
+
+.accordion_ty .dep .on .file li {
+    background: #ccc;
+    border: 1px solid #666;
+}
+
+.accordion_ty .dep .on .file li.btn_camera {
+    background: #ccc url(/resources/sign/images/layout/btn_ico_camera_on.png) center /100% 100% no-repeat;
+}
+
+.accordion_ty .dep .on .file li.btn_file {
+    background: #ccc url(/resources/sign/images/layout/btn_ico_file_on.png) center /100% 100% no-repeat;
+}
+
+.accordion_ty .dep .on .view {
+    display: block;
+}
+
+/** //Accordion_ty :18.08.30 수정 **/
+
+
+/** form_box **/
+.form_box.mt {
+    margin-top: 22px;
+}
+
+.form_box.bg {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-top: 1px solid #e5e5e5;
+}
+
+.form_box .list {
+    margin-top: 25px;
+}
+
+.form_box .list:first-child {
+    margin-top: 0;
+}
+
+.form_box .list dt {
+    margin-bottom: 5px;
+    color: #000;
+    font-size: 15px;
+    line-height: 15px;
+}
+
+.form_box .list dd {
+    position: relative;
+}
+
+.form_box .list dd:after {
+    display: block;
+    clear: both;
+    height: 0;
+    content: "";
+    overflow: hidden;
+}
+
+.form_box .list dd.half .input_ty {
+    width: calc(50% - 15px);
+}
+
+.form_box .list dd.half .input_ty:last-child {
+    float: right;
+}
+
+.form_box .list dd.half select {
+    width: calc(50% - 15px);
+    margin-left: 26px;
+}
+
+.form_box .list dd.half select:last-child {
+    float: right;
+}
+
+.form_box .list dd.half:before {
+    position: absolute;
+    top: 18px;
+    left: calc(50% - 7px);
+    width: 7px;
+    height: 1px;
+    background: #000;
+    content: "";
+}
+
+.form_box .list dd.half.email:before {
+    position: absolute;
+    top: 7px;
+    left: calc(50% - 7px);
+    width: 7px;
+    height: 35px;
+    background: none;
+    content: "@";
+    color: #000;
+}
+
+.form_box .list dd.half .box {
+    float: right;
+    width: calc(50% - 15px);
+}
+
+.form_box .list dd.half .box .input_ty {
+    width: calc(100% - 49px);
+}
+
+.form_box .list dd.half .box em {
+    display: inline-block;
+    width: 45px;
+    color: #000;
+    line-height: 35px;
+}
+
+.form_box .list dd.lent .input_ty, .form_box .list dd.lent select {
+    float: left;
+    width: 30%;
+}
+
+.form_box .list dd.lent .input_ty:last-child, .form_box .list dd.lent select:last-child {
+    float: right;
+    width: calc(70% - 10px);
+}
+
+.form_box .list dd.half.email {
+}
+
+.form_box .list dd.half.email .directly_input {
+    display: block;
+    float: none;
+    clear: both;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.form_box .list dd.half.email .directly_input:disabled {
+    border-bottom-color: #eaeaea
+}
+
+.form_box .list dd.half02 input {
+    max-width: 40%
+}
+
+.form_box .list dd.half02 span {
+    max-width: 55%
+}
+
+.form_box .list dd.half03 {
+    display: table;
+    width: 100%;
+}
+
+.form_box .list dd.half03 p {
+    display: table-cell;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.form_box .list dd.half03 p:nth-child(1) {
+    width: auto;;
+    position: relative;
+}
+
+.form_box .list dd.half03 p:nth-child(2) {
+    max-width: 180px;
+    width: 45%
+}
+
+.form_box .list dd.half03 p:nth-child(2) input {
+    margin-left: 5%;
+    box-sizing: border-box
+}
+
+.form_box .list dd.half04 {
+    overflow: hidden
+}
+
+.form_box .list dd.half04 .input_ty {
+    float: left;
+    width: calc(100% - 30px)
+}
+
+.form_box .list dd.half04 span {
+    float: right;
+    width: 30px
+}
+
+.form_box .list dd.half05 {
+    overflow: hidden
+}
+
+.form_box .list dd.half05 input {
+    float: left;
+    width: 50%;
+    position: relative;
+}
+
+.form_box .list dd.half05 input:nth-child(1) {
+    width: 49%;
+    margin-right: 1%;
+}
+
+.form_box .list dd.half05 p {
+    float: left;
+    width: 50%;
+}
+
+.form_box .list dd.half05 p:nth-child(1) {
+    width: 49%;
+    margin-right: 1%;
+}
+
+.form_box .list dd.business {
+    overflow: hidden
+}
+
+.form_box .list dd.business p {
+    float: left;
+    position: relative;
+}
+
+.form_box .list dd.business p:before {
+    position: absolute;
+    top: 18px;
+    right: 4%;
+    width: 7px;
+    height: 1px;
+    background: #000;
+    content: "";
+}
+
+.form_box .list dd.business p input {
+    width: 90%;
+    text-align: center
+}
+
+.form_box .list dd.business p:nth-child(1) {
+    width: 30%
+}
+
+.form_box .list dd.business p:nth-child(2) {
+    width: 25%
+}
+
+.form_box .list dd.business p:nth-child(3) {
+    width: 45%;
+}
+
+.form_box .list dd.business p:nth-child(3) input {
+    width: 100%
+}
+
+.form_box .list dd.business p:nth-child(3):before {
+    display: none
+}
+
+.form_box .list dd.driver {
+    overflow: hidden
+}
+
+.form_box .list dd.driver p {
+    float: left;
+}
+
+.form_box .list dd.driver p input {
+    width: 90%;
+    text-align: center
+}
+
+.form_box .list dd.driver p select {
+    width: 90%
+}
+
+.form_box .list dd.driver p:nth-child(1) {
+    width: 30%
+}
+
+.form_box .list dd.driver p:nth-child(2) {
+    width: 20%
+}
+
+.form_box .list dd.driver p:nth-child(3) {
+    width: 30%;
+}
+
+.form_box .list dd.driver p:nth-child(4) {
+    width: 20%
+}
+
+.form_box .list dd.registered {
+    overflow: hidden
+}
+
+.form_box .list dd.registered p {
+    float: left;
+    position: relative;
+}
+
+.form_box .list dd.registered p:before {
+    position: absolute;
+    top: 18px;
+    right: 4%;
+    width: 7px;
+    height: 1px;
+    background: #000;
+    content: "";
+}
+
+.form_box .list dd.registered p input {
+    width: 90%;
+    text-align: center;
+}
+
+.form_box .list dd.registered p:nth-child(1) {
+    width: 33%
+}
+
+.form_box .list dd.registered p:nth-child(2) {
+    width: 33%
+}
+
+.form_box .list dd.registered p:nth-child(3) {
+    width: 34%;
+}
+
+.form_box .list dd.registered p:nth-child(3):before {
+    display: none
+}
+
+.form_box .list dd.registered p:nth-child(3) input {
+    width: 100%
+}
+
+.form_box .list input:disabled {
+    border-bottom-color: #ddd
+}
+
+
+.accordion_ty .form_box .list {
+    border: none
+}
+
+
+/* certi_box */
+.certi_box {
+    margin: 10px -5px 0 -5px;
+}
+
+.certi_box li {
+    position: relative;
+    float: left;
+    width: calc(50% - 10px);
+    height: 135px;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    text-align: center;
+    transition: all 0.4s;
+}
+
+.certi_box li:before {
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    right: -1px;
+    bottom: -1px;
+    border: 2px solid #189AAD;
+    content: "";
+    opacity: 0;
+    transition: all 0.4s;
+}
+
+.certi_box li label {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding-top: 90px;
+    box-sizing: border-box;
+    color: #000;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.certi_box li .ez-radio {
+    opacity: 0;
+}
+
+.certi_box li.s1 {
+    background: url(/resources/sign/images/layout/ico_certi_box01.png) center 27px /70px 55px no-repeat;
+}
+
+.certi_box li.s2 {
+    background: url(/resources/sign/images/layout/ico_certi_box02.png) center 27px /70px 55px no-repeat;
+}
+
+.certi_box li.chk_on:before {
+    opacity: 1;
+}
+
+.certi_box li.s1.chk_on {
+    background: url(/resources/sign/images/layout/ico_certi_box01on.png) center 27px /70px 55px no-repeat;
+}
+
+.certi_box li.s2.chk_on {
+    background: url(/resources/sign/images/layout/ico_certi_box02on.png) center 27px /70px 55px no-repeat;
+}
+
+.certi_box:after {
+    display: block;
+    clear: both;
+    height: 0;
+    content: "";
+    overflow: hidden;
+}
+
+
+/** terms_box **/
+.terms_box {
+    position: relative;
+    max-height: 220px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.terms_box.ty02 {
+    height: calc(100vh - 53px - 80px - 75px - 60px);
+    max-height: inherit;
+    min-height: 220px;
+}
+
+.terms_cont {
+    margin-bottom: 8px;
+}
+
+.terms_cont:last-child {
+    margin-bottom: 0;
+}
+
+.terms_cont .li {
+    position: relative;
+    padding-left: 18px;
+}
+
+.terms_cont .li em {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.terms_tit {
+    margin-bottom: 8px;
+    color: #000;
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 22px;
+}
+
+.terms_tit02 {
+    margin-bottom: 2px;
+    color: #000;
+    font-weight: 900;
+}
+
+.terms_cont {
+    margin-bottom: 8px;
+}
+
+.terms_cont:last-child {
+    margin-bottom: 0;
+}
+
+.terms_cont .li {
+    position: relative;
+    padding-left: 18px;
+}
+
+.terms_cont .li em {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.terms_cont .mt {
+    margin-top: 4px;
+}
+
+
+/** complete_msg **/
+.complete_msg {
+    margin: 0 50px 40px 50px;
+    text-align: center;
+}
+
+.complete_msg dt img {
+    height: 85px;
+}
+
+.complete_msg dd {
+    margin-top: 10px;
+    color: #000;
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 22px;
+}
+
+
+/** sign_area **/
+.sign_area {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    border: 2px solid #333;
+    box-sizing: border-box;
+    margin: 0 auto;
+    background: url(/resources/sign/images/layout/sign_bg.png) repeat;
+}
+
+.sign_area:before {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    margin-top: -12px;
+    color: #ccc;
+    font-size: 24px;
+    line-height: 24px;
+    text-align: center;
+    content: "서명란";
+}
+
+
+/*** Animation ***/
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* table */
+table.list {
+    width: 100%;
+    table-layout: fixed
+}
+
+table.list > thead > tr > th {
+    height: 25px;
+    font-size: 12px;
+    color: #000;
+    font-weight: 600;
+    padding: 0 10px;
+    background: #ddd;
+    border-bottom: 1px solid #ccc;
+    border-top: 2px solid #ccc;
+    vertical-align: middle;
+    text-align: center
+}
+
+table.list > tbody > tr > td {
+    height: 25px;
+    font-size: 12px;
+    color: #000;
+    font-weight: 600;
+    padding: 0 5px;
+    background: #fff;
+    border-bottom: 1px solid #ccc;
+    vertical-align: middle;
+    text-align: left
+}
+
+.check_agree {
+    position: relative;
+    margin-top: 15px;
+    padding-left: 33px;
+}
+
+.check_agree .ez-checkbox {
+    position: absolute;
+    top: 50%;
+    left: 13px;
+    width: 10px;
+    height: 10px;
+    margin: -5px 0 0 0;
+    border-radius: 0;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+}
+
+.check_agree .ez-checkbox.ez-checked {
+    background: #1c69d4 url(/resources/sign/images/layout/check_type_02.png) center center no-repeat;
+    background-size: 10px auto;
+    border-color: #1c69d4
+}
+
+.check_agree label {
+    font-size: 12px;
+    line-height: 19px;
+    color: #666;
+}
+
+
+table.normal {
+    width: 100%;
+    table-layout: fixed;
+    border-top: 1px solid #ccc
+}
+
+table.normal th {
+    background: #f5f5f5;
+    word-break: keep-all;
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+table.normal td {
+    border-left: 1px solid #ddd;
+    word-break: keep-all;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: left;
+    line-height: 23px
+}
+
+table.normal th:last-child {
+    border-right: 1px solid #ddd
+}
+
+table.normal td:last-child {
+    border-right: 1px solid #ddd
+}
+
+
+/* 콘텐츠 */
+.privacy_inner .cont:first-child {
+    margin: 0 0 30px 0 !important
+}
+
+.privacy_inner .cont:last-child {
+    margin: 20px 0 0 0
+}
+
+.privacy_inner .cont {
+    margin: 20px 0 30px 0
+}
+
+.privacy_inner .mt {
+    margin-top: 10px;
+}
+
+.privacy_inner .pl {
+    padding-left: 20px;
+    box-sizing: border-box;
+}
+
+.privacy_inner .tit {
+    font: 900 15px/25px 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
+    color: #333
+}
+
+.privacy_inner .text {
+    font: 600 14px/23px 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
+    color: #666
+}
+
+.privacy_inner .text b {
+    font-weight: 900
+}
+
+.privacy_inner .text02 {
+    font: 900 16px/23px 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
+    color: #666
+}
+
+.privacy_inner .box_t {
+    background: #f8f8f8;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    margin-top: 10px;
+    padding: 15px;
+}
+
+.privacy_inner .box_t p {
+    position: Relative;
+    padding-left: 12px;
+    font: 900 16px/23px 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
+    color: #666
+}
+
+.privacy_inner .box_t p:before {
+    position: absolute;
+    left: 0;
+    top: 11px;
+    width: 5px;
+    height: 1px;
+    background: #555;
+    content: "";
+}
+
+.privacy_inner .dot {
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    box-sizing: border-box
+}
+
+.privacy_inner .dot li {
+    position: relative;
+    margin-top: 8px;
+    padding-left: 8px;
+}
+
+.privacy_inner .dot li:before {
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 3px;
+    height: 1px;
+    background: #555;
+    content: "";
+}
+
+.privacy_inner .dot li:first-child {
+    margin-top: 0;
+}
+
+.dot02 li {
+    position: relative;
+    margin-top: 5px;
+    padding-left: 8px;
+}
+
+.dot02 li:before {
+    position: absolute;
+    left: 0;
+    top: 11px;
+    border-radius: 100%;
+    width: 3px;
+    height: 3px;
+    background: #555;
+    content: "";
+}
+
+.dot02 li:first-child {
+    margin-top: 0;
+}
+
+
+.error {
+    text-align: Center;
+    background: url('/resources/sign/images/layout/error.png') no-repeat 50% 0 / 60px;
+    padding: 65px 10px 0 10px;
+    box-sizing: border-box
+}
+
+.error .text {
+    margin-top: 5px
+}
+
+.error_bg {
+    margin-top: 30px;
+    padding: 10px 0;
+    border: 1px solid #e5e5e5;
+    background: #f5f5f5;
+    text-align: center
+}
+
+.error_bg .tit {
+    font: 900 16px/23px 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
+    color: #189AAD
+}
+
+.error_bg .text {
+    margin-top: 3px;
+    font: 600 14px/21px 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
+    color: #189AAD
+}
+
+.error_bg a {
+    display: inline-block;
+    vertical-align: middle;
+    font: 600 14px/21px 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
+    color: #189AAD
+}
+
+.error_bg a.btn {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 1px 2px;
+    border-radius: 3px;
+    font-size: 13px;
+    line-height: 18px !important;
+    font-weight: 600;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #189AAD;
+    box-sizing: border-box;
+    color: #189AAD;
+    transition: all 0.4s;
+}
+
+.error_bg a.btn:focus {
+    background: #189AAD;
+    border-color: #189AAD;
+    color: #fff;
+}
+
+.docu_end {
+}
+
+.docu_end .tit {
+    text-align: Center;
+    margin-bottom: 15px
+}
+
+.line_bg {
+    border: 1px solid #ddd;
+    padding: 15px;
+    box-sizing: border-box
+}
+
+.bd_t {
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+    margin-top: 20px
+}
+
+
+/* 촬영시 유의사항 */
+.photo_caution {
+    position: relative;
+    text-align: center;
+}
+
+.photo_caution .text01 {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    padding: 15px;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+}
+
+.photo_caution .text01::before {
+    content: '';
+    position: Absolute;
+    right: 45%;
+    bottom: -20px;
+    width: 0px;
+    height: 0px;
+    border-top: 10px solid rgba(0, 0, 0, 0.8);
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+}
+
+.photo_caution .text02 {
+    position: absolute;
+    left: 30%;
+    bottom: 17%;
+    padding: 15px;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+}
+
+.photo_caution .text02::before {
+    content: '';
+    position: Absolute;
+    right: 45%;
+    top: -20px;
+    width: 0px;
+    height: 0px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid rgba(0, 0, 0, 0.8);
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+}
+
+
+/* 팝업 */
+div.layer_pop { /*display:none*/;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100000;
+}
+
+div.layer_pop .bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: .5;
+    filter: alpha(opacity=50);
+}
+
+div.layer_pop .layer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    max-width: 770px;
+    height: auto;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+div.layer_pop .layer .pop_top {
+    background: #189AAD;
+    padding: 10px 15px;
+    box-sizing: Border-box
+}
+
+div.layer_pop .layer .pop_top h2 {
+    font: 900 15px/23px 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
+    color: #fff
+}
+
+div.layer_pop .layer .pop_top .close {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+div.layer_pop .layer .pop_top .close a {
+    display: block;
+    width: 43px;
+    height: 43px;
+    background: url(/resources/sign/images/layout/btn_close.png) center / 100% 100% no-repeat;
+    text-indent: -9999px;
+    overflow: hidden;
+    z-index: 2;
+}
+
+div.layer_pop .layer .pop_cont {
+    text-align: center;
+    background: #fff;
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 30px 15px;
+    box-sizing: border-box
+}
+
+div.layer_pop .layer .pop_cont .loading {
+    max-width: 50px;
+    margin: 0 auto;
+}
+
+div.layer_pop .layer .pop_cont .text {
+    font: 600 15px/23px 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
+    color: #333
+}
+
+div.layer_pop .layer .pop_bottom button {
+    display: block;
+    width: 100%;
+    background: #189AAD;
+    padding: 10px 0;
+    text-align: Center;
+    color: #fff;
+}
+
+div.layer_pop .pop_cont.t_l {
+    text-align: left
+}
+
+.sign_top {
+    letter-spacing: -1px;
+    width: 100%;
+    overflow: hidden
+}
+
+.sign_top h3 {
+    display: inline-block;
+    margin: 0 3px 0 0
+}
+
+.sign_top .text {
+    float: right;
+    text-align: right;
+    margin-top: 3px
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.tsoft.sign.mapper.UserLoginMapper">
+
+    <select id="selectContractInfo" parameterType="HashMap" resultType="HashMap">
+        SELECT
+            /** [SIGN].[selectContractInfo] */
+            CONTRC_NO
+             , FILE_SEQ
+             , PIN_NO
+             , USER_NM
+             , CELL_NO
+             , EMAIL
+             , SIGN_DUE_SDATE
+             , SIGN_DUE_EDATE
+             , IN_SIGN_DATE
+        FROM tsign.CONTRC_MGMT
+        WHERE 1 = 1
+          AND USE_YN = 'Y'
+          AND CONTRC_NO = #{contrc_no}
+    </select>
+</mapper>
