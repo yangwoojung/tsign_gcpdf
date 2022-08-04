@@ -166,6 +166,24 @@
             <artifactId>spring-boot-starter-mail</artifactId>
             <version>1.4.3.RELEASE</version>
         </dependency>
+        
+        <!-- Clip Report lib -->
+		<dependency>
+			<groupId>ClipReport</groupId>
+			<artifactId>ClipReport</artifactId>
+			<version>1</version>
+			<scope>system</scope>
+			<systemPath>${project.lib.path}/ClipReport5.0.171.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>ClipReport</groupId>
+			<artifactId>ClipReport-Common</artifactId>
+			<version>1</version>
+			<scope>system</scope>
+			<systemPath>${project.lib.path}/ClipReport5.0-Common.jar</systemPath>
+		</dependency>
+		
     </dependencies>
 
     <build>

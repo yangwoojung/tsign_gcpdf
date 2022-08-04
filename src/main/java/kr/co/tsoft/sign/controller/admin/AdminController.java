@@ -15,6 +15,13 @@ public class AdminController {
 
     private final Logger logger = LoggerFactory.getLogger(TestController.class);
 
+    @RequestMapping(value = "/")
+    public String adminMain(HttpSession se, HttpServletRequest resquest) throws Exception {
+        logger.info("==== 메인 ");
+
+        return "admin/login";
+    }
+    
     @RequestMapping(value = "/admin/login")
     public String adminLogin(HttpSession se, HttpServletRequest resquest) throws Exception {
         logger.info("==== 로그인 전 ");
