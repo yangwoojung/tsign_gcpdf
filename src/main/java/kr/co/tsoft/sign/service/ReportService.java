@@ -1,5 +1,6 @@
 package kr.co.tsoft.sign.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 
 import com.clipsoft.clipreport.oof.OOFDocument;
 import com.clipsoft.clipreport.oof.connection.OOFConnectionMemo;
@@ -42,6 +44,11 @@ import com.clipsoft.clipreport.server.service.reporteservice.UpdateLicense;
 import com.clipsoft.clipreport.server.service.viewer.ExportViewImage;
 import com.clipsoft.clipreport.server.service.viewer.MakeDocumentJSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pdfxml.PdfUtil;
+
+import kr.co.tsoft.sign.config.security.CommonUserDetails;
+import kr.co.tsoft.sign.util.DateUtil;
+import kr.co.tsoft.sign.util.FileUtil;
 
 @Service
 public class ReportService {
@@ -268,5 +275,4 @@ public class ReportService {
 			}
 		}
 	}
-
 }

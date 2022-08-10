@@ -241,18 +241,6 @@
             </div>
             <!-- //form_box -->
         </div>
-
-        <!-- sign_area -->
-        <div class="sign_area">
-            <canvas id="signCan" width="740" height="280">
-            </canvas>
-        </div>
-        <!-- //sign_area -->
-        <p class="t_text">
-            * 위 서명란에 자필서명해 주세요 (예 : 홍길동)<br/>
-        </p>
-
-        <!-- txt_msg -->
         <div class="btn_area">
             <!-- 비활성화 -->
             <!-- 				<button class="btn_m btn_ty01" id="btnAgreeInfoView">전자계약서  [보기](pdf)</button> -->
@@ -260,13 +248,12 @@
             <!-- 활성화 -->
             <button class="btn_s02 btn_ty02" id="btnAgreeInfoView">전자계약서 [보기]</button>
         </div>
-
-        <div class="btn_area">
-            <!-- 비활성화 -->
-            <a href="javascript:void(0);" class="btn_m btn_ty01" id="idBtnRequest" onclick="fnMoveNext();">본인인증</a>
-            <!-- 활성화 -->
-            <!-- <a href="#" class="btn_m btn_ty02">다음 단계로 이동</a> -->
-        </div>
+<!--         <div class="btn_area"> -->
+<!--             비활성화 -->
+<!--             <a href="javascript:void(0);" class="btn_m btn_ty01" id="idBtnRequest" onclick="fnMoveNext();">본인인증</a> -->
+<!--             활성화 -->
+<!--             <a href="#" class="btn_m btn_ty02">다음 단계로 이동</a> -->
+<!--         </div> -->
     </div>
     <!-- //cont_area -->
 </div>
@@ -411,6 +398,14 @@
 	        var popup = window.open('', 'report');	
 	        //리포트 호출할 주소 연결
 	        document.reportForm.submit();
+        }
+    };
+    
+    var closeReport = function (status) {
+        if (status === '0000') {
+            ComUtil.submit('/cert');
+        } else {
+            alert('다시 진행해주시기 바랍니다.');
         }
     };
 
