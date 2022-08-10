@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class CmiController {
@@ -42,6 +41,7 @@ public class CmiController {
 
         SessionUtil.setUser(selectContrcInfo);
 
+        logger.info("#### INIT SESSION ID : {}", SessionUtil.getSessionId());
         model.addAttribute("user", selectContrcInfo);
         model.addAttribute("profilesActive", active);
 
