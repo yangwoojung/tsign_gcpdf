@@ -41,10 +41,9 @@ public class ReportController {
 		log.debug("===== generateReportKey Start =====");
 		log.debug("param={}", param);
 
-		ModelAndView mv = new ModelAndView("sign/report");
-
 		Map<String, Object> result = reportService.makeRep(request, param);
 
+		ModelAndView mv = new ModelAndView("sign/report");
 		mv.addObject("reportKey", result.get("reportKey"));
 		mv.addObject("reportFileName", result.get("reportFileName"));
 

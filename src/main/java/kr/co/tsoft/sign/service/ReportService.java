@@ -56,13 +56,11 @@ public class ReportService {
 	
 	public Map<String, Object> makeRep(HttpServletRequest request, Map<String, Object> param) throws Exception {
 		
-		Map<String, Object> dataMap = new HashMap<>();
+		log.debug("param : {}", param);
+
 		Map<String, Object> reportDataMap = new HashMap<>();
 		Map<String, Object> resultMap = new HashMap<>();
 		String reportFileName = null;
-		
-		dataMap.put("name", "이름");
-		dataMap.put("date", "20220702122546");
 
 		//전자서식 객체 생성
 		OOFDocument oof = OOFDocument.newOOF();
@@ -70,11 +68,13 @@ public class ReportService {
 
 		oof.addFile("crfe.root", "%root%/crf/tsign_test.crfe");
 		reportFileName = "tsign_test";
-		
-		reportDataMap.put("tsign_test", dataMap);
+		reportDataMap.put("tsign_test", param);
+		log.debug("reportDataMap : {} ",reportDataMap);
 
 		//json 데이터로 변환
 		final String json = new ObjectMapper().writeValueAsString(reportDataMap);
+		
+		log.debug("json : ",json);
 		final String propertyPath = request.getSession().getServletContext().getRealPath("/") + CLIP_PROP_PATH;
 
 		memo = oof.addConnectionMemo("*", json);
