@@ -8,7 +8,7 @@ public class DoneController {
 	
 	@GetMapping("/done")
 	public String agreePage() {
-		return "/done/done";
+		return "done/done";
 	}
 	
 }

@@ -64,12 +64,12 @@ public class ErrorController {
 	
 	@RequestMapping("/401")
 	public String view401() {
-		return "/error/401";
+		return "error/401";
 	}
 	
 	@RequestMapping("/404")
 	public String view404() {
-		return "/error/404";
+		return "error/404";
 	}
 	
 }

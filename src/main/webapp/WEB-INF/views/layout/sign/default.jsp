@@ -28,7 +28,7 @@
         <tiles:insertAttribute name="header"/>
     </header>
     <section id="pageTab">
-    	<tiles:insertAttribute name="pageTab"/>
+    	<tiles:insertAttribute name="pageTab" ignore="true"/>
     </section>
     <section id="contents">
         <tiles:insertAttribute name="container"/>
