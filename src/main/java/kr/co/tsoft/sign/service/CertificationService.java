@@ -4,6 +4,8 @@ import com.sci.v2.pcc.secu.SciSecuManager;
 import com.sci.v2.pcc.secu.hmac.SciHmac;
 import kr.co.tsoft.sign.config.security.CommonUserDetails;
 import kr.co.tsoft.sign.util.SecurityUtil;
+import kr.co.tsoft.sign.util.SessionUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 @Service
@@ -34,7 +37,8 @@ public class CertificationService {
     @Value("${service.url}")
     private String SERVICE_URL;
 
-    public HashMap<String, String> initPhoneCert(String callbackUrl) {
+    public HashMap<String, String> initPhoneCert() {
+
         Calendar today = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String day = sdf.format(today.getTime());
@@ -81,17 +85,21 @@ public class CertificationService {
         sb.append("0000000000000000");
         reqInfo = seed.getEncPublic(sb.toString()); // 2차암호화
         logger.debug("===== Phone Cert reqInfo 2차 암호화  : " + reqInfo);
-        SecurityUtil su = new SecurityUtil();
-        CommonUserDetails userVo = su.getSignUserDetails();
+
+//        SecurityUtil su = new SecurityUtil();
+//        CommonUserDetails userVo = su.getSignUserDetails();
 //		UserDetailVO userVo = SessionUtil.getUserDetailVO();
-        if (userVo != null) {
-            userVo.setPhoneCert(reqNum);
-        }
+//        if (userVo != null) {
+//            userVo.setPhoneCert(reqNum);
+//        }
+
+        Map<String, Object> user = SessionUtil.getUser();
+        user.put("phoneCert", reqNum);
 
         HashMap<String, String> resultMap = new HashMap<String, String>();
         resultMap.put("reqNum", reqNum);
         resultMap.put("reqInfo", reqInfo);
-        resultMap.put("retUrl", "32" + SERVICE_URL + callbackUrl);//"32https://sign.tsoft.co.kr/cert/idseed"
+        resultMap.put("retUrl", "32" + SERVICE_URL +  "/sign/cert/idseed");//"32https://sign.tsoft.co.kr/cert/idseed"
         logger.debug("===== resultMap : " + resultMap);
         return resultMap;
     }
@@ -134,15 +142,17 @@ public class CertificationService {
     public HashMap<String, String> getResultPhoneCert(String retInfo) {
 //		UserDetailVO userVo = SessionUtil.getUserDetailVO();
 
-        SecurityUtil su = new SecurityUtil();
-        CommonUserDetails userVo = su.getSignUserDetails();
+//        SecurityUtil su = new SecurityUtil();
+//        CommonUserDetails userVo = su.getSignUserDetails();
+        Map<String, Object> user = SessionUtil.getUser();
+        String phoneCert = (String) user.get("phoneCert");
 
-        if (userVo == null || userVo.getPhoneCert() == null) {
+        if (user == null || StringUtils.isBlank(phoneCert)) {
             logger.error("휴대폰 본인 인증 복호화 키 미존재");
             throw new RuntimeException("휴대폰 본인 인증 실패.");
         }
 
-        String phoneCert = userVo.getPhoneCert();//SessionUtil.getUserDetailVO().getPhoneCert();
+//        String phoneCert = userVo.getPhoneCert();//SessionUtil.getUserDetailVO().getPhoneCert();
 
         // 1. 암호화 모듈 (jar) Loading
         SciSecuManager sciSecuMg = new SciSecuManager();
@@ -222,19 +232,19 @@ public class CertificationService {
 //				if(user.getCustRegNo() == null || "".equals(user.getCustRegNo()) || user.getCustRegNo().length() < 6) {
 //					su.setHistoryList("STEP_3/Y/휴대폰본인인증[완료]");
 //				}else {
-            if (!birYMD.substring(2, birYMD.length()).equals(userVo.getInResidentNo().substring(0, 6))) {
-                status = "0001";
-                su.setHistoryList("STEP_3/N/휴대폰본인인증[불일치]");
+//            if (!birYMD.substring(2, birYMD.length()).equals(userVo.getInResidentNo().substring(0, 6))) {
+//                status = "0001";
+//                su.setHistoryList("STEP_3/N/휴대폰본인인증[불일치]");
 //					}else {
-                su.setHistoryList("STEP_3/Y/휴대폰본인인증[완료]");
-            }
+//                su.setHistoryList("STEP_3/Y/휴대폰본인인증[완료]");
+//            }
 //				}
 //			}else {
 //				su.setHistoryList("STEP_3/Y/휴대폰본인인증[완료]");
 //			}
 
             if (status.equals("0000")) {
-                su.setHistoryList("STEP_5/Y/제출[완료]");
+//                su.setHistoryList("STEP_5/Y/제출[완료]");
 
 //	wj			us11Service.insertUs11(Constant.SV10_CODE_HP);
 //				us10Service.updateOnAccountIdseed("C", ci1, di);
@@ -246,6 +256,43 @@ public class CertificationService {
         resultMap.put("type", "idseed");
 
         return resultMap;
+    }
+
+    public HashMap<String, String> checkCellNumber(HashMap<String, Object> paramMap) {
+
+        HashMap<String, String> result = new HashMap<>();
+
+        if(paramMap == null) result.put("resultCd", "0001");
+        String userInput = (String) paramMap.get("cellNoLast");
+        if(StringUtils.isBlank(userInput)) {
+            result.put("resultCd", "0001");
+            result.put("resultMsg", "오류가 발생하였습니다.");
+            return result;
+        }
+
+        Map<String, Object> user = SessionUtil.getUser();
+        if(user == null) {
+            result.put("resultCd", "0002");
+            result.put("resultMsg", "세션이 만료되었습니다.");
+            return result;
+        }
+
+        String cellNo = (String) user.get("CELL_NO");
+        if(StringUtils.isBlank(cellNo)){
+            result.put("resultCd", "0003");
+            result.put("resultMsg", "세션이 만료되었습니다.");
+            return result;
+        }
+
+        String lastFourDigits = cellNo.substring(cellNo.length() - 4);
+        if(userInput.equals(lastFourDigits)){
+            result.put("resultCd", "0000");
+        } else {
+            result.put("resultCd", "0004");
+            result.put("resultMsg", "뒤 4자리 번호가 일치하지 않습니다.");
+        }
+
+        return result;
     }
 
 	/*public HashMap<String, String> getResultAccCert(String retInfo) throws Exception {

@@ -820,7 +820,7 @@ var ComUtil = {
         ComUtil.request(requestMap, function (data) {
             if (!ComUtil.isNull(data)) {
                 var popup = window.open('', 'PHONE_CHECK', 'width=450, height=800, resizable=1, scrollbars=no, status=0, titlebar=0, toolbar=0, left=300, top=200');
-                console.log(data);
+
                 $('body').append('<form id="phoneCertForm" name="phoneCertForm" action="https://pcc.siren24.com/pcc_V3/jsp/pcc_V3_j10.jsp" target="PHONE_CHECK" method="post"></form>');
                 $('#phoneCertForm').append($('<input>').attr('type', 'hidden').attr('name', 'reqNum').val(data['reqNum']));
                 $('#phoneCertForm').append($('<input>').attr('type', 'hidden').attr('name', 'reqInfo').val(data['reqInfo']));
@@ -919,4 +919,30 @@ function removeChar(event) {
 function removeSpaces(event) {
     event = event || window.event;
     event.target.value = event.target.value.split(' ').join('');
+}
+
+function phoneFormat(target) {
+    // 특수문자 제거
+    // target.value = target.value.replace(/[^0-9]/g, "");
+
+    const value = target.split("");
+
+    const textArr = [
+        // 첫번째 구간 (00 or 000)
+        [0, value.length > 9 ? 3 : 2],
+        // 두번째 구간 (000 or 0000)
+        [0, value.length > 10 ? 4 : 3],
+        // 남은 마지막 모든 숫자
+        [0, 4]
+    ];
+
+    // 총 3번의 반복 ({2,3}) - ({3,4}) - ({4})
+    return textArr
+        .map(function(v)  {
+            return value.splice(v[0], v[1]).join("")
+        })
+        .filter(function(text) {
+            return text
+        })
+        .join("-");
 }

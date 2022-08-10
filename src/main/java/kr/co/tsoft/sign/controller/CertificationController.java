@@ -1,18 +1,18 @@
 package kr.co.tsoft.sign.controller;
 
-import kr.co.tsoft.sign.config.security.CommonUserDetails;
 import kr.co.tsoft.sign.service.CertificationService;
-import kr.co.tsoft.sign.util.SecurityUtil;
+import kr.co.tsoft.sign.util.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,59 +29,16 @@ public class CertificationController {
     @Value("${spring.profiles.active}")
     private String active;
 
-    @PostMapping
-    @GetMapping
-    public ModelAndView viewCert(HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView("/sign/cert/cert");
-
-        logger.debug("===== cert ======");
-        logger.debug(" request :" + request.getParameter("trd_pps"));
-//		
-//		SecurityUtil su = new SecurityUtil();
-//		CommonUserDetails user = su.getSignUserDetails();
-//		
-//		if(user != null) {
-
-//			if(request.getParameter("signImgHash") != null) {
-//				user.setSignImgHash(request.getParameter("signImgHash"));
-//			}
-//
-//
-//			if(request.getParameter("markImgHash") != null) {
-//				user.setMarkImgHash(request.getParameter("markImgHash"));
-//			}
-
-//			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-//			String systemDTM = dateFormat.format(System.currentTimeMillis());
-//
-//			user.setCtrtCfmDt(systemDTM);
-//			user.setOwnSignDt(systemDTM);
-
-//			mv.addObject("custType", user.getCustType());
-//			try {
-//				Map<String, String> userMap = BeanUtils.describe(user);
-//				logger.debug(" user Vo  : {}" , userMap);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-
-        mv.addObject("profilesActive", active);
-        return mv;
+    @RequestMapping("/checkCellNumber")
+    @ResponseBody
+    public HashMap<String, String> checkCellNumber(@RequestBody HashMap<String, Object> paramMap) {
+        return certService.checkCellNumber(paramMap);
     }
 
     @RequestMapping("/initPhone")
     @ResponseBody
     public HashMap<String, String> getInitPhoneCert() {
-        SecurityUtil su = new SecurityUtil();
-        CommonUserDetails user = su.getSignUserDetails();
-        if (user == null) {
-            logger.error("휴대폰 본인인증 Session 정보 미존재");
-            throw new RuntimeException("휴대폰 본인인증 Session 정보 미존재");
-        }
-        String callbackUrl = "/sign/cert/idseed";
-        HashMap<String, String> phoneMap = certService.initPhoneCert(callbackUrl);
-        return phoneMap;
+        return certService.initPhoneCert();
     }
 
 	/*
@@ -111,25 +68,25 @@ public class CertificationController {
 
     @RequestMapping("/idseed")
     public ModelAndView getResultPhoneCert(@RequestParam("retInfo") String retInfo) {
-        ModelAndView mv = new ModelAndView("/cert/result");
+        ModelAndView mv = new ModelAndView("/sign/certResult");
         Map<String, String> resultMap = new HashMap<String, String>();
-        SecurityUtil su = new SecurityUtil();
-        CommonUserDetails user = su.getSignUserDetails();
 
-        if ("local".equals(active)) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-            String systemDTM = dateFormat.format(System.currentTimeMillis());
+        Map<String, Object> user = SessionUtil.getUser();
 
-            resultMap.put("type", "idseed");
-            resultMap.put("status", "0000");
-            resultMap.put("cellNo", user.getCellNo());
-
-            resultMap.put("certDate", systemDTM);
-            resultMap.put("ci", "CI");
-            resultMap.put("di", "DI");
-        } else {
+//        if ("local".equals(active)) {
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+//            String systemDTM = dateFormat.format(System.currentTimeMillis());
+//
+//            resultMap.put("type", "idseed");
+//            resultMap.put("status", "0000");
+//            resultMap.put("cellNo", (String) user.get("CELL_NO"));
+//
+//            resultMap.put("certDate", systemDTM);
+//            resultMap.put("ci", "CI");
+//            resultMap.put("di", "DI");
+//        } else {
             resultMap = certService.getResultPhoneCert(retInfo);
-        }
+//        }
 
 //		if(resultMap != null && resultMap.get("status") != null && "0000".equals(resultMap.get("status"))) {
 //			if(user != null) {
@@ -139,8 +96,10 @@ public class CertificationController {
 //				user.setPhoneDi(resultMap.get("di"));
 //			}
 //		}
+
         mv.addObject("type", resultMap.get("type"));
         mv.addObject("status", resultMap.get("status"));
+
         return mv;
     }
 	/*
