@@ -32,7 +32,7 @@ public class MailHandler {
         String mailProtocol = "smtp";
         String mailHost = "tsoft.hanbiro.net";
         String mailPort = "465";
-        Boolean debugMode = true;
+        boolean debugMode = false;
         String authMode = "true";
 
         try {
