@@ -138,6 +138,14 @@
 			<scope>system</scope>
 			<systemPath>${project.lib.path}/ClipReport5.0-Common.jar</systemPath>
 		</dependency>
+		
+		<dependency>
+			<groupId>ClipReport</groupId>
+			<artifactId>itext</artifactId>
+			<version>1</version>
+			<scope>system</scope>
+			<systemPath>${project.lib.path}/clipitext42bc154-2019-01-09.jar</systemPath>
+		</dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
