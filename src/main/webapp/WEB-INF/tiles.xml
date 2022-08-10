@@ -17,6 +17,17 @@
     <definition name="sign/report" template="/WEB-INF/views/layout/sign/single.jsp">
         <put-attribute name="container" expression="/WEB-INF/views/sign/report.jsp"/>
     </definition>
+     <!-- done -->
+    <definition name="done" template="/WEB-INF/views/layout/sign/default.jsp">
+        <put-attribute name="header" value="/WEB-INF/views/layout/sign/header.jsp"/>
+        <put-attribute name="footer" value="/WEB-INF/views/layout/sign/footer.jsp"/>
+    </definition>   
+     <!-- error -->
+    <definition name="error" template="/WEB-INF/views/layout/sign/default.jsp">
+        <put-attribute name="header" value="/WEB-INF/views/layout/sign/header.jsp"/>
+        <put-attribute name="footer" value="/WEB-INF/views/layout/sign/footer.jsp"/>
+    </definition>   
+    
 
     <!-- pdf 레이아웃 -->
     <definition name="sign/pdfViewer" template="/WEB-INF/views/layout/sign/single.jsp">

@@ -73,7 +73,7 @@ var onLoadReport = function (divIdName) {
     		if(confirm('제출되었습니다. 전자 문서를 닫습니다.')) {
     			opener.closeReport('0000');
     			self.close();
-    			window.location.href = '/cert';
+    			window.location.href = '/done';
     		}
     	} else {
     		opener.closeReport('9999');
