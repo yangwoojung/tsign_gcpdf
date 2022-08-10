@@ -1,10 +1,9 @@
 package kr.co.tsoft.sign.controller;
 
-import com.itextpdf.text.DocumentException;
+import com.clipsoft.lowagie.text.DocumentException;
 import kr.co.tsoft.sign.service.ComService;
 import kr.co.tsoft.sign.service.PdfService;
 import kr.co.tsoft.sign.service.admin.FormService;
-import kr.co.tsoft.sign.util.ConvertHtmlToPdf;
 import kr.co.tsoft.sign.util.SecurityUtil;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -31,8 +30,8 @@ public class PdfController {
 	ComService comService;
 	@Autowired
 	private PdfService pdfService;
-	@Autowired
-	private ConvertHtmlToPdf covertPdf;
+//	@Autowired
+//	private ConvertHtmlToPdf covertPdf;
 	@Autowired
 	private FormService formService;
 	@Value("${config.upload.dir}")
@@ -193,13 +192,13 @@ public class PdfController {
 	) throws IOException, DocumentException {
 //		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 //		
-		covertPdf.test();
+//		covertPdf.test();
 
 		// 추적표 조회&생성 => 메일전송
-		HashMap<String, Object> resultMap = pdfService.createHistPdf(parameter.get("contrcNo"));
+//		HashMap<String, Object> resultMap = pdfService.createHistPdf(parameter.get("contrcNo"));
 
-		return resultMap;
-
+//		return resultMap;
+		return null;
 	}
 
 	public void mkdir(String contrcNo) {

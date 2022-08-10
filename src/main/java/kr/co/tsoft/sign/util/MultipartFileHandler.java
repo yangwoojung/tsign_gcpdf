@@ -1,6 +1,5 @@
 package kr.co.tsoft.sign.util;
 
-import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,13 +46,13 @@ public class MultipartFileHandler {
             multipartFile.transferTo(dest);
 
             // pdf 파일이 아니면 삭제 처리
-            if (!isPdf(dest)) {
-                if (dest.exists()) {
-                    if (dest.delete()) {
-                        // 파일 삭제 완료
-                    }
-                }
-            }
+//            if (!isPdf(dest)) {
+//                if (dest.exists()) {
+//                    if (dest.delete()) {
+//                        // 파일 삭제 완료
+//                    }
+//                }
+//            }
 
             result.add(fileInfo);
         }
@@ -61,18 +60,18 @@ public class MultipartFileHandler {
         return result;
     }
 
-    private boolean isPdf(File file) throws Exception {
-        if (file == null || !file.exists()) {
-            return false;
-        }
-
-        boolean result = false;
-
-        String mimeType = new Tika().detect(file);
-        if ("application/pdf".equals(mimeType)) {
-            return true;
-        }
-
-        return result;
-    }
+//    private boolean isPdf(File file) throws Exception {
+//        if (file == null || !file.exists()) {
+//            return false;
+//        }
+//
+//        boolean result = false;
+//
+//        String mimeType = new Tika().detect(file);
+//        if ("application/pdf".equals(mimeType)) {
+//            return true;
+//        }
+//
+//        return result;
+//    }
 }

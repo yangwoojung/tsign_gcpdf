@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class StringMaskUtil extends org.apache.commons.lang3.StringUtils {
+public class StringMaskUtil extends StringUtils {
 
 	private final static Logger logger = LoggerFactory.getLogger(StringMaskUtil.class);
 

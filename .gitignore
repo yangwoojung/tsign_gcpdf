@@ -6,6 +6,7 @@
 *.log
 
 ### JetBrains
+.idea
 .idea/**
 *.iml
 
@@ -35,4 +36,4 @@ local.properties
 *.launch
 
 # STS (Spring Tool Suite)
-.springBeans
+.springBeans!/.idea/
