@@ -284,7 +284,6 @@
     <input type="hidden" name="inputAddr" id="inputAddr" value=""/>
     <input type="hidden" name="inputUserNm" id="inputUserNm" value=""/>
     <input type="hidden" name="inputEmail" id="inputEmail" value=""/>
-    <input type="hidden" name="inputSignCan" id="inputSignCan" value=""/>
 </form>
 
 <!-- default layout으로 이동 -->
@@ -357,42 +356,42 @@
 
     var isOpenedView = false;
 
-    // pdf 파일 열기
-    function fnViewAgreeInfo() {
-// 	var checkM = true;
-// 	if(!$('#chk01').is(':checked')){
-// 		checkM = false;
-// 	}
-// 	if(!checkM){
-// 		alert('필수 동의 후 계약서 보기가 가능합니다.');
-// 		return;
-// 	}
+//     // pdf 파일 열기
+//     function fnViewAgreeInfo() {
+// // 	var checkM = true;
+// // 	if(!$('#chk01').is(':checked')){
+// // 		checkM = false;
+// // 	}
+// // 	if(!checkM){
+// // 		alert('필수 동의 후 계약서 보기가 가능합니다.');
+// // 		return;
+// // 	}
 
-        if (fnValidateInput()) {
-            $('#inputResidentNo1').val($('#inResidentNo1').val());
-            $('#inputResidentNo2').val($('#inResidentNo2').val());
-            $('#inputBankCd').val($('#stlmAccBank option:selected').val());
-            $('#inputBankNm').val($('#stlmAccBank option:selected').text());
-            $('#inputAcnutNo').val($('#stlmAccNo').val());
-            $('#inputAddr').val($('#inAddr').val());
-            $('#inputUserNm').val($('#userNm').val());
-            $('#inputEmail').val($('#etaxEmail').val());
+//         if (fnValidateInput()) {
+//             $('#inputResidentNo1').val($('#inResidentNo1').val());
+//             $('#inputResidentNo2').val($('#inResidentNo2').val());
+//             $('#inputBankCd').val($('#stlmAccBank option:selected').val());
+//             $('#inputBankNm').val($('#stlmAccBank option:selected').text());
+//             $('#inputAcnutNo').val($('#stlmAccNo').val());
+//             $('#inputAddr').val($('#inAddr').val());
+//             $('#inputUserNm').val($('#userNm').val());
+//             $('#inputEmail').val($('#etaxEmail').val());
 
-            isOpenedView = true;
-            var opt = {'formNm': 'viewForm', 'action': '/sign/pdf/view'};
+//             isOpenedView = true;
+//             var opt = {'formNm': 'viewForm', 'action': '/sign/pdf/view'};
 
-            var canvas = document.getElementById('signCan');
-            var dataUrl = canvas.toDataURL('image/png');
-            console.log("canvas dataUrl ==" + dataUrl);
-            dataUrl = dataUrl.substring(dataUrl.indexOf('base64,') + 7, dataUrl.length);
-            console.log("canvas dataUrl 222==" + dataUrl);
-            $('#inputSignCan').val(dataUrl);
+//             var canvas = document.getElementById('signCan');
+//             var dataUrl = canvas.toDataURL('image/png');
+//             console.log("canvas dataUrl ==" + dataUrl);
+//             dataUrl = dataUrl.substring(dataUrl.indexOf('base64,') + 7, dataUrl.length);
+//             console.log("canvas dataUrl 222==" + dataUrl);
+//             $('#inputSignCan').val(dataUrl);
 
-            $('#idPopup2').tsPopup('postOpen', opt);
-            $('#idBtnRequest').removeClass('btn_ty01').addClass('btn_ty02');
-        }
+//             $('#idPopup2').tsPopup('postOpen', opt);
+//             $('#idBtnRequest').removeClass('btn_ty01').addClass('btn_ty02');
+//         }
 
-    }
+//     }
     
     //클립소프트 crf 전자서식으로 오픈
     /** 전자 서명 */
