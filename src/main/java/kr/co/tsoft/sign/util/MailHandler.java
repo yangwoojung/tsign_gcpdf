@@ -25,54 +25,38 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
-// [END multipart_includes]
-
-//시작함수는 아래쪽에 있습니다.
 public class MailHandler {
 
     public void send(String toMail, String title, String content, ArrayList<String> attachFileName) {
 
         String mailProtocol = "smtp";
-        String mailHost = "smtp.gmail.com";
-        String mailPort = "587";
-        Boolean debugMode = false;
+        String mailHost = "tsoft.hanbiro.net";
+        String mailPort = "465";
+        Boolean debugMode = true;
         String authMode = "true";
 
         try {
-            /*
-             * //메일 환경 변수 설정입니다. Properties props = new Properties(); //메일 프로토콜은 gmail를 이용할
-             * 것이기 때문에 smtp로 사용합니다. props.setProperty("mail.transport.protocol", "smtp");
-             * //메일 호스트 주소를 설정합니다. props.setProperty("mail.host", "smtp.gmail.com"); //ID,
-             * Password 설정이 필요합니다. props.put("mail.smtp.auth", "true"); //port는 465입니다.
-             * props.put("mail.smtp.port", "465");
-             */
             Properties mailProps = new Properties();
-
-            mailProps.put("mail.smtp.starttls.enable", "true");
-
             mailProps.setProperty("mail.transport.protocol", mailProtocol);
 
+            mailProps.put("mail.smtp.starttls.enable", "true");
             mailProps.put("mail.debug", debugMode);
-
             mailProps.put("mail.smtp.host", mailHost);
-
             mailProps.put("mail.smtp.port", mailPort);
-
             mailProps.put("mail.smtp.connectiontimeout", "5000");
-
             mailProps.put("mail.smtp.timeout", "5000");
-
             mailProps.put("mail.smtp.auth", authMode);
+
             //ssl를 사용할 경우 설정합니다.
-            //		props.put("mail.smtp.socketFactory.port", "465");
-            //		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-            //		props.put("mail.smtp.socketFactory.fallback", "false");
-            //		props.setProperty("mail.smtp.quitwait", "false");
+            mailProps.put("mail.smtp.socketFactory.port", "465");
+            mailProps.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+            mailProps.put("mail.smtp.socketFactory.fallback", "false");
+            mailProps.setProperty("mail.smtp.quitwait", "false");
 
             //id와 password를 설정하고 session을 생성합니다.
             Session session = Session.getInstance(mailProps, new Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication("woojung4554@gmail.com", "@Dnwjd3233");
+                    return new PasswordAuthentication("yjpark@tsoft.co.kr", "dbwldwld1!");
                 }
             });
             //디버그 모드입니다.
@@ -80,7 +64,7 @@ public class MailHandler {
             //메일 메시지를 만들기 위한 클래스를 생성합니다.
             MimeMessage message = new MimeMessage(session);
             //송신자 설정
-            message.setFrom(getAddress("woojung4554@gmail.com"));
+            message.setFrom(getAddress("yjpark@tsoft.co.kr"));
             //수신자 설정
             message.addRecipients(Message.RecipientType.TO, getAddresses(toMail));
             //참조 수신자 설정

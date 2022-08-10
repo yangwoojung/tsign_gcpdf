@@ -1,6 +1,7 @@
 package kr.co.tsoft.sign.controller;
 
 import kr.co.tsoft.sign.config.security.CommonUserDetails;
+import kr.co.tsoft.sign.util.MailHandler;
 import kr.co.tsoft.sign.util.MultipartFileHandler;
 import kr.co.tsoft.sign.util.SecurityUtil;
 import org.slf4j.Logger;
@@ -90,4 +91,24 @@ public class TestController {
 
 		return result;
 	}
+
+
+	@RequestMapping(value = "/test/email")
+	@ResponseBody
+	public void emailSendTest() {
+		Logger.debug("== 메일 전송");
+		MailHandler mail = new MailHandler();
+		String toMail = "mompom@naver.com";
+		String title = "(주)티소프트 전자계약을 진행해 주세요.";
+		String content = "<html><body>(주)티소프트 전자계약을 진행해 주세요.<br/> https://sign.tsoft.co.kr/cmi/20220804161937_5891 </body></html>";
+//		ArrayList<String> attachFileNames = new ArrayList<>();
+//		attachFileNames.add("D:\\테스트파일\\id.jpg");
+//		attachFileNames.add("D:\\테스트파일\\id2.jpg");
+//		mail.send(toMail, title, content, attachFileNames);
+		mail.send(toMail, title, content, null);
+
+	}
+
+
+
 }
