@@ -273,7 +273,8 @@
 <!-- //container -->
 
 
-<form action="/sign/pdf/view" id="viewForm" method="post">
+<!-- <form action="/sign/pdf/view" id="viewForm" method="post"> -->
+<form action="/report/viewReport" id="reportForm" name="reportForm" target="report" method="post">
     <input type="hidden" name="contrcNo" id="contrcNo" value="${contrcNo}"/>
     <input type="hidden" name="inputResidentNo1" id="inputResidentNo1" value=""/>
     <input type="hidden" name="inputResidentNo2" id="inputResidentNo2" value=""/>
@@ -303,7 +304,7 @@
 
         $('#chk01').click(fnCheckRaidoAll);
 
-        $('#btnAgreeInfoView').click(fnViewAgreeInfo);
+        $('#btnAgreeInfoView').click(viewReport);
 
     });
 
@@ -392,6 +393,27 @@
         }
 
     }
+    
+    //클립소프트 crf 전자서식으로 오픈
+    /** 전자 서명 */
+    var viewReport = function () {
+    	if (fnValidateInput()) {
+            $('#inputResidentNo1').val($('#inResidentNo1').val());
+            $('#inputResidentNo2').val($('#inResidentNo2').val());
+            $('#inputBankCd').val($('#stlmAccBank option:selected').val());
+            $('#inputBankNm').val($('#stlmAccBank option:selected').text());
+            $('#inputAcnutNo').val($('#stlmAccNo').val());
+            $('#inputAddr').val($('#inAddr').val());
+            $('#inputUserNm').val($('#userNm').val());
+            $('#inputEmail').val($('#etaxEmail').val());
+
+	        isView = true;
+			//report popup
+	        var popup = window.open('', 'report');	
+	        //리포트 호출할 주소 연결
+	        document.reportForm.submit();
+        }
+    };
 
     // 다음 단계로 이동
     function fnMoveNext() {
@@ -459,7 +481,7 @@
     };
 
     function fnValidateInput() {//개발중 true
-        var result = true;
+        var result = false;
         if (ComUtil.isNull($('#inResidentNo1').val()) || $('#inResidentNo1').val().length != 6) {
             $('#inResidentNo1').focus();
             alert("주민등록번호를 올바르게 입력해 주세요");
