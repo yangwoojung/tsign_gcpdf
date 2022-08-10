@@ -27,6 +27,9 @@
     <header id="header">
         <tiles:insertAttribute name="header"/>
     </header>
+    <section id="pageTab">
+    	<tiles:insertAttribute name="pageTab"/>
+    </section>
     <section id="contents">
         <tiles:insertAttribute name="container"/>
     </section>

@@ -138,11 +138,15 @@ header .txt_app {
     }
 }
 
+/*** pageTab ***/
+#pageTab {
+	position:relative;
+    padding-top: 50px;
+}
 
 /*** container ***/
 #container {
     position: relative;
-    padding-top: 50px;
     min-height: 400px;
 }
 
@@ -249,7 +253,7 @@ header .txt_app {
 /** cont_area **/
 .cont_area {
     position: relative;
-    padding: 30px 15px 50px 15px;
+    padding: 30px 15px 20px 15px;
 }
 
 .cont {
