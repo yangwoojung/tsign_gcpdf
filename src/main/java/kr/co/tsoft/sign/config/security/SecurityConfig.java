@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
+import org.springframework.security.web.firewall.HttpFirewall;
 
 @Configuration
 @EnableWebSecurity
@@ -22,8 +24,15 @@ public class SecurityConfig {
     @Order(1)
     public static class SecuritySignConfig extends WebSecurityConfigurerAdapter {
 
+        @Bean
+        public HttpFirewall defaultHttpFirewall() {
+            return new DefaultHttpFirewall();
+        }
+
+
         @Override
         public void configure(WebSecurity web) throws Exception {
+            web.httpFirewall(defaultHttpFirewall());
             web.ignoring().antMatchers("/resources/**");
         }
 

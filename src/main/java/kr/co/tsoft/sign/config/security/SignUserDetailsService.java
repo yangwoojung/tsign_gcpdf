@@ -41,7 +41,7 @@ public class SignUserDetailsService implements UserDetailsService {
 		userDetails.setAuthorities(authorities);
 		userDetails.setUsername((String) contractInfo.get("CONTRC_NO"));
 		userDetails.setContractNo((String) contractInfo.get("CONTRC_NO"));
-		userDetails.setPassword((String) contractInfo.get("PIN_NO"));
+//		userDetails.setPassword((String) contractInfo.get("PIN_NO"));
 		userDetails.setUserNm((String) contractInfo.get("USER_NM"));
 		userDetails.setCellNo((String) contractInfo.get("CELL_NO"));
 		userDetails.setEmail((String) contractInfo.get("EMAIL"));

@@ -36,10 +36,10 @@ public class CommonAuthenticationProvider implements AuthenticationProvider {
             if ("SIGN".equals(getAuthType())) {
                 userDetails = signUserDetailsService.loadUserByUsername(principal);
 
-                if (!credentials.equals(userDetails.getPassword())) {
-                    Logger.debug("##### incorrect pin #####");
-                    throw new BadCredentialsException("incorrect pin");
-                }
+//                if (!credentials.equals(userDetails.getPassword())) {
+//                    Logger.debug("##### incorrect pin #####");
+//                    throw new BadCredentialsException("incorrect pin");
+//                }
             } else if ("ADMIN".equals(getAuthType())) {
                 userDetails = adminUserDetailsService.loadUserByUsername(principal);
 
