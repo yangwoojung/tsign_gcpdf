@@ -1,22 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html lang="ko">
-<body>
-<!-- wrap -->
-<div id="wrap">
 
-    <!-- header -->
-    <header>
-        <h2 class="title">(주)티소프트 전자계약</h2>
-    </header>
-    <!-- //header -->
 
     <!-- container -->
     <div id="container">
 
         <!-- cont_area -->
         <div class="cont_area">
-            <div class="txt_msg_box cont">계약자의 휴대폰번호 뒷 4자리를 입력하신 후 휴대폰 본인인증을 해주세요.</div>
+            <div class="txt_msg_box cont">계약자의 휴대폰 번호 <span class="point">뒤 4자리를 입력</span>하신 후<br>휴대폰 <span class="point">본인인증</span>을 해주세요.</div>
+            <div class="progress">
+                <div class="box-progress-bar">
+                    <span class="box-progress" style="width: 33.3333%;"></span>
+                </div>
+                <div class="number">
+                    <span class="active">1</span>/3
+                </div>
+            </div>
             <div class="form_box sub">
                 <dl class="list">
                     <dt>휴대폰번호</dt>
@@ -32,17 +30,12 @@
                 </dl>
             </div>
             <div class="btn_area">
-                <a href="javascript:void(0);" class="btn_m btn_ty02" onclick="checkCellNo()">휴대폰본인인증</a>
+                <a href="javascript:void(0);" class="btn_m btn_ty02" onclick="checkCellNo()">휴대폰 본인인증</a>
             </div>
         </div>
         <!-- //cont_area -->
     </div>
     <!-- //container -->
-
-</div>
-<!-- //wrap -->
-
-</body>
 <script type="text/javascript">
 
     const maskedCellNo = '${user.CELL_NO_MASK }';
@@ -99,4 +92,3 @@
     };
 
 </script>
-</html>

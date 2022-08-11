@@ -5,15 +5,19 @@
 
 /*** Form Common Style ***/
 /* input */
+input:read-only {
+    background: #f7f7f7;
+    color: #484848;
+}
 .input_ty {
     width: 100%;
-    height: 50px;
-    padding: 0;
-    background: none;
-    border: solid #000;
-    border-width: 0 0 1px 0;
+    height: 40px;
+    padding: 0 10px;
+    background: transparent;
+    border: 1px solid #ededed;
+    border-radius: 8px;
     box-sizing: border-box;
-    color: #000;
+    color: #222;
     font-family: 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
     font-size: 14px;
     font-weight: 600;
@@ -56,9 +60,10 @@ input.input_ty[type=number]::-webkit-outer-spin-button {
     font-size: 14px;
 }
 
-.input_ty:focus {
+.input_ty:focus:not(:read-only) {
     outline-style: none;
-    border-color: #189AAD;
+    border-color: rgba(234,76,137,0.4);
+    box-shadow: 0 0 0 4px rgb(234 76 137 / 10%);
 }
 
 /* button */
@@ -297,8 +302,8 @@ select:focus {
 .txt_msg_box {
     padding: 15px;
     background: #fff;
-    border: 1px solid #ccc;
     box-sizing: border-box;
+    text-align: center;
 }
 
 .txt_msg_box dt {
@@ -726,9 +731,9 @@ html.fix {
 
 .form_box .list dt {
     margin-bottom: 5px;
-    color: #000;
-    font-size: 15px;
-    line-height: 15px;
+    color: #222;
+    font-size: 13px;
+    line-height: 20px;
 }
 
 .form_box .list dd {

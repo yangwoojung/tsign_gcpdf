@@ -11,7 +11,7 @@
     </definition>
     
     <definition name="sign/*" extends="sign">
-        <put-attribute name="pageTab" value="/WEB-INF/views/layout/sign/pageTab.jsp"/>
+        <!--<put-attribute name="pageTab" value="/WEB-INF/views/layout/sign/pageTab.jsp"/>-->
         <put-attribute name="container" expression="/WEB-INF/views/sign/{1}.jsp"/>
     </definition>
 

@@ -10,6 +10,7 @@
     <meta name="theme-color" content="#189AAD">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>(주)티소프트 전자계약</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css">
     <link rel="shortcut icon" href="/resources/sign/images/layout/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="/resources/sign/images/layout/apple-touch-icon.png">
     <link rel="stylesheet" type="text/css" href="/resources/sign/css/style.css">
@@ -24,31 +25,28 @@
 <body>
 <!-- wrap -->
 <div id="wrap">
-    <header id="header">
         <tiles:insertAttribute name="header"/>
-    </header>
-    <section id="pageTab">
-    	<tiles:insertAttribute name="pageTab" ignore="true"/>
-    </section>
+<%--    <section id="pageTab">
+        <tiles:insertAttribute name="pageTab" ignore="true"/>
+    </section>--%>
     <section id="contents">
         <tiles:insertAttribute name="container"/>
     </section>
-    <footer id="footer">
-        <tiles:insertAttribute name="footer"/>
-    </footer>
 </div>
 <!-- //wrap -->
+<tiles:insertAttribute name="footer"/>
+
 <div id="idPopup" class="ts_popup">
-	<script type="text/javascript">
-		$(function() {
-			$("#idPopup").tsPopup();
-		});
-	</script>
+    <script type="text/javascript">
+        $(function() {
+            $("#idPopup").tsPopup();
+        });
+    </script>
 </div>
 <!-- <div id="idPopup2" class="ts_popup"></div> -->
 <script>
-/* jshint esversion: 6 */
-var cpath = "${pageContext.request.contextPath}";
+    /* jshint esversion: 6 */
+    var cpath = "${pageContext.request.contextPath}";
 </script>
 </body>
 </html>
