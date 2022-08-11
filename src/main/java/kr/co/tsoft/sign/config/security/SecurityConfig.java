@@ -48,23 +48,23 @@ public class SecurityConfig {
                     .anyRequest().hasRole("SIGN")
                     .and()
                     .formLogin()
-                    .loginPage("/error/401")
+                    .loginPage("/sign/error/401")
                     .loginProcessingUrl("/sign/authenticate")
                     .defaultSuccessUrl("/sign/agree", true)
                     .usernameParameter("c")
                     .passwordParameter("p")
-                    .failureUrl("/error/401")
+                    .failureUrl("/sign/error/401")
                     .and()
                     .logout()
                     .logoutUrl("/error/401")
                     .deleteCookies("JSESSIONID")
                     .invalidateHttpSession(true)
-                    .logoutSuccessUrl("/error/401");
+                    .logoutSuccessUrl("/sign/error/401");
 
             http
                     .sessionManagement()
                     .maximumSessions(1)
-                    .expiredUrl("/error/401")
+                    .expiredUrl("/sign/error/401")
                     .maxSessionsPreventsLogin(false);
 
             http

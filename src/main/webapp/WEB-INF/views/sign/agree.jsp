@@ -261,7 +261,7 @@
 
 
 <!-- <form action="/sign/pdf/view" id="viewForm" method="post"> -->
-<form action="/report/viewReport" id="reportForm" name="reportForm" target="report" method="post">
+<form action="/sign/report/viewReport" id="reportForm" name="reportForm" target="report" method="post">
     <input type="hidden" name="contrcNo" id="contrcNo" value="${contrcNo}"/>
     <input type="hidden" name="inputResidentNo1" id="inputResidentNo1" value=""/>
     <input type="hidden" name="inputResidentNo2" id="inputResidentNo2" value=""/>
@@ -403,7 +403,7 @@
     
     var closeReport = function (status) {
         if (status === '0000') {
-            ComUtil.submit('/cert');
+            ComUtil.submit('/sign/attach');
         } else {
             alert('다시 진행해주시기 바랍니다.');
         }
@@ -537,126 +537,126 @@
         return returnBool;
     }
 
-    var blank;
-    (function () {
-// 	if(custType == '1'){
-// 		$('#crpDiv').hide();
-// 		$('#psnDiv').show();
-// 	}else if(custType == '2'){
-// 		$('#crpDiv').show();
-// 		$('#psnDiv').hide();
-// 	}
+//     var blank;
+//     (function () {
+// // 	if(custType == '1'){
+// // 		$('#crpDiv').hide();
+// // 		$('#psnDiv').show();
+// // 	}else if(custType == '2'){
+// // 		$('#crpDiv').show();
+// // 		$('#psnDiv').hide();
+// // 	}
 
-// 	if(contSignerType == '1'){
-// 		$('#agentDiv').hide();
-// 	}else if(contSignerType == '2'){
-// 		$('#agentDiv').show();
-// 	}
+// // 	if(contSignerType == '1'){
+// // 		$('#agentDiv').hide();
+// // 	}else if(contSignerType == '2'){
+// // 		$('#agentDiv').show();
+// // 	}
 
-        var canvas = this.__canvas = new fabric.Canvas('signCan', {
-            isDrawingMode: true
-        });
+//         var canvas = this.__canvas = new fabric.Canvas('signCan', {
+//             isDrawingMode: true
+//         });
 
-        canvas.freeDrawingBrush = new fabric['PencilBrush'](canvas);
-        canvas.freeDrawingBrush.color = '#000000';
-        canvas.freeDrawingBrush.width = 5;
-        canvas.freeDrawingBrush.shadow = new fabric.Shadow({
-            blur: 0,
-            offsetX: 0,
-            offsetY: 0,
-            affectStroke: true,
-            color: '#005E7A',
-        });
+//         canvas.freeDrawingBrush = new fabric['PencilBrush'](canvas);
+//         canvas.freeDrawingBrush.color = '#000000';
+//         canvas.freeDrawingBrush.width = 5;
+//         canvas.freeDrawingBrush.shadow = new fabric.Shadow({
+//             blur: 0,
+//             offsetX: 0,
+//             offsetY: 0,
+//             affectStroke: true,
+//             color: '#005E7A',
+//         });
 
-        fabric.Object.prototype.transparentCorners = false;
-        $('#delSign').on('click', function () {
-            var targetCan = document.getElementById('signCan');
-            if (blank == targetCan.toDataURL()) {
-                alert('입력된 자필서명이 없습니다.');
-            } else {
-                alert('입력된 자필서명이 삭제되었습니다.');
-            }
-            canvas.clear();
-        });
+//         fabric.Object.prototype.transparentCorners = false;
+//         $('#delSign').on('click', function () {
+//             var targetCan = document.getElementById('signCan');
+//             if (blank == targetCan.toDataURL()) {
+//                 alert('입력된 자필서명이 없습니다.');
+//             } else {
+//                 alert('입력된 자필서명이 삭제되었습니다.');
+//             }
+//             canvas.clear();
+//         });
 
-        if (fabric.PatternBrush) {
-            var vLinePatternBrush = new fabric.PatternBrush(canvas);
-            vLinePatternBrush.getPatternSrc = function () {
+//         if (fabric.PatternBrush) {
+//             var vLinePatternBrush = new fabric.PatternBrush(canvas);
+//             vLinePatternBrush.getPatternSrc = function () {
 
-                var patternCanvas = fabric.document.createElement('canvas');
-                patternCanvas.width = patternCanvas.height = 10;
-                var ctx = patternCanvas.getContext('2d');
+//                 var patternCanvas = fabric.document.createElement('canvas');
+//                 patternCanvas.width = patternCanvas.height = 10;
+//                 var ctx = patternCanvas.getContext('2d');
 
-                ctx.strokeStyle = this.color;
-                ctx.lineWidth = 5;
-                ctx.beginPath();
-                ctx.moveTo(0, 5);
-                ctx.lineTo(10, 5);
-                ctx.closePath();
-                ctx.stroke();
-                return patternCanvas;
-            };
+//                 ctx.strokeStyle = this.color;
+//                 ctx.lineWidth = 5;
+//                 ctx.beginPath();
+//                 ctx.moveTo(0, 5);
+//                 ctx.lineTo(10, 5);
+//                 ctx.closePath();
+//                 ctx.stroke();
+//                 return patternCanvas;
+//             };
 
-            var hLinePatternBrush = new fabric.PatternBrush(canvas);
-            hLinePatternBrush.getPatternSrc = function () {
-                var patternCanvas = fabric.document.createElement('canvas');
-                patternCanvas.width = patternCanvas.height = 10;
-                var ctx = patternCanvas.getContext('2d');
+//             var hLinePatternBrush = new fabric.PatternBrush(canvas);
+//             hLinePatternBrush.getPatternSrc = function () {
+//                 var patternCanvas = fabric.document.createElement('canvas');
+//                 patternCanvas.width = patternCanvas.height = 10;
+//                 var ctx = patternCanvas.getContext('2d');
 
-                ctx.strokeStyle = this.color;
-                ctx.lineWidth = 5;
-                ctx.beginPath();
-                ctx.moveTo(5, 0);
-                ctx.lineTo(5, 10);
-                ctx.closePath();
-                ctx.stroke();
-                return patternCanvas;
-            };
+//                 ctx.strokeStyle = this.color;
+//                 ctx.lineWidth = 5;
+//                 ctx.beginPath();
+//                 ctx.moveTo(5, 0);
+//                 ctx.lineTo(5, 10);
+//                 ctx.closePath();
+//                 ctx.stroke();
+//                 return patternCanvas;
+//             };
 
-            var squarePatternBrush = new fabric.PatternBrush(canvas);
-            squarePatternBrush.getPatternSrc = function () {
-                var squareWidth = 10, squareDistance = 2;
-                var patternCanvas = fabric.document.createElement('canvas');
-                patternCanvas.width = patternCanvas.height = squareWidth + squareDistance;
-                var ctx = patternCanvas.getContext('2d');
+//             var squarePatternBrush = new fabric.PatternBrush(canvas);
+//             squarePatternBrush.getPatternSrc = function () {
+//                 var squareWidth = 10, squareDistance = 2;
+//                 var patternCanvas = fabric.document.createElement('canvas');
+//                 patternCanvas.width = patternCanvas.height = squareWidth + squareDistance;
+//                 var ctx = patternCanvas.getContext('2d');
 
-                ctx.fillStyle = this.color;
-                ctx.fillRect(0, 0, squareWidth, squareWidth);
-                return patternCanvas;
-            };
+//                 ctx.fillStyle = this.color;
+//                 ctx.fillRect(0, 0, squareWidth, squareWidth);
+//                 return patternCanvas;
+//             };
 
-            var diamondPatternBrush = new fabric.PatternBrush(canvas);
-            diamondPatternBrush.getPatternSrc = function () {
-                var squareWidth = 10, squareDistance = 5;
-                var patternCanvas = fabric.document.createElement('canvas');
-                var rect = new fabric.Rect({
-                    width: squareWidth,
-                    height: squareWidth,
-                    angle: 45,
-                    fill: this.color
-                });
+//             var diamondPatternBrush = new fabric.PatternBrush(canvas);
+//             diamondPatternBrush.getPatternSrc = function () {
+//                 var squareWidth = 10, squareDistance = 5;
+//                 var patternCanvas = fabric.document.createElement('canvas');
+//                 var rect = new fabric.Rect({
+//                     width: squareWidth,
+//                     height: squareWidth,
+//                     angle: 45,
+//                     fill: this.color
+//                 });
 
-                var canvasWidth = rect.getBoundingRect().width;
+//                 var canvasWidth = rect.getBoundingRect().width;
 
-                patternCanvas.width = patternCanvas.height = canvasWidth + squareDistance;
-                rect.set({left: canvasWidth / 2, top: canvasWidth / 2});
+//                 patternCanvas.width = patternCanvas.height = canvasWidth + squareDistance;
+//                 rect.set({left: canvasWidth / 2, top: canvasWidth / 2});
 
-                var ctx = patternCanvas.getContext('2d');
-                rect.render(ctx);
+//                 var ctx = patternCanvas.getContext('2d');
+//                 rect.render(ctx);
 
-                return patternCanvas;
-            };
-            var texturePatternBrush = new fabric.PatternBrush(canvas);
+//                 return patternCanvas;
+//             };
+//             var texturePatternBrush = new fabric.PatternBrush(canvas);
 
-            /**
-             var img = new Image();
-             img.src = '../assets/honey_im_subtle.png';
-             texturePatternBrush.source = img;
-             **/
-        }
+//             /**
+//              var img = new Image();
+//              img.src = '../assets/honey_im_subtle.png';
+//              texturePatternBrush.source = img;
+//              **/
+//         }
 
-        blank = document.getElementById('signCan').toDataURL();
-    })();
+//         blank = document.getElementById('signCan').toDataURL();
+//     })();
 
 </script>
 

@@ -27,7 +27,7 @@ const eformkey = "${reportKey}";
 const reportFileName = "${reportFileName}";
 
 var onLoadReport = function (divIdName) {
-	var eform = createImportJSPEForm('/report/view', eformkey, document.getElementById(divIdName));
+	var eform = createImportJSPEForm('/sign/report/view', eformkey, document.getElementById(divIdName));
 
 	eform.setCloseReportEvent(function(){ window.close() });
 	eform.setDefaultRatio("PageWidth");
@@ -63,7 +63,7 @@ var onLoadReport = function (divIdName) {
 
  var savePdf = function(reportkey) {
 	var requestMap = {
-		url: '/report/makePDF',
+		url: '/sign/report/makePDF',
 		dataParam: {
 			repKey: reportkey
 		},
@@ -73,7 +73,8 @@ var onLoadReport = function (divIdName) {
     		if(confirm('제출되었습니다. 전자 문서를 닫습니다.')) {
     			opener.closeReport('0000');
     			self.close();
-    			window.location.href = '/done';
+    	//		window.location.href = '/attach/attach';
+    			
     		}
     	} else {
     		opener.closeReport('9999');

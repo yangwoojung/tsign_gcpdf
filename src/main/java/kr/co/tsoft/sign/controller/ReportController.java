@@ -36,7 +36,7 @@ import kr.co.tsoft.sign.util.SecurityUtil;
 import kr.co.tsoft.sign.util.SessionUtil;
 
 @Controller
-@RequestMapping("/report")
+@RequestMapping("/sign/report")
 public class ReportController {
 	
 	private final Logger log = LoggerFactory.getLogger(ReportController.class);

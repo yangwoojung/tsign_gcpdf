@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-@RequestMapping("/error")
+@RequestMapping("/sign/error")
 @Controller
 public class ErrorController {
 	
@@ -64,12 +64,12 @@ public class ErrorController {
 	
 	@RequestMapping("/401")
 	public String view401() {
-		return "error/401";
+		return "sign/error/401";
 	}
 	
 	@RequestMapping("/404")
 	public String view404() {
-		return "error/404";
+		return "sign/error/404";
 	}
 	
 }
