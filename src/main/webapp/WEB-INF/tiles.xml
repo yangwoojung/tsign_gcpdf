@@ -7,29 +7,39 @@
     <!-- sign -->
     <definition name="sign" template="/WEB-INF/views/layout/sign/default.jsp">
         <put-attribute name="header" value="/WEB-INF/views/layout/sign/header.jsp"/>
-        <put-attribute name="pageTab" value="/WEB-INF/views/layout/sign/pageTab.jsp"/>
         <put-attribute name="footer" value="/WEB-INF/views/layout/sign/footer.jsp"/>
     </definition>
+    
     <definition name="sign/*" extends="sign">
+        <put-attribute name="pageTab" value="/WEB-INF/views/layout/sign/pageTab.jsp"/>
         <put-attribute name="container" expression="/WEB-INF/views/sign/{1}.jsp"/>
     </definition>
+
+   	<!-- attachPop -->
+	<definition name="sign/attach/attachPop" extends="sign">
+     	<put-attribute name="container" expression="/WEB-INF/views/sign/attach/attachPop.jsp"/>
+    </definition>
+    
+	<!-- error -->
+	<definition name="sign/error/*" extends="sign">
+     	<put-attribute name="container" expression="/WEB-INF/views/sign/error/{1}.jsp"/>
+    </definition>
+    
+	<!-- done -->
+	<definition name="sign/done/*" extends="sign">
+     	<put-attribute name="container" expression="/WEB-INF/views/sign/done/{1}.jsp"/>
+    </definition>
+
+    <definition name="sign/*/*" extends="sign">
+        <put-attribute name="pageTab" value="/WEB-INF/views/layout/sign/pageTab.jsp"/>
+        <put-attribute name="container" expression="/WEB-INF/views/sign/{1}/{2}.jsp"/>
+    </definition>
+    
     <!-- report 화면 -->
     <definition name="sign/report" template="/WEB-INF/views/layout/sign/single.jsp">
         <put-attribute name="container" expression="/WEB-INF/views/sign/report.jsp"/>
     </definition>
-     <!-- done -->
-    <definition name="done/*" template="/WEB-INF/views/layout/sign/default.jsp">
-        <put-attribute name="header" value="/WEB-INF/views/layout/sign/header.jsp"/>
-        <put-attribute name="footer" value="/WEB-INF/views/layout/sign/footer.jsp"/>
-        <put-attribute name="container" expression="/WEB-INF/views/done/{1}.jsp"/>
-    </definition>   
-     <!-- error -->
-    <definition name="error/*" template="/WEB-INF/views/layout/sign/default.jsp">
-        <put-attribute name="header" value="/WEB-INF/views/layout/sign/header.jsp"/>
-        <put-attribute name="footer" value="/WEB-INF/views/layout/sign/footer.jsp"/>
-        <put-attribute name="container" expression="/WEB-INF/views/error/{1}.jsp"/>
-    </definition>   
-    
+
     <!-- pdf 레이아웃 -->
     <definition name="sign/pdfViewer" template="/WEB-INF/views/layout/sign/single.jsp">
         <put-attribute name="container" expression="/WEB-INF/views/sign/pdfViewer.jsp"/>

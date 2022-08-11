@@ -19,7 +19,7 @@ $(window).on("load", function () {
 /*** Layout **/
 $(function () {
     $('.step_loc').closest('#container').addClass('dep');
-    $('.btn_close').closest('body').addClass('pop');
+//    $('.btn_close').closest('body').addClass('pop');
 });
 
 

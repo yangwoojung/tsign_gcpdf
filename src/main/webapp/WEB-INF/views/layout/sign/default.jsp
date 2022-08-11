@@ -38,7 +38,18 @@
     </footer>
 </div>
 <!-- //wrap -->
-<div id="idPopup2" class="ts_popup"></div>
+<div id="idPopup" class="ts_popup">
+	<script type="text/javascript">
+		$(function() {
+			$("#idPopup").tsPopup();
+		});
+	</script>
+</div>
+<!-- <div id="idPopup2" class="ts_popup"></div> -->
+<script>
+/* jshint esversion: 6 */
+var cpath = "${pageContext.request.contextPath}";
+</script>
 </body>
 </html>
 
