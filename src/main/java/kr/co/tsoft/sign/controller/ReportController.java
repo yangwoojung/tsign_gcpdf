@@ -42,10 +42,9 @@ public class ReportController {
 	private final Logger log = LoggerFactory.getLogger(ReportController.class);
 	
 	@Value("${clip.prop.path}")
-	private String propPath;
-	
+	private String CLIP_PROP_PATH;
 	@Value("${clip.contract.path}")
-	private String contractPath;
+	private String CLIP_CONTRACT_PATH;
 	
 	@Autowired
 	private ReportService reportService;
@@ -73,78 +72,20 @@ public class ReportController {
 	public void getReportView(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		log.debug("===== getReportView Start =====");
-		reportService.getReportView(request, response, propPath);
+		reportService.getReportView(request, response);
 		log.debug("===== getReportView End =====");
 	}
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/makePDF", method = {RequestMethod.POST, RequestMethod.GET})
 	@ResponseBody
-	public HashMap<String, Object> generatePDF(Locale locale, HttpServletRequest request, HttpServletResponse response
-		, @RequestBody HashMap<String, Object> reqMap, SecurityUtil su) throws Exception {
+	public Map<String, Object> generatePDF(Locale locale, HttpServletRequest request, HttpServletResponse response
+		, @RequestBody HashMap<String, Object> reqMap) throws Exception {
 		
-	//	CommonUserDetails detail = su.getSignUserDetails();
-
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		String repKey = (String) reqMap.get("repKey");
-
-		log.debug("repKey : " + repKey);
-
-		String propertyPath = request.getSession().getServletContext().getRealPath("/") + propPath;
-		
-		File localDirSave = new File(contractPath);
-		
-		if (!localDirSave.exists()) {
-			localDirSave.mkdirs();
-		}
-		
-//		File contractFolder = new File(localDirSave, detail.getContractNo());
-		File contractFolder = new File(localDirSave, "contract");
-		if (!contractFolder.exists()) {
-			contractFolder.mkdirs();
-		}
-		
-		File contractDir = new File(contractFolder, "contract");
-		if (!contractDir.exists()) {
-			contractDir.mkdirs();
-		}
-		
-		FileUtil.deleteDirectory(contractDir, false);
-		
-//		File localFileSave = new File(contractDir, detail.getContractNo() + ".pdf");
-		File localFileSave = new File(contractDir, "contract.pdf");
-		log.debug("localFileSave : " + localFileSave.getPath());
-		
-		if (!localFileSave.exists()) {
-			localFileSave.createNewFile();
-		}
-		
-		try {
-			OutputStream fileStream = new FileOutputStream(localFileSave);
-			
-			PDFOption option = null;
-			// statusType == 0 정상적인 출력
-			// statusType == 1 인스톨 오류
-			// statusType == 2 oof 문서 오류
-			// statusType == 3 리포트 엔진 오류
-			// statusType == 4 PDF 출력 오류
-			// statusType == 5 리포트의 페이지 0 일 경우 오류
-			ExportInfo exportInfo = ClipReportExport.createExportForPartPDF(request, repKey, fileStream, option, propertyPath);
-			int errorCode = exportInfo.getErrorCode();
-			log.debug("errorCode : " + errorCode);
-			
-			if (errorCode == 0) {
-				resultMap.put("resultCd", "0000");
-			}else {
-				log.error("E-form 생성 실패");
-				throw new RuntimeException("전자문서 생성에 실패하였습니다.");
-			}
-		} catch (Exception e) {
-			log.error("E-form 생성 실패");
-			throw new RuntimeException("전자문서 생성에 실패하였습니다.");
-		}
-		
+		log.debug("===== generatePDF Start =====");
+		Map<String, Object> resultMap = reportService.makePdf(request, reqMap);
 		log.debug("===== generatePDF End =====");
+		
 		return resultMap;
 	}
 }
