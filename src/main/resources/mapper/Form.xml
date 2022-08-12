@@ -3,15 +3,61 @@
 
 <mapper namespace="kr.co.tsoft.sign.mapper.admin.FormMapper">
 
-    <select id="selectFormList" parameterType="HashMap" resultType="HashMap">
+    <!--    <select id="selectFormList" parameterType="HashMap" resultType="HashMap">-->
+    <!--        /** [SIGN].[FormMapper.selectFileList] */-->
+
+    <!--        select B.* from (-->
+    <!--        SELECT A.*-->
+    <!--        <![CDATA[-->
+    <!--				,(@row_number := @row_number + 1) RN-->
+    <!--				]]>-->
+    <!--        FROM (SELECT-->
+    <!--        FILE_SEQ-->
+    <!--        ,FILE_TP-->
+    <!--        ,CONTRC_NO-->
+    <!--        ,FORM_NM-->
+    <!--        ,ORG_FILE_NM-->
+    <!--        ,SAV_FILE_NM-->
+    <!--        ,FILE_PATH-->
+    <!--        ,USE_YN-->
+    <!--        ,REG_DATE-->
+    <!--        ,REG_ID-->
+    <!--        ,MOD_DATE-->
+    <!--        ,MOD_ID-->
+    <!--        FROM file_mgmt-->
+    <!--        <![CDATA[-->
+    <!--							  ,(SELECT @row_number := 0) AA-->
+    <!--						]]>-->
+    <!--        WHERE 1=1-->
+    <!--        <if test="searchWord != null and searchWord != ''">-->
+    <!--            AND FORM_NM LIKE CONCAT('%',#{searchWord},'%')-->
+    <!--        </if>-->
+    <!--        <if test="fileType != null and fileType != ''">-->
+    <!--            AND FILE_TP = #{fileType}-->
+    <!--        </if>-->
+    <!--        ORDER BY FILE_SEQ desc-->
+    <!--        ) A-->
+    <!--        ) B-->
+    <!--        <![CDATA[-->
+    <!--		WHERE B.RN >= #{pagingVO.start}-->
+    <!--		  AND B.RN <= #{pagingVO.end}	  -->
+    <!--		]]>-->
+    <!--    </select>-->
+
+    <sql id="where_condition_list">
+        WHERE 1=1
+        <if test="searchWord != null and searchWord != ''">
+            AND FORM_NM LIKE CONCAT('%',#{searchWord},'%')
+        </if>
+        <if test="fileTp != null and fileTp != ''">
+            AND FILE_TP = #{fileTp}
+        </if>
+    </sql>
+
+    <select id="selectFormList" resultType="kr.co.tsoft.sign.vo.admin.FormGridDto">
         /** [SIGN].[FormMapper.selectFileList] */
 
-        select B.* from (
-        SELECT A.*
-        <![CDATA[
-				,(@row_number := @row_number + 1) RN
-				]]>
-        FROM (SELECT
+        SELECT
         FILE_SEQ
         ,FILE_TP
         ,CONTRC_NO
@@ -25,31 +71,25 @@
         ,MOD_DATE
         ,MOD_ID
         FROM file_mgmt
-        <![CDATA[
-							  ,(SELECT @row_number := 0) AA
-						]]>
-        <if test="searchWord != null and searchWord != ''">
-            WHERE FORM_NM LIKE CONCAT('%',#{searchWord},'%')
+        <include refid="where_condition_list"/>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY #{orderBy}
         </if>
-        <if test="FILE_TYPE != null and FILE_TYPE != ''">
-            AND FILE_TYPE = #{FILE_TYPE}
-        </if>
-        ORDER BY FILE_SEQ desc
-        ) A
-        ) B
-        <![CDATA[
-		WHERE B.RN >= #{pagingVO.start}
-		  AND B.RN <= #{pagingVO.end}	  
-		]]>
+        <![CDATA[ 	LIMIT #{length} OFFSET #{start} 		]]>
+    </select>
+
+    <select id="countSelectFormList" resultType="kr.co.tsoft.sign.vo.common.TotalRowCount">
+        SELECT COUNT(1) AS ROW_COUNT FROM file_mgmt
+        <include refid="where_condition_list"/>
     </select>
 
 
-    <select id="countSelectFormList" resultType="int">
-        SELECT COUNT(*) FROM file_mgmt
-        <if test="searchWord != null and searchWord != ''">
-            WHERE FORM_NM LIKE CONCAT('%',#{searchWord},'%')
-        </if>
-    </select>
+<!--    <select id="countSelectFormList" resultType="int">-->
+<!--        SELECT COUNT(*) FROM file_mgmt-->
+<!--        <if test="searchWord != null and searchWord != ''">-->
+<!--            WHERE FORM_NM LIKE CONCAT('%',#{searchWord},'%')-->
+<!--        </if>-->
+<!--    </select>-->
 
     <!-- 원본서식 pdf -->
     <select id="selectContrcFormInfo" resultType="HashMap">
