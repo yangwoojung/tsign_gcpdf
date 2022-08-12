@@ -1,12 +1,29 @@
 package kr.co.tsoft.sign.vo;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.ToString;
 
 @Data
-public class ApiResponseData {
-    public String code;
-    public Object data;
-    public String message;
-    public String module;
-    public String status;
+public class ApiResponseData<T> {
+    private String code;
+    private T data;
+    private String message;
+    private String module;
+    private String status;
+
+    @Getter
+    @Builder
+    @ToString
+    public static class Tsa {
+        private final String encodeTsaFile;
+    }
+
+    @Getter
+    @Builder
+    @ToString
+    public static class Ocr {
+        private final String encodeOcrFile;
+    }
 }

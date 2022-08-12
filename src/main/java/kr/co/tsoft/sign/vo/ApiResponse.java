@@ -5,14 +5,11 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ApiResponse {
+public class ApiResponse<T> {
     private String code;
-    private List<ApiResponseData> data;
+    private List<ApiResponseData<T>> data;
     private String message;
     private String status;
     private String trxnId;
 
-
 }
-
-

@@ -3,6 +3,7 @@ package kr.co.tsoft.sign.service;
 import kr.co.tsoft.sign.util.retrofit.RetrofitUtils;
 import kr.co.tsoft.sign.vo.ApiRequest;
 import kr.co.tsoft.sign.vo.ApiResponse;
+import kr.co.tsoft.sign.vo.ApiResponseData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,9 @@ public class ApiService {
     private final RetrofitUtils retrofitUtils;
     private final RetrofitApi retrofitApi;
 
-  public ApiResponse processTsa(ApiRequest request) {
+  public ApiResponse<ApiResponseData.Tsa> processTsa(ApiRequest request) {
 
-      Call<ApiResponse> call = retrofitApi.processTsa(request.getToken(), request.getFile());
+      Call<ApiResponse<ApiResponseData.Tsa>> call = retrofitApi.processTsa(request.getToken(), request.getFile());
       return retrofitUtils.responseSync(call).orElseThrow(RuntimeException::new);
     }
 
