@@ -18,8 +18,9 @@
 					<th>구비서류</th>
 					<td>
 						<ul class="dot01">
-							<li>1. 신분증</li>
-							<li>2. 통장사본</li>
+							<c:forEach items="${docList}" var="doc" varStatus="status">
+								<li>${status.count}. ${doc.docNm}</li>
+							</c:forEach>
 						</ul>
 					</td>
 				</tr>

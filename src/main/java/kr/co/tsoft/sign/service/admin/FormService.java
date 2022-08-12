@@ -4,6 +4,8 @@ import kr.co.tsoft.sign.mapper.admin.FormMapper;
 import kr.co.tsoft.sign.service.ComService;
 import kr.co.tsoft.sign.util.MultipartFileHandler;
 import kr.co.tsoft.sign.util.SecurityUtil;
+import kr.co.tsoft.sign.vo.admin.FormGridDto;
+import kr.co.tsoft.sign.vo.common.TotalRowCount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class FormService {
@@ -55,12 +56,19 @@ public class FormService {
 
     }
 
-    public List<Map<String, Object>> selectFormList(Map<String, Object> parameter) {
-
+//    public List<Map<String, Object>> selectFormList(Map<String, Object> parameter) {
+//
+//        return formMapper.selectFormList(parameter);
+//    }
+//
+//    public int countSelectFormList(Map<String, Object> parameter) {
+//        return formMapper.countSelectFormList(parameter);
+//    }
+    public List<FormGridDto> selectFormList(FormGridDto parameter) {
         return formMapper.selectFormList(parameter);
     }
 
-    public int countSelectFormList(Map<String, Object> parameter) {
+    public TotalRowCount countSelectFormList(FormGridDto parameter) {
         return formMapper.countSelectFormList(parameter);
     }
 

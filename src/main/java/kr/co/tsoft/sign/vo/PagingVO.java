@@ -4,7 +4,7 @@ public class PagingVO {
 
     // 현재페이지, 시작페이지, 끝페이지, 게시글 총 갯수, 마지막페이지, SQL쿼리에 쓸 start, end
     private int nowPage, startPage, endPage, total, lastPage, start, end;
-    private int cntPerPage = 3;//페이지당 글 갯수
+    private int cntPerPage = 10;//페이지당 글 갯수
     private int cntPage = 5;
 
     public PagingVO() {

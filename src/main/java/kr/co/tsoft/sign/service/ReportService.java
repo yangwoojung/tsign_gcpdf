@@ -1,6 +1,9 @@
 package kr.co.tsoft.sign.service;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,10 +17,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 
+import com.clipsoft.clipreport.export.option.PDFOption;
 import com.clipsoft.clipreport.oof.OOFDocument;
 import com.clipsoft.clipreport.oof.connection.OOFConnectionMemo;
+import com.clipsoft.clipreport.server.service.ClipReportExport;
 import com.clipsoft.clipreport.server.service.DeleteReport;
 import com.clipsoft.clipreport.server.service.ExePrintInfo;
+import com.clipsoft.clipreport.server.service.ExportInfo;
 import com.clipsoft.clipreport.server.service.NewReport;
 import com.clipsoft.clipreport.server.service.Page;
 import com.clipsoft.clipreport.server.service.PageCount;
@@ -49,6 +55,7 @@ import com.pdfxml.PdfUtil;
 import kr.co.tsoft.sign.config.security.CommonUserDetails;
 import kr.co.tsoft.sign.util.DateUtil;
 import kr.co.tsoft.sign.util.FileUtil;
+import kr.co.tsoft.sign.util.SessionUtil;
 
 @Service
 public class ReportService {
@@ -101,10 +108,10 @@ public class ReportService {
 	}
 		
 	//report 뷰어 열기 위한 코드
-	public void getReportView(HttpServletRequest request, HttpServletResponse response, String propPath) throws Exception {
+	public void getReportView(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 		log.debug("get real path : " + request.getSession().getServletContext().getRealPath("/"));
-		String propertyPath = request.getSession().getServletContext().getRealPath("/") + propPath;
+		String propertyPath = request.getSession().getServletContext().getRealPath("/") + CLIP_PROP_PATH;
 		log.debug("server property path :" + propertyPath);
 		
 		// 크로스 도메인 설정
@@ -274,5 +281,69 @@ public class ReportService {
 				documentPage.doPost(request, response, propertyPath);
 			}
 		}
+	}
+
+	public Map<String, Object> makePdf(HttpServletRequest request, HashMap<String, Object> param) throws Exception {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+
+		Map<String, Object> user = SessionUtil.getUser();
+		String contNo = (String) user.get("CONTRC_NO");
+		
+		String repKey = (String) param.get("repKey");
+		log.debug("repKey : " + repKey);
+
+		String propertyPath = request.getSession().getServletContext().getRealPath("/") + CLIP_PROP_PATH;
+		
+		File localDirSave = new File(CLIP_CONTRACT_PATH);
+		
+		if (!localDirSave.exists()) {
+			localDirSave.mkdirs();
+		}
+		
+		File contractFolder = new File(localDirSave, contNo);
+		if (!contractFolder.exists()) {
+			contractFolder.mkdirs();
+		}
+		
+		File contractDir = new File(contractFolder, "contract");
+		if (!contractDir.exists()) {
+			contractDir.mkdirs();
+		}
+		
+		FileUtil.deleteDirectory(contractDir, false);
+		
+		File localFileSave = new File(contractDir, contNo + ".pdf");
+		log.debug("localFileSave : " + localFileSave.getPath());
+		
+		if (!localFileSave.exists()) {
+			localFileSave.createNewFile();
+		}
+		
+		try {
+			OutputStream fileStream = new FileOutputStream(localFileSave);
+			
+			PDFOption option = null;
+			// statusType == 0 정상적인 출력
+			// statusType == 1 인스톨 오류
+			// statusType == 2 oof 문서 오류
+			// statusType == 3 리포트 엔진 오류
+			// statusType == 4 PDF 출력 오류
+			// statusType == 5 리포트의 페이지 0 일 경우 오류
+			ExportInfo exportInfo = ClipReportExport.createExportForPartPDF(request, repKey, fileStream, option, propertyPath);
+			int errorCode = exportInfo.getErrorCode();
+			log.debug("errorCode : " + errorCode);
+			
+			if (errorCode == 0) {
+				resultMap.put("resultCd", "0000");
+			}else {
+				log.error("E-form 생성 실패");
+				throw new RuntimeException("전자문서 생성에 실패하였습니다.");
+			}
+		} catch (Exception e) {
+			log.error("E-form 생성 실패");
+			throw new RuntimeException("전자문서 생성에 실패하였습니다.");
+		}
+		return resultMap;
 	}
 }

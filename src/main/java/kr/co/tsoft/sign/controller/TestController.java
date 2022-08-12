@@ -1,29 +1,39 @@
 package kr.co.tsoft.sign.controller;
 
+import com.clipsoft.org.apache.commons.io.FileUtils;
 import kr.co.tsoft.sign.config.security.CommonUserDetails;
+import kr.co.tsoft.sign.service.ApiService;
 import kr.co.tsoft.sign.util.MailHandler;
 import kr.co.tsoft.sign.util.MultipartFileHandler;
 import kr.co.tsoft.sign.util.SecurityUtil;
+import kr.co.tsoft.sign.vo.ApiRequest;
+import kr.co.tsoft.sign.vo.ApiResponse;
+import kr.co.tsoft.sign.vo.ApiResponseData;
+import lombok.RequiredArgsConstructor;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class TestController {
 
 	private final Logger Logger = LoggerFactory.getLogger(TestController.class);
 
-	@Autowired
-	MultipartFileHandler multipartFileHandler;
-	@Autowired
-	SecurityUtil securityUtil;
+	private final MultipartFileHandler multipartFileHandler;
+	private final SecurityUtil securityUtil;
+	private final ApiService apiService;
 
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	@ResponseBody
@@ -109,6 +119,33 @@ public class TestController {
 
 	}
 
+	@RequestMapping(value = "/test/tsa")
+	@ResponseBody
+	public void processTsaTest() throws IOException {
+
+		File file = new File("D:\\git\\workspace\\tsign\\src\\main\\webapp\\WEB-INF\\resources\\sign\\pdfjs\\tsoft.pdf");
+		MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", "test", okhttp3.RequestBody.create(MediaType.parse("application/pdf"), file));
+
+		ApiRequest requst = ApiRequest.builder()
+				.token("vL9adtaTYkphP3vChWoKAkvLH2Ffxv")
+				.file(filePart)
+				.build();
+
+		Logger.info("#### API requst : {} ", requst);
+
+		ApiResponse<ApiResponseData.Tsa> response = apiService.processTsa(requst);
+
+
+		Logger.info("#### API response : {} ", response);
+
+		ApiResponseData<ApiResponseData.Tsa> tsaApiResponseData = response.getData().get(0);
+
+		ApiResponseData.Tsa data = tsaApiResponseData.getData();
+
+		Logger.info("#### API encodeTsaFile : {} ", data);
+
+		FileUtils.writeByteArrayToFile(new File("D:\\cmi\\test.pdf"), Base64.decodeBase64(data.getEncodeTsaFile()));
+	}
 
 
 }
