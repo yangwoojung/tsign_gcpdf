@@ -1024,7 +1024,7 @@ var fnUploadFile = function(item, attachCd, attachId) {
 			$('#attachLoading').hide();
 			alert('[e] 파일 첨부 실패 - 다시 촬영(첨부)해 주세요\n장시간 미사용 상태거나, 인터넷이 끊기신 경우 처음부터 진행해 주세요.');
 			if(xhr.status == 403) {
-				location.href = '/error/401';
+				location.href = '/sign/error/401';
 			}
 			fnUploadFileFormReset(item);
 			
@@ -1039,12 +1039,7 @@ var fnUploadFile = function(item, attachCd, attachId) {
 var fnCaseShowAlert = function(cd, childDataNo) {
 	var show = false;
 	switch(cd){
-		case "002": show=true;	break;   	//대표자 개인 인감증명서
-		case "003": show=true;	break;   	//법인 인감증명서
-		case "004": show=true;	break;		//법인 등기부 등본
-		case "008": show=true;	break;		//대표자 신분증
-		case "009": show=true;	break;		//대리인 신분증
-		case "022": show=true;	break;		//연대보증인 개인인감증명서
+		case "001": show=true;	break;   	//신분증
 		default : show=false;						//기타:
 	}
 	if(childDataNo>1) show = false;
@@ -1433,7 +1428,7 @@ var btnSubmitAction = function(e) {
 	    }, error:function(xhr, data) {
             alert('[' + data.resCd + '] 제출에 실패하였습니다. 다시 진행해 주세요.');
 			if(xhr.status == 403) {
-				location.href = '/error/401';
+				location.href = '/sign/error/401';
 			}
             fnPopClose();
 

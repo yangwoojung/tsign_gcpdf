@@ -1,5 +1,6 @@
 package kr.co.tsoft.sign.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,9 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.tsoft.sign.service.AttachService;
@@ -26,8 +29,11 @@ public class AttachController {
 	private AttachService attachService;
 	
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.GET})
-	public String attachPage() {
+	public String attachPage(Model model) {
 		logger.info("===== attach page =====");
+		//TODO : db에서 구비서류 리스트 가져온 다음 화면에 뿌려주기 (param : 계약번호)
+			List<Map<String, Object>> docList = attachService.docList();
+			model.addAttribute("docList", docList);
 		return "sign/attach/attach";
 	}
 	
@@ -39,17 +45,27 @@ public class AttachController {
 		
 		//TODO : db에서 구비서류 리스트 가져온 다음 화면에 뿌려주기 (param : 계약번호)
 		List<Map<String, Object>> docList = attachService.docList();
-
 		mv.addObject("docList", docList);
 		
 		logger.debug("===== attachPop End =====");
 		return mv;
 	}
 	
-//	@PostMapping("/upload")
-//	public String upload() {
-//		logger.info("========upload========");
-//		return null;
-//	}
+	@PostMapping("/upload")
+	public String upload(@RequestParam Map<String, Object> param) {
+		logger.info("========upload========");
+		logger.info("param : {}", param);
+
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		try {
+			resultMap = attachService.uploadAttachFile(param);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 	
 }
