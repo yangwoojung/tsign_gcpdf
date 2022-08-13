@@ -25,7 +25,7 @@ public class ApiResponseData<T> {
     @ToString
     public static class Ocr {
     	private final String idType; //신분증 타입     1:주민등록증, 3:운전면허증
-    	private final String socailNo; //주민등록번호
+    	private final String socialNo; //주민등록번호
     	private final String name; //성명
     	private final String issueDt; //발급일자
     	private final String licenseNo; //면허번호(운전면허증)
