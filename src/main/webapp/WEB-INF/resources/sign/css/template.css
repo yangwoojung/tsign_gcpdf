@@ -65,7 +65,15 @@ input.input_ty[type=number]::-webkit-outer-spin-button {
     border-color: rgba(234,76,137,0.4);
     box-shadow: 0 0 0 4px rgb(234 76 137 / 10%);
 }
-
+.form_box.typeSide input::placeholder {
+    font-size: 13px;
+}
+.form_box.typeSide select {
+    font-size: 13px;
+    height: 20px;
+    padding: 0 10px;
+    border: none;
+}
 /* button */
 button {
     font-family: 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
@@ -331,7 +339,8 @@ select:focus {
     border-bottom: 2px solid transparent;
     transform: rotate(45deg);
     transform-origin: 0% 100%;
-    animation: checkbox-check-all 125ms 250ms cubic-bezier(.4,.0,.23,1) forwards;
+    /*animation: checkbox-check-all 125ms 250ms cubic-bezier(.4,.0,.23,1) forwards;*/
+    animation: checkbox-check-all 125ms 250ms linear forwards;
     border-radius: 2px;
 }
 .checkBox-wrap input[type='checkbox']:checked + label > span.checkPoint:after {
@@ -343,7 +352,8 @@ select:focus {
     border-bottom: 2px solid transparent;
     transform: rotate(45deg);
     transform-origin: 0% 100%;
-    animation: checkbox-check 125ms 250ms cubic-bezier(.4,.0,.23,1) forwards;
+    /*animation: checkbox-check 125ms 250ms cubic-bezier(.4,.0,.23,1) forwards;*/
+    animation: checkbox-check 125ms 250ms linear forwards;
     border-radius: 2px;
 }
 @keyframes checkbox-check-all{
@@ -390,12 +400,13 @@ select:focus {
 .checkBox-wrap input[type='checkbox'] + label > ins i {
     font-style: normal;
     font-size: 12px;
-    color: #4a4a4a;
+    color: #646464;
     letter-spacing: -0.3px;
 }
 .checkBox-wrap input[type='checkbox'] + label[for="chk_all"] > ins i {
     font-size: 16px;
     font-weight: bold;
+    color: #222;
 }
 .arrow {
     width: 6px;
@@ -456,7 +467,7 @@ select:focus {
 
 /* txt_msg_box */
 .txt_msg_box {
-    padding: 30px 15px 15px 15px;
+    padding: 25px 15px 5px 15px;
     background: #fff;
     box-sizing: border-box;
     text-align: center;
@@ -866,6 +877,24 @@ html.fix {
 
 
 /** form_box **/
+ul.description {
+    padding-top: 20px;
+    font-size: 11px;
+}
+ul.description li {
+    display: flex;
+    align-items: center;
+    color: #646464;
+}
+ul.description li:before {
+    content: '';
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #828282;
+    display: inline-block;
+    margin-right: 8px;
+}
 .form_box.mt {
     margin-top: 22px;
 }
@@ -876,7 +905,40 @@ html.fix {
     background: #f9f9f9;
     border-top: 1px solid #e5e5e5;
 }
+.form_box.typeSide {
+    margin-top: 30px;
+}
 
+.form_box.typeSide .list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ededed;
+    margin-top: 0;
+}
+.form_box.typeSide .list dt {
+    width: 23%;
+    font-size: 12px;
+    color: #a9a9a9;
+    margin-bottom: 0;
+}
+.form_box.typeSide .list dd {
+    width: 77%;
+    padding: 20px 0;
+}
+.form_box.typeSide input {
+    background: none;
+    border: none;
+    font-size: 13px;
+    height: 20px;
+    padding: 0 10px;
+}
+.form_box.typeSide textarea {
+    border: none;
+    height: 20px;
+    padding: 0 10px;
+    resize: none;
+}
 .form_box .list {
     margin-top: 25px;
 }
@@ -930,7 +992,9 @@ html.fix {
     background: #000;
     content: "";
 }
-
+.form_box.typeSide .list dd.half:before {
+    top: 50%;
+}
 .form_box .list dd.half.email:before {
     position: absolute;
     top: 7px;
@@ -993,7 +1057,6 @@ html.fix {
 
 .form_box .list dd.half03 {
     display: table;
-    width: 100%;
 }
 
 .form_box .list dd.half03 p {

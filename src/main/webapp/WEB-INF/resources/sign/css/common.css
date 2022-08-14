@@ -109,3 +109,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 strong {
     font-weight: 900;
 }
+
+.hidden {
+    display: none;
+}

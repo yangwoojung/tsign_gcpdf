@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
+<header>
+    <h2 class="title">계약 확인</h2>
+</header>
 
 <!-- container -->
 <div id="container">
@@ -19,8 +22,8 @@
         <!--체크전-->
         <div id="mt02_all_check">
             <div class="checkBox-wrap">
-                <input type="checkbox" class="checkBox" id="checkAll">
-                <label for="checkAll">
+                <input type="checkbox" class="checkBox" id="chk_all">
+                <label for="chk_all">
                     <span class="checkPoint"></span>
                     <ins><i>전체 동의</i></ins>
                 </label>
@@ -35,7 +38,7 @@
                 <ul class="list">
                     <li>
                         <div class="checkBox-wrap">
-                            <input type="checkbox" id="chk01" class="checkBox required">
+                            <input type="checkbox" id="chk01" class="checkBox" required>
                             <label for="chk01">
                                 <span class="checkPoint"></span>
                                 <ins><i>(필수) 개인(신용)정보의 수집, 이용에 관한 사항</i></ins>
@@ -47,7 +50,7 @@
                     </li>
                     <li>
                         <div class="checkBox-wrap">
-                            <input type="checkbox" id="chk02" class="checkBox required">
+                            <input type="checkbox" id="chk02" class="checkBox" required>
                             <label for="chk02">
                                 <span class="checkPoint"></span>
                                 <ins><i>(필수) 고유식별번호의 수집, 이용에 관한 사항</i></ins>
@@ -59,7 +62,7 @@
                     </li>
                     <li>
                         <div class="checkBox-wrap">
-                            <input type="checkbox" id="chk03" class="checkBox required">
+                            <input type="checkbox" id="chk03" class="checkBox" required>
                             <label for="chk03">
                                 <span class="checkPoint"></span>
                                 <ins><i>(필수) 개인(신용)정보의 제3자 제공에 관한 사항</i></ins>
@@ -71,7 +74,7 @@
                     </li>
                     <li>
                         <div class="checkBox-wrap">
-                            <input type="checkbox" id="chk04" class="checkBox required">
+                            <input type="checkbox" id="chk04" class="checkBox" required>
                             <label for="chk04">
                                 <span class="checkPoint"></span>
                                 <ins><i>(필수) 개인(신용)정보의 취급위탁에 관한 사항</i></ins>
@@ -108,21 +111,40 @@
                 </ul>
             </div>
         </div>
-
-        <div class="btn_area">
-            <a href="javascript:" id="agreeCompleteBtn" class="btn_m btn_ty02 disabled">다음</a>
-        </div>
     </div>
     <!-- //cont_area -->
 </div>
 <!-- //container -->
 
-<script type="text/javascript">
+<script>
+
+    $(function () {
+
+        $('#chk_all').on('change', function () {
+            $('.checkBox').prop('checked', this.checked);
+        });
+
+        $('.checkBox').on('change', function () {
+            const isValid = $('.checkBox:checked:required').length === $('.checkBox:required').length;
+            $('#nextBtn').attr('disabled', !isValid);
+            const isAllChecked = $('.checkBox:checked:not(#chk_all)').length === $('.checkBox:not(#chk_all)').length;
+            $('#chk_all').prop('checked', isAllChecked);
+        });
+
+        $('#nextBtn').on('click', function(){
+            if ($('.checkBox.required:checked').length !== $('.checkBox.required').length) return alert("필수 동의여부를 확인해주세요.");
+            location.href= '/sign/info';
+            // fnMoveNext();
+        });
+
+    })
 
     // 팝업 열기
     const fnPopOpen = num => {
         $('#idPopup2').tsPopup('open', '/sign/agree/agreePop' + num);
     };
+
+    // TODO: 아래 경우의 수 정리 필요
     const fnClose = status => {
         if (status !== '0000') {
             $('#idPopup2').tsPopup('close');
@@ -131,34 +153,8 @@
         }
     }
 
-    $('#checkAll').change(function () {
-        $('.checkBox').prop('checked', this.checked);
-    });
-
-    $('.checkBox').change(function () {
-        if ($('.checkBox.required:checked').length === $('.checkBox.required').length) {
-            $('#agreeCompleteBtn').removeClass('disabled');
-        } else {
-            $('#agreeCompleteBtn').addClass('disabled');
-        }
-
-        if ($('.checkBox:checked:not(#checkAll)').length === $('.checkBox:not(#checkAll)').length) {
-            $('#checkAll').prop('checked', true);
-        } else {
-            $('#checkAll').prop('checked', false);
-        }
-    });
-
-    $('#agreeCompleteBtn').on('click', function(){
-        if ($('.checkBox.required:checked').length !== $('.checkBox.required').length) return alert("필수 동의여부를 확인해주세요.");
-
-
-
-    });
-
-
-    // 다음 단계로 이동
-    function fnMoveNext() {
+    // TODO: 아래 함수 수정 필요
+    const fnMoveNext = () => {
 
         var paramMap_dev = {
             agree: $('input:checkbox[id="chk01"]').is(':checked') ? 'Y' : 'N',
@@ -172,7 +168,7 @@
         };
         ComUtil.request(requestMap, function (data) {
 
-            if (data.result == "success") {
+            if (data.result === "success") {
                 ComUtil.submit('/info', null, 'post');
             } else {
                 alert(data.resMsg);

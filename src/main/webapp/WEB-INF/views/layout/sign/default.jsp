@@ -23,12 +23,8 @@
     <script src="/resources/sign/js/tsoft.js"></script>
 </head>
 <body>
-<tiles:insertAttribute name="header"/>
 <!-- wrap -->
 <div id="wrap">
-<%--    <section id="pageTab">
-        <tiles:insertAttribute name="pageTab" ignore="true"/>
-    </section>--%>
     <section id="contents">
         <tiles:insertAttribute name="container"/>
     </section>
@@ -44,17 +40,23 @@
     </script>
 </div>
 <div id="idPopup2" class="ts_popup"></div>
+
 <script>
     /* jshint esversion: 6 */
-    const cpath = "${pageContext.request.contextPath}";
+    const cpath = '${pageContext.request.contextPath}';
+
+    history.pushState(null, null, location.href);
+    window.onpopstate = function() {
+        history.go(1);
+    };
 
     let vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty("--vh", `${vh}px`);
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
 
-    window.addEventListener("resize", () => {
-        console.log("resize");
-        let vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty("--vh", `${vh}px`);
+    window.addEventListener('resize', () => {
+        console.log('resize');
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
     });
 
 </script>

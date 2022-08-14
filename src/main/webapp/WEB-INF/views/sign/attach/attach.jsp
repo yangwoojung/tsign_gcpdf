@@ -3,6 +3,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%-- <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %> --%>
 
+<header>
+	<h2 class="title">서류 제출</h2>
+</header>
 
 <!-- container -->
 <div id="container">

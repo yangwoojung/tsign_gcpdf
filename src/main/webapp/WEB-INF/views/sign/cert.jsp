@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
+    <header>
+        <h2 class="title">본인인증</h2>
+    </header>
+
     <!-- container -->
     <div id="container">
 
@@ -24,31 +28,32 @@
                 <dl class="list">
                     <dt>뒤 4자리</dt>
                     <dd>
-                        <input id="cellNoLast" name="cellNoLast" type="number" class="input_ty" maxlength="4"/>
+                        <input id="cellNoLast" name="cellNoLast" type="tel" class="input_ty" maxlength="4"/>
                     </dd>
                 </dl>
-            </div>
-            <div class="btn_area">
-                <a href="javascript:" id="certCompleteBtn" class="btn_m btn_ty02 disabled" onclick="checkCellNo()">휴대폰 본인인증</a>
             </div>
         </div>
         <!-- //cont_area -->
     </div>
     <!-- //container -->
 
-<script type="text/javascript">
+<script>
 
     const maskedCellNo = '${user.CELL_NO_MASK }';
 
-    $(document).ready(function() {
+    $(function() {
         $('#cellNo').val(phoneFormat(maskedCellNo));
 
         $('#cellNoLast').on('change keyup', function(){
-            if(this.value.length === 4) {
-                $('#certCompleteBtn').removeClass('disabled');
-            } else {
-                $('#certCompleteBtn').addClass('disabled');
-            }
+            const isValid = this.value.length === 4;
+            $('#nextBtn').attr('disabled', !isValid);
+
+            if(isValid) ComUtil.hideKeyboard($(this));
+        });
+
+        $('#nextBtn').on('click', function(){
+            // checkCellNo();
+            fnCertificationClose('0000', 'idseed');
         });
     });
 

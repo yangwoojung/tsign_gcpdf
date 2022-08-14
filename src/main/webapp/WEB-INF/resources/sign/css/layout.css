@@ -2,8 +2,10 @@
 /*
     Layout.css
 */
-.ts_popup {display: none;}
 /***** layout *****/
+html {
+    height: calc(var(--vh, 1vh) * 100);
+}
 body {
     min-width: 320px;
     background: #fff;
@@ -38,7 +40,7 @@ body.bg #wrap {
     max-width: 770px;
     margin: 0 auto;
     background: #fff;
-    padding-bottom: 50px;
+    padding-bottom: 80px;
 }
 
 .point {color: #e11f27;}
@@ -89,9 +91,10 @@ header .title {
     position: relative;
     padding: 0 12px;
     color: #222;
-    font-size: 15px;
+    font-size: 20px;
     font-weight: bold;
     text-align: center;
+    letter-spacing: -0.3px;
 }
 
 header .btn_back {
@@ -674,15 +677,18 @@ footer {
     line-height: 18px;
     text-align: center;
     color: #aeaeae;
-    background: #fff;
-    height: 50px;
+    background: linear-gradient(to top, #fff 80%, transparent 100%);
+    height: 80px;
     bottom:0;
     width: 100%;
     display: flex;
     justify-content: center;
-    align-items: flex-end;
+    align-items: center;
 }
 
+footer .btn_area {
+    width: 100%;
+}
 footer .copyright {
     padding: 20px 0;
 }
@@ -1059,7 +1065,6 @@ footer .lang_select a:after {
 /*** Btn ***/
 /** btn_area **/
 .btn_area {
-    margin: 25px -5px 0 -5px;
     font-size: 0;
 }
 
@@ -1135,10 +1140,10 @@ footer .lang_select a:after {
 .btn_m {
     display: inline-block;
     width: 100%;
-    height: 40px;
+    height: 46px;
     font-size: 15px;
     font-weight: 600;
-    line-height: 40px;
+    line-height: 46px;
     text-align: center;
 }
 
@@ -1194,7 +1199,7 @@ footer .lang_select a:after {
     border-radius: 8px;
 }
 
-.btn_ty02.disabled {
+.btn_ty02[disabled] {
     opacity: 0.4;
     /*background: #d0d0d0;*/
 }
