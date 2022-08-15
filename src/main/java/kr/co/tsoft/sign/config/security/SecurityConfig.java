@@ -42,6 +42,7 @@ public class SecurityConfig {
                     .antMatcher("/sign/**")
                     .authorizeRequests()
                     .antMatchers("/cmi/**").permitAll()
+                    .antMatchers("/sign/error/**").permitAll()
                     .antMatchers("/sign/cert/**").permitAll()
                     .antMatchers("/sign/pin/**").permitAll()
                     .antMatchers("/sign/complete").permitAll()
@@ -56,7 +57,7 @@ public class SecurityConfig {
                     .failureUrl("/sign/error/401")
                     .and()
                     .logout()
-                    .logoutUrl("/error/401")
+                    .logoutUrl("/sign/error/401")
                     .deleteCookies("JSESSIONID")
                     .invalidateHttpSession(true)
                     .logoutSuccessUrl("/sign/error/401");

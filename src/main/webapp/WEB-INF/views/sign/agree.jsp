@@ -144,16 +144,16 @@
         $('#idPopup2').tsPopup('open', '/sign/agree/agreePop' + num);
     };
 
-    // TODO: 아래 경우의 수 정리 필요
-    const fnClose = status => {
-        if (status !== '0000') {
-            $('#idPopup2').tsPopup('close');
-        } else {
+    // iframe 에서 parent 의 함수 호출시 keyword 로 function 사용해야함
+    function fnClose(type) {
+        $('#idPopup2').tsPopup('close');
 
+        if(type) {
+            $('#chk0' +type).prop('checked',true);
         }
     }
 
-    // TODO: 아래 함수 수정 필요
+    // TODO: 필수/선택에 따른 데이터 저장 확인필요
     const fnMoveNext = () => {
 
         var paramMap_dev = {

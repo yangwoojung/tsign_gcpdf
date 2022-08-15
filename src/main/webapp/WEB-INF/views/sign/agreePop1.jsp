@@ -3,7 +3,7 @@
 <!-- header -->
 <header>
     <h2 class="title">개인(신용)정보의 수집, 이용에 관한 사항</h2>
-    <a href="javascript:void(0);" onclick="fnPopClose();" class="btn_close">닫기</a>
+    <a href="javascript:" onclick="parent.fnClose('1');" class="btn_close">닫기</a>
 </header>
 
 <!-- container -->
@@ -68,26 +68,10 @@
 
         <!-- btn_area -->
         <div class="btn_area">
-            <button class="btn_m btn_ty02" onclick="fnPopClose();">확인</button>
+            <button class="btn_m btn_ty02" onclick="parent.fnClose('1');">확인</button>
         </div>
         <!-- //btn_area -->
     </div>
     <!-- //cont_area -->
 </div>
 <!-- //container -->
-
-</div>
-<!-- //wrap -->
-
-<script type="text/javascript">
-
-    // 팝업 창 닫기
-    var fnPopClose = function () {
-        parent.fnClose();
-    };
-
-</script>
-
-</body>
-
-</html>

@@ -10,7 +10,6 @@
     <meta name="theme-color" content="#fff">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>(주)티소프트 전자계약</title>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css">
     <link rel="shortcut icon" href="/resources/sign/images/layout/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="/resources/sign/images/layout/apple-touch-icon.png">
     <link rel="stylesheet" type="text/css" href="/resources/sign/css/style.css">
@@ -21,6 +20,7 @@
     <script src="/resources/sign/js/common.js"></script>
     <script src="/resources/sign/js/template.js"></script>
     <script src="/resources/sign/js/tsoft.js"></script>
+    <script src="/resources/sign/js/sweetalert2.all.min.js"></script>
 </head>
 <body>
 <!-- wrap -->
