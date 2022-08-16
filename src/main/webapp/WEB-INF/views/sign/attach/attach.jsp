@@ -12,8 +12,48 @@
 	<!-- cont_area -->
 	<div class="cont_area">
 		<div class="txt_msg_box cont">
-			  아래 구비서류를 제출해 주세요. 구비서류는 반드시 원본을 촬영(첨부)하여 제출해 주세요.
-		</div>	
+			  아래 구비서류를 제출해 주세요. 구비서류는 <span class="point">반드시 원본을 촬영(첨부)</span>하여 제출해 주세요.
+		</div>
+		<div class="progress">
+			<div class="box-progress-bar">
+				<span class="box-progress" style="width: 100%;"></span>
+			</div>
+			<div class="number">
+				<span class="active">4</span>/4
+			</div>
+		</div>
+		<div class="exImg-wrap">
+			<div class="horizontal">
+				<div class="frame">
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+			</div>
+			<div class="vertical">
+				<div class="frame"></div>
+			</div>
+		</div>
+		<div>
+			<ul>
+				<li>
+					문서는 세로로, 신분증은 가로로 촬영해주세요.
+				</li>
+				<li>
+					여백을 최소화 해주세요.
+				</li>
+				<li>
+					모서리가 잘리지 않게 촬영해주세요.
+				</li>
+				<li>
+					원본이 잘리거나 흐릿하게 촬영된 경우에는 반드시 다시 촬영해주세요.
+				</li>
+				<li>
+					첨부는 JPEG 형식만 가능합니다.
+				</li>
+			</ul>
+		</div>
 		<table class="normal">
 			<colgroup><col style="width:20%"><col style="width:auto"></colgroup>
 			<tbody>

@@ -339,7 +339,6 @@ select:focus {
     border-bottom: 2px solid transparent;
     transform: rotate(45deg);
     transform-origin: 0% 100%;
-    /*animation: checkbox-check-all 125ms 250ms cubic-bezier(.4,.0,.23,1) forwards;*/
     animation: checkbox-check-all 125ms 250ms linear forwards;
     border-radius: 2px;
 }
@@ -352,7 +351,6 @@ select:focus {
     border-bottom: 2px solid transparent;
     transform: rotate(45deg);
     transform-origin: 0% 100%;
-    /*animation: checkbox-check 125ms 250ms cubic-bezier(.4,.0,.23,1) forwards;*/
     animation: checkbox-check 125ms 250ms linear forwards;
     border-radius: 2px;
 }
@@ -394,6 +392,27 @@ select:focus {
         transform: translate3d(0,-10px,0) rotate(45deg);
     }
 }
+
+@keyframes checkbox-check-all{
+    0%{
+        width: 0;
+        height: 0;
+        border-color: #e11f27;
+        transform: translate3d(0,2px,0) rotate(44deg);
+    }
+    33%{
+        width: 6px;
+        height: 0;
+        transform: translate3d(0,2px,0) rotate(45deg);
+    }
+    100%{
+        width: 6px;
+        height: 10px;
+        border-color: #e11f27;
+        transform: translate3d(0,-8px,0) rotate(45deg);
+    }
+}
+
 .checkBox-wrap input[type='checkbox'] + label > ins {
     text-decoration: none;
 }
@@ -969,7 +988,10 @@ ul.description li:before {
 .form_box .list dd.half .input_ty {
     width: calc(50% - 15px);
 }
-
+.form_box .list dd input:focus, .form_box .list dd textarea:focus {
+    box-shadow: none;
+    border: none;
+}
 .form_box .list dd.half .input_ty:last-child {
     float: right;
 }

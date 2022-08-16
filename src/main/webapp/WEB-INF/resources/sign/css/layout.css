@@ -1075,14 +1075,14 @@ footer .lang_select a:after {
 
 .btn_area a:only-child {
     display: block;
-    width: calc(100% - 10px);
-    margin: 0 5px;
+    width: calc(100% - 20px);
+    margin: 0 10px;
 }
 
 .btn_area button:only-child {
     display: block;
-    width: calc(100% - 10px);
-    margin: 0 5px;
+    width: calc(100% - 20px);
+    margin: 0 10px;
 }
 
 /** btn_area_s **/
@@ -1273,4 +1273,38 @@ footer .lang_select a:after {
 
 .mb02 {
     margin-bottom: 10px
+}
+
+.exImg-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+}
+.exImg-wrap > div {
+    background: #222;
+    margin: 0 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.exImg-wrap .horizontal {
+    width: 55%;
+    height: 120px;
+}
+.exImg-wrap .vertical {
+    width: 28%;
+    height: 120px;
+}
+.exImg-wrap .frame {
+    width: 90%;
+    height: 90%;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: space-between;
+    flex-grow: 2;
+}
+.exImg-wrap .frame > div {
+    border: 1px solid #fff;
+    width: 10px;
+    height: 10px;
 }
