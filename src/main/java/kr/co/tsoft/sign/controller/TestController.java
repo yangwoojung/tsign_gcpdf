@@ -126,7 +126,7 @@ public class TestController {
 		File file = new File("D:\\git\\workspace\\tsign\\src\\main\\webapp\\WEB-INF\\resources\\sign\\pdfjs\\tsoft.pdf");
 		MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", "test", okhttp3.RequestBody.create(MediaType.parse("application/pdf"), file));
 
-		ApiRequest requst = ApiRequest.builder()
+		ApiRequest.Tsa requst = ApiRequest.Tsa.builder()
 				.token("vL9adtaTYkphP3vChWoKAkvLH2Ffxv")
 				.file(filePart)
 				.build();

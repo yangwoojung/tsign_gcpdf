@@ -16,7 +16,7 @@ public class ApiService {
     private final RetrofitUtils retrofitUtils;
     private final RetrofitApi retrofitApi;
 
-  public ApiResponse<ApiResponseData.Tsa> processTsa(ApiRequest request) {
+  public ApiResponse<ApiResponseData.Tsa> processTsa(ApiRequest.Tsa request) {
 
       Call<ApiResponse<ApiResponseData.Tsa>> call = retrofitApi.processTsa(request.getToken(), request.getFile());
       return retrofitUtils.responseSync(call).orElseThrow(RuntimeException::new);
