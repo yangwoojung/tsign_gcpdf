@@ -9,12 +9,22 @@
     <meta name="viewport" content="width=1280">
     <link rel="shortcut icon" type="image/x-icon" href="../images/content/favicon.ico"/>
     <link rel="icon" href="../images/content/favicon.png">
+    
     <!-- 	<link rel="stylesheet" type="text/css" href="admin/css/base.css" media="all"> -->
     <link rel="stylesheet" type="text/css" href="/resources/admin/css/reset.css" media="all">
-    <link rel="stylesheet" type="text/css" href="/resources/admin/css/jquery-ui.css" media="all">
+<!--     <link rel="stylesheet" type="text/css" href="/resources/admin/css/jquery-ui.css" media="all"> -->
     <link rel="stylesheet" type="text/css" href="/resources/admin/css/common.css" media="all">
-    <script src="/resources/admin/js/jquery.js"></script>
-    <script src="/resources/admin/js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/resources/admin/css/tsoft.css" media="all">
+    
+<!--     // jQuery UI CSS파일  -->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
+<!-- // jQuery 기본 js파일 -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<!-- // jQuery UI 라이브러리 js파일 -->
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+    
+<!--     <script src="/resources/admin/js/jquery.js"></script> -->
+<!--     <script src="/resources/admin/js/jquery-ui.min.js"></script> -->
 </head>
 <body>
 <header id="header">
