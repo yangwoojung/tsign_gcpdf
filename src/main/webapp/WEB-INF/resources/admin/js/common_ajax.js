@@ -8,7 +8,7 @@ let Commons = (function () {
     let ajaxGet = function (requestUrl, callback) {
         $.ajax({
             type: 'GET',
-            url: ecbUtils.contextPath + requestUrl,
+            url: cpath + requestUrl,
             cache: false,
             // data: params,
             dataType: 'json',
@@ -27,7 +27,7 @@ let Commons = (function () {
     let ajaxPost = function (requestUrl, params, callback) {
         $.ajax({
             type: 'POST',
-            url: ecbUtils.contextPath + requestUrl,
+            url: cpath + requestUrl,
             data: JSON.stringify(params),
             contentType: 'application/json',
             dataType: 'json',
@@ -44,7 +44,7 @@ let Commons = (function () {
     let ajaxDelete = function (requestUrl, params, callback) {
         $.ajax({
             type: 'DELETE',
-            url: requestUrl,
+            url: cpath + requestUrl,
             data: JSON.stringify(params),
             contentType: 'application/json',
             dataType: 'json',
@@ -61,7 +61,7 @@ let Commons = (function () {
     let ajaxPut = function (requestUrl, params, callback) {
         $.ajax({
             type: 'PUT',
-            url: requestUrl,
+            url: cpath + requestUrl,
             data: JSON.stringify(params),
             contentType: 'application/json',
             dataType: 'json',

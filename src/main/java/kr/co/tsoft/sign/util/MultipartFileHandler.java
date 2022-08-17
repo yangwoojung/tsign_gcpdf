@@ -1,10 +1,12 @@
 package kr.co.tsoft.sign.util;
 
+import kr.co.tsoft.sign.vo.admin.FormGridDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.text.Normalizer;
 import java.util.*;
 
 @Component
@@ -45,33 +47,38 @@ public class MultipartFileHandler {
             //서버 경로에 저장
             multipartFile.transferTo(dest);
 
-            // pdf 파일이 아니면 삭제 처리
-//            if (!isPdf(dest)) {
-//                if (dest.exists()) {
-//                    if (dest.delete()) {
-//                        // 파일 삭제 완료
-//                    }
-//                }
-//            }
-
             result.add(fileInfo);
         }
 
         return result;
     }
 
-//    private boolean isPdf(File file) throws Exception {
-//        if (file == null || !file.exists()) {
-//            return false;
-//        }
-//
-//        boolean result = false;
-//
-//        String mimeType = new Tika().detect(file);
-//        if ("application/pdf".equals(mimeType)) {
-//            return true;
-//        }
-//
-//        return result;
-//    }
+    public FormGridDto handleFiles(FormGridDto form) throws Exception {
+        if (form == null) return null;
+
+        MultipartFile multipartFile = form.getFile();
+        if (multipartFile.isEmpty()) return null;
+
+        String orgFileName = multipartFile.getOriginalFilename();
+        String savedName = UUID.randomUUID().toString();
+        String pathByFileType = findPathByFileType(form.getFileTp());
+        String finalPath = uploadDir + File.separatorChar + pathByFileType + File.separatorChar;
+
+        form.setOrgFileNm(orgFileName);
+        form.setSavFileNm(savedName);
+        form.setFilePath(finalPath);
+
+        //실제 저장되는 위치 c:/project/upload/#{lastPath}/생성한 svaedName
+        multipartFile.transferTo(new File(finalPath + savedName));
+
+        return form;
+    }
+
+    private String findPathByFileType(String fileType) {
+        if ("100".equals(fileType)) {
+            return "form";
+        }
+        return "";
+    }
+
 }

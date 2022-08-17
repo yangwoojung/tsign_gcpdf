@@ -1,5 +1,6 @@
 package kr.co.tsoft.sign.mapper;
 
+import kr.co.tsoft.sign.vo.admin.FormGridDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
@@ -8,5 +9,7 @@ import java.util.HashMap;
 public interface ComMapper {
 
     int insertFileUpload(HashMap<String, String> fileInfo);
+
+    int insertFileUpload(FormGridDto dto);
 
 }

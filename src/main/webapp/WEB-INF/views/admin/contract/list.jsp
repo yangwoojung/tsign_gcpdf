@@ -48,7 +48,7 @@
         $('#contractList').DataTable({
             order: [0, 'desc'],
             ajax: {
-                url: "${pageContext.request.contextPath}/admin/contract/lists",
+                url: cpath + "/admin/contract/lists",
                 type: "post",
                 headers: {
                     'Accept': 'application/json',

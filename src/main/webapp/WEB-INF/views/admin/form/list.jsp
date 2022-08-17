@@ -8,7 +8,14 @@
 
     <div>
         <h3>서식</h3>
-        <table id="formList" class="ui celled table" style="width:100%"></table>
+        <table id="formList" class="ui celled table" style="width:100%">
+            <colgroup>
+                <col style="width:3%">
+                <col style="width:auto">
+                <col style="width:auto">
+                <col style="width:5%">
+            </colgroup>
+        </table>
     </div>
 
 </section>
@@ -22,7 +29,7 @@
                 <h3>서식등록</h3>
                 <div class="detail_data">
 
-                    <form name="insertForm" id="insertForm" method="post" action="/admin/form/reg_insert"
+                    <form name="insertForm" id="insertForm" method="post" action="/admin/forms/insert"
                           enctype="multipart/form-data">
 
                         <label>서식명
@@ -73,8 +80,8 @@
             //     'copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'
             // ],
             ajax: {
-                url: cpath + "/api/forms",
-                type: "POST",
+                url: cpath + "/admin/forms/list",
+                type: "post",
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -84,13 +91,13 @@
                     data.fileTp = '100';
 
                     let orderBy = "";
-                    for (let i = 0; i < data.order.length; i++) {
-                        const {column, dir} = data.order[i];
-                        orderBy = data.columns[column].name + " " + dir
+                    for (let i = 0; i < data?.order.length; i++) {
+                        const {column, dir} = data?.order[i];
+                        orderBy = data?.columns[column].name + " " + dir
                     }
                     data.orderBy = orderBy;
 
-                    if (data.search.value) {
+                    if (data?.search.value) {
                         data.searchWord = data.search.value;
                     }
 
@@ -138,7 +145,7 @@
 
     const deleteRow = (fileSeq) => {
         confirm2("경고", "삭제하시겠습니까?",
-            () => Commons.ajaxDelete("/api/forms", {fileSeq:fileSeq}, () => alert2("삭제완료"))
+            () => Commons.ajaxDelete("/admin/forms", fileSeq, () => alert2("삭제완료"))
         );
     }
 

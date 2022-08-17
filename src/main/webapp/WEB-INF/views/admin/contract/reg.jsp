@@ -246,7 +246,7 @@
         $('#popFormList').DataTable({
               order: [0, 'desc'],
               ajax: {
-                  url: "${pageContext.request.contextPath}/admin/form/lists",
+                  url: "${pageContext.request.contextPath}/admin/forms/list",
                   type: "post",
                   headers: {
                       'Accept': 'application/json',

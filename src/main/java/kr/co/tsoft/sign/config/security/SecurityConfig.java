@@ -78,7 +78,7 @@ public class SecurityConfig {
 
     @Configuration
     @Order(2)
-    public class SecurityAdminConfig extends WebSecurityConfigurerAdapter {
+    public static class SecurityAdminConfig extends WebSecurityConfigurerAdapter {
 
         @Override
         public void configure(WebSecurity web) throws Exception {
@@ -89,7 +89,6 @@ public class SecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .antMatcher("/admin/**")
-                    .antMatcher("/api/**")
                     .authorizeRequests()
                     .antMatchers("/admin/login").permitAll()
                     .anyRequest().hasRole("ADMIN")
