@@ -12,7 +12,7 @@
 
 <!-- contents -->
 <section id="contents">
-    <form name="insertForm" id="insertForm" action="/admin/contract/reg_insert">
+    <form name="insertForm" id="insertForm">
 
         <table class="view">
             <caption>계약 등록/수정 테이블</caption>
@@ -25,16 +25,15 @@
             <tr>
                 <th>대상서식<span class="star">*</span></th>
                 <td>
-                    <input type="hidden" required name="FILE_SEQ" id="FILE_SEQ" data-title="서식"/>
                     <c:choose>
                         <c:when test="${resultContract.size() > 0 }">
                             <span>${resultContract.FORM_NM }</span>
                         </c:when>
                         <c:otherwise>
-<!--                             <a href="#" onclick="common.contentPopOpen('pop_formList');fnListSearch(1);" -->
-                            <a href="#" onclick="common.contentPopOpen('pop_formList');"
+                            <a href="javascript:;" onclick="common.contentPopOpen('pop_formList');"
                                class="btn_small type_01">선택</a>
-                            <span id="selectFotmResult">선택된 서식</span>
+                            <input type="hidden" id="FILE_SEQ" name="FILE_SEQ"/>
+                            <span id="FILE_SEQ_span"></span>
                         </c:otherwise>
                     </c:choose>
                 </td>
@@ -43,62 +42,63 @@
                 <th>서명기한<span class="star">*</span></th>
                 <td>
                     <div class="row_input">
-                        <div class="d_wrap"><input type="text" name="SIGN_DUE_SDATE" required id="SDATE"
-                                                   class="datepicker" style="width:120px"
-                                                   value="${resultContract.SIGN_DUE_SDATE }"
-                                                   data-title="서명기한 시작일자"
-                                                   <c:if test="${resultContract.size() > 0 }">readonly</c:if>></div>
+                        <div class="d_wrap">
+                        	<input type="text" name="SIGN_DUE_SDATE" id="SDATE"
+                                  class="datepicker" style="width:120px"
+                                  value="${resultContract.SIGN_DUE_SDATE }"
+                            />
+                        </div>
                         <span class="char">~</span>
-                        <div class="d_wrap"><input type="text" name="SIGN_DUE_EDATE" required id="EDATE"
-                                                   class="datepicker" style="width:120px"
-                                                   value="${resultContract.SIGN_DUE_EDATE }"
-                                                   data-title="서명기한 종료일자"
-                                                   <c:if test="${resultContract.size() > 0 }">readonly</c:if>></div>
+                        <div class="d_wrap">
+                        	<input type="text" name="SIGN_DUE_EDATE" id="EDATE"
+                                   class="datepicker" style="width:120px"
+                                   value="${resultContract.SIGN_DUE_EDATE }"                                   
+                            />
+                        </div>
                     </div>
                 </td>
             </tr>
             <tr>
                 <th>성명<span class="star">*</span></th>
                 <td>
-                    <input type="text" name="USER_NM" placeholder="" required id="" 
-                    		value="${resultContract.USER_NM }" data-title="성명"
-                           <c:if test="${resultContract.size() > 0 }">readonly</c:if>
+                    <input type="text" name="USER_NM" id="USER_NM" 
+                    		value="${resultContract.USER_NM }"                           
                     />
                 </td>
             </tr>
             <tr>
                 <th>휴대폰번호<span class="star">*</span></th>
                 <td>
-                    <input type="number" name="CELL_NO" placeholder="" required id="" 
-                    		value="${resultContract.CELL_NO }" data-title="휴대폰번호"
-                           <c:if test="${resultContract.size() > 0 }">readonly</c:if>
+                    <input type="number" name="CELL_NO" id="CELL_NO" 
+                    		value="${resultContract.CELL_NO }"
                     />
                 </td>
             </tr>
             <tr>
                 <th>이메일<span class="star">*</span></th>
                 <td>
-                    <input width="400px" type="text" name="EMAIL" placeholder="" required id=""
-                           value="${resultContract.EMAIL }" data-title="이메일"/>
+                    <input style="width:350px" type="text" name="EMAIL" id="EMAIL"
+                           value="${resultContract.EMAIL }"
+                    />
                 </td>
             </tr>
             </tbody>
         </table>
+	
+	    <div>
+	        <div class="btn_page text_c">
+	            <a href="/admin/contract/list" class="btn_default type_02">목록</a>
+	            <c:choose>
+	                <c:when test="${empty fileSeq}">
+	                    <input type="submit" value="저장" class="btn_default type_01"/>                    
+	                </c:when>
+	                <c:otherwise>
+						<input type="submit" value="수정" class="btn_default type_01"/>
+	                </c:otherwise>
+	            </c:choose>
+	        </div>
+	    </div>
     </form>
-
-    <div>
-        <div class="btn_page text_c">
-            <a href="/admin/contract/list" class="btn_default type_02">목록</a>
-            <c:choose>
-                <c:when test="${empty fileSeq}">
-                    <a href="javascript:;" id="submit" class="btn_default type_01">저장</a>
-                </c:when>
-                <c:otherwise>
-                    <a href="javascript:;" id="modify" class="btn_default type_01">수정</a>
-                </c:otherwise>
-            </c:choose>
-        </div>
-    </div>
 </section>
 <!-- //contents -->
 
@@ -109,36 +109,8 @@
             <div class="pop_data middle">
                 <h3>대상서식</h3>
                 <div class="detail_data">
-                    <form name="frm" id="frm">
-                        <input type="hidden" id="page" name="page" value="1">
-                        <input type="hidden" id="FILE_TP" name="FILE_TP" value="100">
-                    </form>
                     <table id="popFormList" class="ui celled table" style="width:100%"></table>
-                   <!--  <table class="list">
-                        <caption>등록된 서식회 결과 리스트 테이블</caption>
-                        <colgroup>
-                            <col style="width:50px">
-                            <col style="width:42%">
-                            <col style="width:auto">
-                            <col style="width:70px">
-                        </colgroup>
-                        <thead>
-                        <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">서식명</th>
-                            <th scope="col">서식원본파일명</th>
-                            <th scope="col">선택</th>
-                        </tr>
-                        </thead>
-                        <tbody id="listBody">
-                       //ajax 리스트 조회
-                        </tbody>
-                    </table>
-				
-                    <div class="paging_wrap">
-                        <div class="paging"></div>
-                    </div>
-					 -->
+                   
                     <div class="btn_page text_c">
                         <a href="#" id="popClose" onclick="common.contentPopClose(this);"
                            class="btn_default type_01">닫기</a>
@@ -152,113 +124,35 @@
 <!--// end 서식조회 선택 팝업 -->
 
 <script>
+	
     $(function () {
         // 달력
         common.datepicker("#SDATE", 0, null);
         common.datepicker("#EDATE", null, "+10D")
-
-        //등록
-        $("#submit").on("click", () => {
-        	console.log(checkVaild())
-            if (!checkVaild()){
-            	return;
-            };
-			
-            if (confirm("저장하시겠습니까?")) {
-
-                var formSerial = $("#insertForm").serialize();
-// 				console.log(formSerial)
-
-                $.ajax({
-                    url: '/admin/contract/reg_insert',
-                    data: formSerial,
-                    type: 'POST',
-                    success: function (data) {
-                        if (data.result == "success") {
-                            alert("저장하였습니다.");
-                            href = "/admin/contract/list";
-                        }
-                    }, error: function (error) {
-                        alert(error)
-                    }, beforeSend: function () {
-                        //로딩바
-                    }, complete: function () {
-
-                    }
-                });
-
-            }
-        })
-        //수정
-        $("#modify").on("click", () => {
-            checkVaild();
-
-            if (confirm("수정하시겠습니까?")) {
-                $("#insertForm").submit((result) => {
-                    console.log(result);
-                });
-            }
-        })
-
-		//서식조회 팝업 내 ajax 테이블 조회
+		
+        //서식조회 팝업 내 ajax 테이블 조회
         initDataTable();
+		
+        //input validation
+	    initValidate();
+        
     })
-
-    function checkVaild() {
-    	var inputLen = $("#insertForm input").length;
-    	for (var i = 0; i < inputLen; i++) {
-    		if ($("#insertForm input").eq(i).val() == "") {
-    			if ($("#insertForm input").eq(i).attr("required")) {
-	    			alert($("#insertForm input").eq(i).data("title") + "은 필수입니다. ");
-	    			return false;
-    			}
-    		}
-    	}
-       	
-    	return true;
-    	
-    	/*if ($("#formNm").val() == '') {
-            alert("서식명은 필수입니다. ");
-            $("#formNm").focus();
-            return false;
-        }
-
-        if ($("#selectFotmResult").val() == '') {
-            alert("서식 선택은 필수입니다. ");
-            $("input[name='file']").focus();
-            return false;
-        }*/
-	
-    }
-
-    /* 서식 선택 팝업 start */
-    /* var gloItem = null;
-
-    //1. 서식팝업에서 리스트 선택
-    function popSelectItem(seq) {
-        for (var i = 0; i < gloItem.length; i++) {
-            if (gloItem[i].FILE_SEQ == seq) {
-                $("#selectFotmResult").text(gloItem[i].FORM_NM + " / " + gloItem[i].ORG_FILE_NM);
-                $("#FILE_SEQ").val(seq);
-                break;
-            }
-        }
-        $("#popClose").trigger("click")
-    }
-
-    //2. 서식 팝업내 리스트 조회(ajax)
-    function fnListSearch(page) {
-        $('#page').val(page);
-
-        var formSerial = $("#frm").serialize();
-        console.log(formSerial)
+    
+    var fn_submit = function () {
+    	var formSerial = $("#insertForm").serialize();
+//			console.log(formSerial)
 
         $.ajax({
-            url: '/admin/form/ajaxPopList',
+            url: '/admin/contract/reg_insert',
             data: formSerial,
             type: 'POST',
             success: function (data) {
-                ajaxPopListSuccess(data);
+                if (data.result == "success") {
+                    alert("저장하였습니다.");
+                    href = "/admin/contract/list";
+                } else {
+                	alert("저장에 실패하였습니다.");
+                }
             }, error: function (error) {
                 alert(error)
             }, beforeSend: function () {
@@ -267,39 +161,86 @@
 
             }
         });
-
-        function ajaxPopListSuccess(data) {
-            $('#listBody').empty();
-            var list = data.list;
-            gloItem = list;
-            var totalRow = data.pagingVO.total;
-            var num = totalRow - (data.pagingVO.nowPage * (data.pagingVO.cntPerPage - 1));
-            $.each(list, function (a, item) {
-                var $tr = $('<tr/>');
-                $tr.append('<td>' + num + '</td>')
-                    .append('<td class="text_l">' + this.FORM_NM + '</td>')
-                    .append('<td class="text_l">' + this.ORG_FILE_NM + '</td>')
-                    .append('<td><a href="javascript:;" onclick="popSelectItem(' + this.FILE_SEQ + ');" class="btn_small type_03">선택</a></td>')
-                $('#listBody').append($tr);
-                num--;
-            });
-            $('#listBody').parents('div').show();
-
-            if (totalRow > 0) {
-                fnMakePagingForAjax(totalRow, data.pagingVO.cntPerPage, 10, data.pagingVO.nowPage, true, true, $('div.paging'));
-                $('div.paging').find('a').click(function () {
-                    var page = $(this).attr("data");
-                    if (page) {
-                        fnListSearch(page);
-                    }
-                });
-            }
-            return;
-        }
     }
-	 */
-    /* 서식 선택 팝업 end */
-   
+    
+    const initValidate = () => {
+    	$("#insertForm").validate({
+			
+           /**
+           * submitHandler : form 양식이 유효한 경우 실질적인 
+           * submit을 하기 위한 콜백 핸들러. 
+           * 유효성이 확인된 후 Ajax를 통해 처리하기에 적합하다.
+           */
+           submitHandler: function(form) {
+        	   
+        	   var btnType = $("input[type='submit']").val();
+               var f = confirm(btnType +"을 하시겠습니까?");
+               if(f){
+            	   //form.submit();            	   
+            	   if ($("input[type='submit']").val() == "저장") {
+						//insert
+        		   		fn_submit();
+            	   } else {
+            			//update
+            	   }
+               } else {
+                   return false;
+               }
+           },
+           ignore : "", 
+           // 체크할 항목들의 룰 설정
+           rules: {
+        	   FILE_SEQ: {
+                   required : true,
+                   //remote: "/check_id.jsp"
+               },
+               SIGN_DUE_SDATE: {
+                   required : true,
+                   date: true
+               },
+               SIGN_DUE_EDATE: {
+                   required : true,
+                   date: true
+               },
+               USER_NM : {
+            	   required : true,
+            	   minlength : 2,
+               },
+               CELL_NO : {
+            	   required : true,
+            	   minlength : 11,
+            	   maxlength : 11, 
+            	   phone : true
+               },
+               EMAIL: {
+                   required : true,
+                   minlength : 2,
+                   email : true
+               }
+           },
+           //규칙체크 실패시 출력될 메시지
+           messages : {
+        	   FILE_SEQ: {
+                   required : "서식을 선택하세요.",
+                   //remote : "존재하는 아이디입니다"
+               },
+               USER_NM : {
+            	   required : "성명을 입력하세요.",
+            	   minlength : "최소 {0}글자이상이어야 합니다",
+               },
+               CELL_NO : {
+            	   required : "휴대폰번호를 입력하세요.",
+            	   minlength : "최소 {0}글자이상이어야 합니다",
+            	   maxlength : "최대 {0}글자이상이어야 합니다",
+               },
+               EMAIL: {
+                   required : "이메일을 입력하세요",
+                   minlength : "최소 {0}글자이상이어야 합니다",
+                   email : "메일규칙에 어긋납니다"
+               },
+           }
+       });
+    }
 	//서식 선택 팝업(datatable사용) 20220816
    	const initDataTable = () => {
         $('#popFormList').DataTable({
@@ -367,7 +308,7 @@
      	            var fileSeq = $('#popFormList').dataTable().fnGetData(position).fileSeq
      	            var formNm = $('#popFormList').dataTable().fnGetData(position).formNm
      	            var savFileNm = $('#popFormList').dataTable().fnGetData(position).savFileNm
-     	 			$("#selectFotmResult").text(formNm + " / " + savFileNm);
+     	 			$("#FILE_SEQ_span").text(formNm + " / " + savFileNm);
                    	$("#FILE_SEQ").val(fileSeq);
                    	
                    	//서식 선택 후 팝업 닫기 
