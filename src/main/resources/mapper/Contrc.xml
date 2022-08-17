@@ -3,16 +3,18 @@
 
 <mapper namespace="kr.co.tsoft.sign.mapper.admin.ContrcMapper">
 
+    <sql id="where_condition_list">
+        WHERE 1=1
+        <if test="searchWord != null and searchWord != ''">
+            AND USER_NM LIKE CONCAT('%',#{searchWord},'%')
+        </if>
+    </sql>
+
     <!-- 계약 리스트 조회(페이징 포함) -->
-    <select id="selectContrcList" parameterType="HashMap" resultType="HashMap">
+    <select id="selectContrcList" resultType="kr.co.tsoft.sign.vo.admin.ContractGridDto">
         /** [SIGN].[ContrcMapper.selectContrcList] */
 
-        select B.* from (
-        SELECT A.*
-        <![CDATA[
-					,(@row_number := @row_number + 1) RN
-					]]>
-        FROM (SELECT
+        SELECT
         A.CONTRC_SEQ
         ,A.CONTRC_NO
         ,A.FILE_SEQ
@@ -26,32 +28,26 @@
         ,A.USE_YN
         ,A.REG_DATE
         ,B.FORM_NM
-        FROM
-        <![CDATA[
-							(SELECT @row_number := 0) AA
-							]]>
-        ,contrc_mgmt A
-        left join file_mgmt B
+        ,B.FILE_PATH
+        FROM contrc_mgmt A
+        LEFT join file_mgmt B
         on A.FILE_SEQ = B.FILE_SEQ
         and B.USE_YN = 'Y'
-        <if test="searchWord != null and searchWord != ''">
-            WHERE USER_NM LIKE CONCAT('%',#{searchWord},'%')
+        <include refid="where_condition_list"/>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
         </if>
-        ORDER BY A.REG_DATE desc
-        ) A
-        ) B
-        <![CDATA[
-		WHERE B.RN >= #{pagingVO.start}
-		  AND B.RN <= #{pagingVO.end}	  
-		]]>
+        <![CDATA[ 	LIMIT #{length} OFFSET #{start} 		]]>
     </select>
 
     <!-- 계약 전체 리스트 수 조회 -->
-    <select id="countSelectContrcList" resultType="int">
-        SELECT COUNT(*) FROM contrc_mgmt
-        <if test="searchWord != null and searchWord != ''">
-            WHERE USER_NM LIKE CONCAT('%',#{searchWord},'%')
-        </if>
+    <select id="countSelectContrcList" resultType="kr.co.tsoft.sign.vo.common.TotalRowCount">
+        SELECT COUNT(1) AS ROW_COUNT
+        FROM contrc_mgmt A
+        LEFT join file_mgmt B
+        ON A.FILE_SEQ = B.FILE_SEQ
+        AND B.USE_YN = 'Y'
+        <include refid="where_condition_list"/>
     </select>
 
     <!-- 계약 단건 조회 -->

@@ -2,15 +2,14 @@ package kr.co.tsoft.sign.controller.admin;
 
 import kr.co.tsoft.sign.service.admin.ContrcService;
 import kr.co.tsoft.sign.service.admin.FormService;
-import kr.co.tsoft.sign.vo.PagingVO;
+import kr.co.tsoft.sign.vo.admin.ContractGridDto;
+import kr.co.tsoft.sign.vo.common.GridResponse;
+import kr.co.tsoft.sign.vo.common.TotalRowCount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
@@ -29,31 +28,28 @@ public class ContrcController {
     FormService formService;
 
     @RequestMapping(value = "/admin/contract/list")
-    public ModelAndView adminFormList(@RequestParam Map<String, Object> parameter) throws Exception {
+    public ModelAndView adminFormList() throws Exception {
         Logger.debug(" === /admin/contract/list");
+        return new ModelAndView();
+    }
+
+    @RequestMapping(value = "/admin/contract/lists")
+    @ResponseBody
+    public GridResponse adminFormLists(@RequestBody ContractGridDto searchVO) throws Exception {
+        Logger.debug(" === /admin/contract/lists");
 
         //전체 리스트 조회
-        int totalCount = contrcService.countSelectContrcList(parameter);
+        TotalRowCount count = contrcService.countSelectContrcList(searchVO);
+        // 서식 리스트 조회
+        List<ContractGridDto> selectFromList = contrcService.selectContrcList(searchVO);
 
-        int nowPage = 1;
-        if (parameter.get("page") != null) {
-            nowPage = Integer.parseInt((String) parameter.get("page"));
-        }
-        PagingVO pagingVO = new PagingVO(totalCount, nowPage);
-        parameter.put("pagingVO", pagingVO);
+        GridResponse response = new GridResponse();
+        response.setData(selectFromList);
+        response.setDraw(searchVO.getDraw());
+        response.setRecordsTotal(count.getRowCount());
+        response.setRecordsFiltered(count.getRowCount());
 
-        // 계약 리스트 조회
-        List<Map<String, Object>> selectContrcList = contrcService.selectContrcList(parameter);
-
-        ModelAndView mav = new ModelAndView();
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("list", selectContrcList);
-        resultMap.put("pagingVO", pagingVO);
-        resultMap.put("param", parameter);
-
-        mav.addObject("result", resultMap);
-
-        return mav;
+        return response;
     }
 
     @RequestMapping(value = "/admin/contract/reg")

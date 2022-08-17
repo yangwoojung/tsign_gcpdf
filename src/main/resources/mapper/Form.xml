@@ -84,14 +84,6 @@
         <include refid="where_condition_list"/>
     </select>
 
-
-<!--    <select id="countSelectFormList" resultType="int">-->
-<!--        SELECT COUNT(*) FROM file_mgmt-->
-<!--        <if test="searchWord != null and searchWord != ''">-->
-<!--            WHERE FORM_NM LIKE CONCAT('%',#{searchWord},'%')-->
-<!--        </if>-->
-<!--    </select>-->
-
     <!-- 원본서식 pdf -->
     <select id="selectContrcFormInfo" resultType="HashMap">
         select fm.FILE_TP

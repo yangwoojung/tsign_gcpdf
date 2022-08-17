@@ -1258,3 +1258,7 @@ a.type_03, input[type=submit].type_03, button.type_03 {
 .screen_check.actived {
     text-decoration: underline
 }
+
+th.dt-center, td.dt-center {
+    text-align: center;
+}

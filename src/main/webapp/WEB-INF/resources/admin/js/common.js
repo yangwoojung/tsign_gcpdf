@@ -281,8 +281,10 @@ $.extend(true, $.fn.dataTable.defaults, {
     },
     columnDefs: [
         {
-            targets:'_all',
-            defaultContent: "",
+            className: 'dt-center', targets: '_all'
+        },
+        {
+            defaultContent: "", targets: '_all'
         },
     ],
     ajax: {
@@ -295,7 +297,7 @@ $.extend(true, $.fn.dataTable.defaults, {
             }
             data.orderBy = orderBy;
 
-            if(data.search.value){
+            if (data.search.value) {
                 data.searchWord = data.search.value;
             }
             return JSON.stringify(data);
@@ -372,3 +374,7 @@ $.extend(true, $.fn.dataTable.defaults, {
         }
     }
 });
+
+/******************************************************
+ @ SWEET ALERT2 COMMON CONFIG
+ ******************************************************/

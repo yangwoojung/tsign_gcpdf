@@ -3,6 +3,8 @@ package kr.co.tsoft.sign.service.admin;
 import kr.co.tsoft.sign.mapper.admin.ContrcMapper;
 import kr.co.tsoft.sign.util.MailHandler;
 import kr.co.tsoft.sign.util.SendMessage;
+import kr.co.tsoft.sign.vo.admin.ContractGridDto;
+import kr.co.tsoft.sign.vo.common.TotalRowCount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ContrcService {
@@ -30,12 +31,12 @@ public class ContrcService {
         return ContrcMapper.selectContrcInfo(paramMap);
     }
 
-    public List<Map<String, Object>> selectContrcList(Map<String, Object> parameter) {
-        return ContrcMapper.selectContrcList(parameter);
+    public List<ContractGridDto> selectContrcList(ContractGridDto searchVO) {
+        return ContrcMapper.selectContrcList(searchVO);
     }
 
-    public int countSelectContrcList(Map<String, Object> parameter) {
-        return ContrcMapper.countSelectContrcList(parameter);
+    public TotalRowCount countSelectContrcList(ContractGridDto searchVO) {
+        return ContrcMapper.countSelectContrcList(searchVO);
     }
 
     public HashMap<String, Object> contrcReg(HashMap<String, Object> parameter) throws Exception {
@@ -99,5 +100,4 @@ public class ContrcService {
 
         return resultMap;
     }
-
 }
