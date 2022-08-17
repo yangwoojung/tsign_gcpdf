@@ -89,6 +89,7 @@ public class SecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .antMatcher("/admin/**")
+                    .antMatcher("/api/**")
                     .authorizeRequests()
                     .antMatchers("/admin/login").permitAll()
                     .anyRequest().hasRole("ADMIN")

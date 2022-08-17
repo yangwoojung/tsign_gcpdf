@@ -59,7 +59,12 @@
         src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.27/dist/sweetalert2.all.min.js"></script>
 
 <script src="/resources/admin/js/common.js"></script>
+<script src="/resources/admin/js/common_ajax.js"></script>
 <script src="/resources/admin/js/function.js"></script>
 
+
+<script>
+    const cpath = "${pageContext.request.contextPath}";
+</script>
 </body>
 </html>

@@ -379,13 +379,58 @@ $.extend(true, $.fn.dataTable.defaults, {
  @ SWEET ALERT2 COMMON CONFIG
  ******************************************************/
 
+/*
+    * SWEET ALERT 공통 설정
+    */
+const swal = Swal.mixin({
+    width: 320,
+    confirmButtonColor: '#5A75FF',
+    confirmButtonText: '확인'
+});
+
+const alert2 = (msg = "", fnSuccess) => {
+    if (typeof fnSuccess != "function") {
+        fnSuccess = function () {
+        };
+    }
+    swal.fire({
+        text: msg,
+        didClose: () => fnSuccess()
+    })
+}
+
+const confirm2 = (title, msg = "", fnSuccess, fnCancel) => {
+    if (!fnSuccess || typeof fnSuccess != "function") {
+        fnSuccess = () => {
+        };
+    }
+    if (!fnCancel || typeof fnSuccess != "function") {
+        fnCancel = () => {
+        };
+    }
+    swal.fire({
+        title: title,
+        text: msg,
+        showCancelButton: true,
+        scrollbarPadding: false,
+        allowOutsideClick: false,
+    })
+        .then((result) => {
+            if (result.value) {
+                fnSuccess();
+            } else {
+                fnCancel();
+            }
+        });
+}
+
 /******************************************************
-@ Jquery Validation
-******************************************************/
+ @ Jquery Validation
+ ******************************************************/
 //validate 전화번호 형식 추가
-$.validator.addMethod("phone", function(phone_number, element) {
+$.validator.addMethod("phone", function (phone_number, element) {
     console.log(phone_number)
     console.log(element)
-	phone_number = phone_number.replace(/\s+/g, ""); 
+    phone_number = phone_number.replace(/\s+/g, "");
     return this.optional(element) || phone_number.length > 9 && phone_number.match(/^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$/);
 }, "잘못된 입력 형식입니다");

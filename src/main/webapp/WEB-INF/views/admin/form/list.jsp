@@ -30,8 +30,9 @@
                         </label>
 
                         <label>서식파일
-                            <input id="file" type="file" name="file" multiple="multiple" accept="application/pdf" required>
-                            <ins class="mt5 sm_text">* 10M 이하 crf만 업로드 가능합니다. </ins>
+                            <input id="file" type="file" name="file" multiple="multiple" accept="application/pdf"
+                                   required>
+                            <ins class="mt5 sm_text">* 10M 이하 crf만 업로드 가능합니다.</ins>
                         </label>
                     </form>
 
@@ -61,19 +62,19 @@
 
         $('#formList').DataTable({
             order: [0, 'desc'],
-            dom: 'Bt',
-            buttons: [
-                {
-                    text: '서식 추가',
-                    action: function ( e, dt, node, config ) {
-                        $('#content_pop').show();
-                    }
-                },
-                'copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'
-            ],
+            // dom: 'Bt',
+            // buttons: [
+            //     {
+            //         text: '서식 추가',
+            //         action: function ( e, dt, node, config ) {
+            //             $('#content_pop').show();
+            //         }
+            //     },
+            //     'copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'
+            // ],
             ajax: {
-                url: "${pageContext.request.contextPath}/admin/form/lists",
-                type: "post",
+                url: cpath + "/api/forms",
+                type: "POST",
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -120,10 +121,25 @@
                     name: 'SAV_FILE_NM',
                     title: '파일명'
                 },
+                {
+                    data: 'fileSeq',
+                    name: 'SAV_FILE_NM',
+                    title: '',
+                    orderable: false,
+                    render: function (data, type, row, meta) {
+                        return '<a href="javascript:" onclick="deleteRow(\'' + data + '\');">삭제</a>';
+                    }
+                },
 
             ]
         });
 
+    }
+
+    const deleteRow = (fileSeq) => {
+        confirm2("경고", "삭제하시겠습니까?",
+            () => Commons.ajaxDelete("/api/forms", {fileSeq:fileSeq}, () => alert2("삭제완료"))
+        );
     }
 
 </script>

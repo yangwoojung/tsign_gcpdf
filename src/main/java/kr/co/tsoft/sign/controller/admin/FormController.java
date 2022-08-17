@@ -2,9 +2,6 @@ package kr.co.tsoft.sign.controller.admin;
 
 import kr.co.tsoft.sign.service.admin.FormService;
 import kr.co.tsoft.sign.vo.PagingVO;
-import kr.co.tsoft.sign.vo.admin.FormGridDto;
-import kr.co.tsoft.sign.vo.common.GridResponse;
-import kr.co.tsoft.sign.vo.common.TotalRowCount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,57 +23,11 @@ public class FormController {
     @Autowired
     FormService formService;
 
-    @RequestMapping(value = "/admin/form/list")
+    @RequestMapping(value = "/admin/form/list",method = RequestMethod.GET)
     public ModelAndView adminFormList() throws Exception {
         Logger.debug(" === /admin/form/list");
         return new ModelAndView();
     }
-
-    @RequestMapping(value = "/admin/form/lists")
-    @ResponseBody
-    public GridResponse adminFormLists(@RequestBody FormGridDto searchVO) throws Exception {
-        Logger.debug(" === /admin/form/lists");
-
-        //전체 리스트 조회
-        TotalRowCount count = formService.countSelectFormList(searchVO);
-        // 서식 리스트 조회
-        List<FormGridDto> selectFromList = formService.selectFormList(searchVO);
-        GridResponse response = new GridResponse();
-        response.setData(selectFromList);
-        response.setDraw(searchVO.getDraw());
-        response.setRecordsTotal(count.getRowCount());
-        response.setRecordsFiltered(count.getRowCount());
-
-        return response;
-    }
-
-    /*@RequestMapping(value = "/admin/form/list")
-    public ModelAndView adminFormList(@RequestParam Map<String, Object> parameter, HttpSession session) throws Exception {
-        Logger.debug(" === /admin/form/list");
-
-        //전체 리스트 조회
-        int totalCount = formService.countSelectFormList(parameter);
-
-        int nowPage = 1;
-        if (parameter.get("page") != null) {
-            nowPage = Integer.parseInt((String) parameter.get("page"));
-        }
-        PagingVO pagingVO = new PagingVO(totalCount, nowPage);
-        parameter.put("pagingVO", pagingVO);
-
-        // 서식 리스트 조회
-        parameter.put("fileTp", "100");
-        List<Map<String, Object>> selectFromList = formService.selectFormList(parameter);
-
-        ModelAndView mav = new ModelAndView();
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("list", selectFromList);
-        resultMap.put("pagingVO", pagingVO);
-        resultMap.put("param", parameter);
-        mav.addObject("result", resultMap);
-
-        return mav;
-    }*/
 
     @RequestMapping(value = "/admin/form/ajaxPopList", method = RequestMethod.POST)
     @ResponseBody
