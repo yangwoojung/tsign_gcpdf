@@ -14,7 +14,6 @@
     <link rel="stylesheet" type="text/css" href="/resources/admin/css/reset.css" media="all">
     <!--     <link rel="stylesheet" type="text/css" href="/resources/admin/css/jquery-ui.css" media="all"> -->
     <link rel="stylesheet" type="text/css" href="/resources/admin/css/common.css" media="all">
-    <link rel="stylesheet" type="text/css" href="/resources/admin/css/tsoft.css" media="all">
 
     <!--     // jQuery UI CSS파일  -->
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css"/>
@@ -25,6 +24,7 @@
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.semanticui.min.css">
+	<link rel="stylesheet" type="text/css" href="/resources/admin/css/custom.css" media="all">
 
     <!-- // jQuery 기본 js파일 -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
