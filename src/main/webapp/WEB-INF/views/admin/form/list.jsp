@@ -80,15 +80,13 @@
             //     'copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'
             // ],
             ajax: {
-                url: cpath + "/admin/forms/list",
-                type: "post",
+                url: cpath + "/admin/forms",
+                type: "GET",
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
                 data: function (data, settings) {
-
-                    data.fileTp = '100';
 
                     let orderBy = "";
                     for (let i = 0; i < data?.order.length; i++) {
@@ -97,11 +95,12 @@
                     }
                     data.orderBy = orderBy;
 
-                    if (data?.search.value) {
-                        data.searchWord = data.search.value;
-                    }
-
-                    return JSON.stringify(data);
+                    return {
+                        fileTp: '100',
+                        draw: data.draw,
+                        orderBy: orderBy,
+                        searchWord: data.search.value
+                    };
                 },
                 cache: false,
                 contentType: 'application/json;charset=UTF-8',

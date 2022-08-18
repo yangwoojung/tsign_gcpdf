@@ -25,7 +25,7 @@
             <a href="/admin/test">test</a>
         </li>
         <li>
-            <a href="/admin/forms">서식관리</a>
+            <a href="/admin/forms/page">서식관리</a>
             <%--<div class="snb">
                 <ul>
                     <li><a href="/admin/forms">서식리스트</a></li>
