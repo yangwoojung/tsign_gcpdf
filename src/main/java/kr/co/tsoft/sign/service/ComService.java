@@ -18,6 +18,6 @@ public class ComService {
     }
 
     public int insertFileUpload(FormGridDto form) {
-        return comMapper.insertFileUpload(form);
+        return comMapper.insertFileUpload2(form);
     }
 }

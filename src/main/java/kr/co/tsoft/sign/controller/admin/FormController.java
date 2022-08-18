@@ -7,6 +7,7 @@ import kr.co.tsoft.sign.vo.common.GridResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,12 +36,12 @@ public class FormController {
         return formService.getFormList(form);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseBody
-    public CommonResponse insertForm(@RequestBody FormGridDto form) throws Exception {
-        Logger.info("DELETE : {}", form);
-        FormGridDto savedForm = formService.insertForm(form);
-        return CommonResponse.success(savedForm);
+    public CommonResponse insertForm(FormGridDto form) throws Exception {
+        Logger.info("INSERT : {}", form);
+        formService.insertForm(form);
+        return CommonResponse.success();
     }
 
     @RequestMapping(method = RequestMethod.DELETE)

@@ -36,8 +36,28 @@ let Commons = (function () {
             },
             error: function (jqXHR, status, error) {
               	console.log(jqXHR);
-            	alert2("에러가 발생하였습니다.", function(){ location.reload();});
+            	// alert2("에러가 발생하였습니다.", function(){ location.reload();});
            }
+        });
+    };
+
+    let ajaxPostMutipart = function (requestUrl, params, callback) {
+        $.ajax({
+            type: 'POST',
+            url: cpath + requestUrl,
+            data: params,
+            processData: false,
+            contentType: false,
+            encType: 'multipart/form-data',
+            async: false,
+            timeout: 15000,
+            success: function(resp) {
+                callback(resp);
+            },
+            error: function (jqXHR, status, error) {
+                console.log(jqXHR);
+                // alert2("에러가 발생하였습니다.", function(){ location.reload();});
+            }
         });
     };
 
@@ -145,7 +165,7 @@ let Commons = (function () {
         if (!ajaxConfig.error) {
             ajaxConfig['error'] = function (error) {
                 alert(defaultErrorMsg, function (event) {
-                    location.reload();
+                    // location.reload();
                 });
             };
         }
@@ -157,7 +177,6 @@ let Commons = (function () {
         }
         if(!ajaxConfig.complete){
             ajaxConfig['complete'] = function (error) {
-                moreTextEventBind();
                 // setTimeout(() => {
                 //     $('#preloader').fadeOut();
                 // }, 500);
@@ -178,6 +197,7 @@ let Commons = (function () {
         isNotEmpty: isNotEmpty,
         initCap: initCap,
         null2Space: null2Space,
-        htmlDecode: htmlDecode
+        htmlDecode: htmlDecode,
+        ajaxPostMutipart:ajaxPostMutipart
     }
 })();

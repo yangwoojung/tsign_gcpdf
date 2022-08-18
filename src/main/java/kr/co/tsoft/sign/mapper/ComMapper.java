@@ -10,6 +10,6 @@ public interface ComMapper {
 
     int insertFileUpload(HashMap<String, String> fileInfo);
 
-    int insertFileUpload(FormGridDto dto);
+    int insertFileUpload2(FormGridDto dto);
 
 }
