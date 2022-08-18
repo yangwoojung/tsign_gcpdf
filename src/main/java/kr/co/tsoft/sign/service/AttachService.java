@@ -89,7 +89,6 @@ public class AttachService {
 			
 			logger.info("#### OCR API Request : {} ", request);
 			ApiResponse<ApiResponseData.Ocr> response = apiService.processOcr(request);
-			logger.info("#### name : {} " , response.getData().get(0).getData());
 			resultMap.put("code", response.getData().get(0).getCode());
 			resultMap.put("ocrResult", response.getData().get(0).getData());
 			resultMap.put("resultMessage", response.getData().get(0).getStatus());
@@ -136,6 +135,29 @@ public class AttachService {
 		}
 
 		return destFile;
+	}
+
+
+	public ApiResponse<ApiResponseData.Scrap> scrapping(Map<String, Object> param) {
+		logger.info("#### [attachService > scrapping] start ##### ");
+		logger.info("#### [attachService > scrapping] param : {} ##### ", param);
+		
+		ApiRequest.Scrap request = ApiRequest.Scrap.builder()
+									.token("fc2yilEkhclyP1xGnWRNVFFIptXTLd")
+									.type((String)param.get("type"))
+									.col1((String)param.get("col1"))
+									.col2((String)param.get("col2"))
+									.col3((String)param.get("col3"))
+									.col4((String)param.get("col4"))
+									.col5((String)param.get("col5"))
+									.col6((String)param.get("col6"))
+									.build();
+		
+		logger.info("#### Scrap API Request : {} ", request);
+		ApiResponse<ApiResponseData.Scrap> response = apiService.processScrap(request);
+		logger.info("#### Scrap API Response : {} ", response);
+		
+		return response;
 	}
 	
 }

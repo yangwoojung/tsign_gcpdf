@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.tsoft.sign.service.AttachService;
+import kr.co.tsoft.sign.vo.ApiResponse;
+import kr.co.tsoft.sign.vo.ApiResponseData;
 
 @Controller
 @RequestMapping("/sign/attach")
@@ -60,8 +62,8 @@ public class AttachController {
 		
 		try {
 			resultMap = attachService.uploadAttachFile(param);
-			logger.debug("#### /attach/upload >>> resultMap : {}", resultMap);
 			resultMap.put("result", true);
+			logger.debug("#### /attach/upload >>> resultMap : {}", resultMap);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -69,4 +71,12 @@ public class AttachController {
 		}
 		return resultMap;
 	}
+	
+	@PostMapping("/scrap")
+	@ResponseBody
+	public ApiResponse<ApiResponseData.Scrap> scrapping(@RequestParam Map<String, Object> param) {
+		logger.info(" ##### start scrap #####");
+		return attachService.scrapping(param);
+	}
+	
 }
