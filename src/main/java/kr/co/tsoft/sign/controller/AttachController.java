@@ -63,7 +63,7 @@ public class AttachController {
 		try {
 			resultMap = attachService.uploadAttachFile(param);
 			resultMap.put("result", true);
-			logger.debug("#### /attach/upload >>> resultMap : {}", resultMap);
+			logger.debug("#### [ attach/upload ] resultMap : {}", resultMap);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -75,8 +75,15 @@ public class AttachController {
 	@PostMapping("/scrap")
 	@ResponseBody
 	public ApiResponse<ApiResponseData.Scrap> scrapping(@RequestParam Map<String, Object> param) {
-		logger.info(" ##### start scrap #####");
+		logger.info(" ##### [ attach/scrap] start scrap #####");
 		return attachService.scrapping(param);
+	}
+	
+	@PostMapping("/submission")
+	@ResponseBody
+	public Map<String, Object> submission() {
+		logger.info(" ##### [ attach/submission] start submission #####");
+		return attachService.submission();
 	}
 	
 }

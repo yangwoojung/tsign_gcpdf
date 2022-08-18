@@ -19,8 +19,8 @@
 			<!-- accordion_ty -->
 			<ul class="accordion_ty">
 				<c:forEach items="${docList}" var="doc" varStatus="status">
-					<li class="list parent" data-no="${status.count}" data-cd="${doc.docCd}"
-							data-title="${doc.docNm}" data-uploadaddcnt="${doc.maxCnt -1}" data-ocr-cnt="0">
+					<li class="list parent" data-no="${status.count}" data-cd="${doc.docCd}" data-subReq="${doc.subReq}"
+							data-title="${doc.docNm}" data-uploadaddcnt="${doc.maxCnt -1}" data-ocr-cnt="0" >
 						<!-- front -->
 						<div class="front">
 							<div class="tit">
@@ -446,6 +446,7 @@
 
 <script type="text/javascript">
 
+//사업자등록증명원용
 var removeSymbol = function(el) {
 	var returnStr = $(el).val();
 	if(returnStr)
@@ -496,6 +497,7 @@ var createChildContainerSet = function() {
 	childContainerSet += '</li>';
 	return childContainerSet;
 }
+
 
 var fnSelSidoChangeAction = function() {
 	var formBox = $(this).closest('.form_box');
@@ -1186,23 +1188,23 @@ var fnFormBoxSubmit = function() {
 	var targetUrl = '';
 	var formData = new FormData();
 
-	<%-- (신분증) 주민등록증 --%>
- 		if(docNum == '2') {
-		targetUrl = '/scrap/idCard';
-		formData.append('ownerNm', $(formBox).find('input[name=ownerNm]').val());
-		formData.append('juminNo', $(formBox).find('input[name=juminNo1]').val() + $(formBox).find('input[name=juminNo2]').val());
-		formData.append('issueDt', $(formBox).find('input[name=issueDt]').val());
-		
-	<%-- (신분증) 운전면허증 --%>
-	} else if(docNum == '3') {
-		targetUrl = '/scrap/licCard';
-		formData.append('ownerNm', $(formBox).find('input[name=ownerNm]').val());
-		formData.append('juminNo', $(formBox).find('input[name=juminNo]').val());
-		formData.append('licence01', $(formBox).find('select[name=licence01] option:selected').val());
-		formData.append('licence02', $(formBox).find('input[name=licence02]').val());
-		formData.append('licence03', $(formBox).find('input[name=licence03]').val());
-		formData.append('licence04', $(formBox).find('input[name=licence04]').val());
-
+	<%-- (신분증) 주민등록증, 운전면허증 --%>
+ 		if(docNum == '2' || docNum == '3') {
+		targetUrl = '/sign/attach/scrap';
+			formData.append('col1', $(formBox).find('input[name=ownerNm]').val());
+			if(docNum == '2') {
+				formData.append('type', '001');
+				formData.append('col2', $(formBox).find('input[name=juminNo1]').val() + $(formBox).find('input[name=juminNo2]').val());
+				formData.append('col3', $(formBox).find('input[name=issueDt]').val());
+			} else if(docNum = '3') {
+				formData.append('type', '002');
+				formData.append('col2', $(formBox).find('input[name=juminNo]').val());
+				formData.append('col3', $(formBox).find('select[name=licence01] option:selected').val());
+				formData.append('col4', $(formBox).find('input[name=licence02]').val());
+				formData.append('col5', $(formBox).find('input[name=licence03]').val());
+				formData.append('col6', $(formBox).find('input[name=licence04]').val());
+			}
+			
 	<%-- 법인등기부등본 --%>
 	} else if(docNum == '4') {
 		targetUrl = '/scrap/corpRgst';	
@@ -1264,32 +1266,39 @@ var fnFormBoxSubmit = function() {
 };
 
 var checkScrapping = function(data, docNum, formBox) {
+	
+	console.log(data);
+	console.log(data.data[0]);
+	console.log(docNum);
+	console.log(formBox);
 
 	var formBoxConfirm = '';
 	var errMsg = '';
 	
-	if (data.errYn == "N") {
+	const responseData = data.data[0].data.outB0001;
+	
+	if (data.code = '0000') {
 		if (docNum == "2") {
 			// 신분증 - 주민등록증
-			if (data.outB0001.errYn == "N") {
-				if (data.outB0001.truthYn == "Y") {
+			if (responseData.errYn == "N") {
+				if (responseData.truthYn == "Y") {
 					formBoxConfirm = "Y";
 				} else {
-					errMsg = data.outB0001.truthMsg;
+					errMsg = responseData.truthMsg;
 				}
 			} else {
-				errMsg = data.outB0001.errMsg;
+				errMsg = responseData.errMsg;
 			}
 		} else if (docNum == "3") {
 			// 신분증 - 운전면허증
-			if (data.outB0001.errYn == "N") {
-				if (data.outB0001.licenceTruthYn == "Y") {
+			if (responseData.errYn == "N") {
+				if (responseData.licenceTruthYn == "Y") {
 					formBoxConfirm = "Y";
 				} else {
-					errMsg = data.outB0001.licenceTruthMsg;
+					errMsg = responseData.licenceTruthMsg;
 				}
 			} else {
-				errMsg = data.outB0001.errMsg;
+				errMsg = responseData.errMsg;
 			}
 		} else if (docNum == "4") {
 			// 법인등기부등본
@@ -1377,14 +1386,13 @@ var btnSubmitAction = function(e) {
 				alert( fileName + '파일을 촬영(첨부)해 주세요.');
 			}
 			return false;
-
+		}
 		// 구비서류 스크래핑 체크
 		var notConfirmedData = chkScrapData();
 		if(notConfirmedData != '') {
 			alert(notConfirmedData + ' 정보 확인을 완료해 주세요.');
 			return false;
 		}
-	}
 	
 	var parentList = $('li.parent');
 	var docList = [];
@@ -1411,7 +1419,7 @@ var btnSubmitAction = function(e) {
 	alert('계약서류를 구비서류와 함께 해당 기관에 제출하고 있습니다.\n!!주의!!\n전송 완료 후 본 화면은 자동으로 닫힙니다. 절대 화면을 강제로 닫으시면 안됩니다. (5초 ~ 최장 60초)');
 
 	$.ajax({
-	    url: '/attach/submission',
+	    url: '/sign/attach/submission',
 	    data: formData,
 	    processData: false,
 	    contentType: false,
