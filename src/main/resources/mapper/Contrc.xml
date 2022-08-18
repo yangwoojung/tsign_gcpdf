@@ -78,7 +78,7 @@
     </select>
 
     <!-- 계약 저장 -->
-    <insert id="insertContrcReg" parameterType="HashMap">
+    <insert id="insertContrcReg" parameterType="kr.co.tsoft.sign.vo.admin.ContractGridDto">
         /** [SIGN].[ContrcMapper.insertContrcReg] */
         insert into contrc_mgmt
         ( CONTRC_NO
@@ -90,15 +90,15 @@
         , SIGN_DUE_EDATE
         , REG_ID
         , MOD_ID)
-        values ( #{CONTRC_NO}
-               , #{FILE_SEQ}
-               , #{USER_NM}
-               , #{CELL_NO}
-               , #{EMAIL}
-               , #{SIGN_DUE_SDATE}
-               , #{SIGN_DUE_EDATE}
-               , #{REG_ID}
-               , #{MOD_ID})
+        values ( #{contrcNo}
+               , #{fileSeq}
+               , #{userNm}
+               , #{cellNo}
+               , #{email}
+               , #{signDueSdate}
+               , #{signDueEdate}
+               , #{regId}
+               , #{modId})
     </insert>
 
     <!-- 계약 pin번호 업데이트 -->

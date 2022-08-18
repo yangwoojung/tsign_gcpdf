@@ -32,7 +32,7 @@
                         <c:otherwise>
                             <a href="javascript:;" onclick="common.contentPopOpen('pop_formList');"
                                class="btn_small type_01">선택</a>
-                            <input type="hidden" id="FILE_SEQ" name="FILE_SEQ"/>
+                            <input type="hidden" id="FILE_SEQ" name="fileSeq"/>
                             <span id="FILE_SEQ_span"></span>
                         </c:otherwise>
                     </c:choose>
@@ -43,14 +43,14 @@
                 <td>
                     <div class="row_input">
                         <div class="d_wrap">
-                        	<input type="text" name="SIGN_DUE_SDATE" id="SDATE"
+                        	<input type="text" name="signDueSdate" id="SDATE"
                                   class="datepicker" style="width:120px"
                                   value="${resultContract.SIGN_DUE_SDATE }"
                             />
                         </div>
                         <span class="char">~</span>
                         <div class="d_wrap">
-                        	<input type="text" name="SIGN_DUE_EDATE" id="EDATE"
+                        	<input type="text" name="signDueEdate" id="EDATE"
                                    class="datepicker" style="width:120px"
                                    value="${resultContract.SIGN_DUE_EDATE }"                                   
                             />
@@ -61,7 +61,7 @@
             <tr>
                 <th>성명<span class="star">*</span></th>
                 <td>
-                    <input type="text" name="USER_NM" id="USER_NM" 
+                    <input type="text" name="userNm" id="USER_NM" 
                     		value="${resultContract.USER_NM }"                           
                     />
                 </td>
@@ -69,7 +69,7 @@
             <tr>
                 <th>휴대폰번호<span class="star">*</span></th>
                 <td>
-                    <input type="number" name="CELL_NO" id="CELL_NO" 
+                    <input type="number" name="cellNo" id="CELL_NO" 
                     		value="${resultContract.CELL_NO }"
                     />
                 </td>
@@ -77,7 +77,7 @@
             <tr>
                 <th>이메일<span class="star">*</span></th>
                 <td>
-                    <input style="width:350px" type="text" name="EMAIL" id="EMAIL"
+                    <input style="width:350px" type="text" name="email" id="EMAIL"
                            value="${resultContract.EMAIL }"
                     />
                 </td>
@@ -109,7 +109,7 @@
             <div class="pop_data middle">
                 <h3>대상서식</h3>
                 <div class="detail_data">
-                    <table id="popFormList" class="ui celled table" style="width:100%"></table>
+                    <table id="popFormList" class="ui celled table hover" style="width:100%"></table>
                    
                     <div class="btn_page text_c">
                         <a href="#" id="popClose" onclick="common.contentPopClose(this);"
@@ -136,15 +136,22 @@
         //input validation
 	    initValidate();
         
+	    $(document).on( 'init.dt', function ( e, settings ) {
+	        var api = new $.fn.dataTable.Api( settings );
+	        var state = api.state.loaded();
+	     
+	        // ... use `state` to restore information
+	    } );
+        
     })
     
-    var fn_submit = function () {
-    	var formSerial = $("#insertForm").serialize();
-//			console.log(formSerial)
+    const fn_submit = () => {
+		var formJsonObj = $('#insertForm').serializeObject();
 
         $.ajax({
             url: '/admin/contract/reg_insert',
-            data: formSerial,
+            data: JSON.stringify(formJsonObj),
+            contentType: 'application/json',
             type: 'POST',
             success: function (data) {
                 if (data.result == "success") {
@@ -190,29 +197,29 @@
            ignore : "", 
            // 체크할 항목들의 룰 설정
            rules: {
-        	   FILE_SEQ: {
+        	   fileSeq: {
                    required : true,
                    //remote: "/check_id.jsp"
                },
-               SIGN_DUE_SDATE: {
+               signDueSdate: {
                    required : true,
                    date: true
                },
-               SIGN_DUE_EDATE: {
+               signDueEdate: {
                    required : true,
                    date: true
                },
-               USER_NM : {
+               userNm : {
             	   required : true,
             	   minlength : 2,
                },
-               CELL_NO : {
+               cellNo : {
             	   required : true,
             	   minlength : 11,
             	   maxlength : 11, 
             	   phone : true
                },
-               EMAIL: {
+               email: {
                    required : true,
                    minlength : 2,
                    email : true
@@ -220,20 +227,20 @@
            },
            //규칙체크 실패시 출력될 메시지
            messages : {
-        	   FILE_SEQ: {
+        	   fileSeq: {
                    required : "서식을 선택하세요.",
                    //remote : "존재하는 아이디입니다"
                },
-               USER_NM : {
+               userNm : {
             	   required : "성명을 입력하세요.",
             	   minlength : "최소 {0}글자이상이어야 합니다",
                },
-               CELL_NO : {
+               cellNo : {
             	   required : "휴대폰번호를 입력하세요.",
             	   minlength : "최소 {0}글자이상이어야 합니다",
             	   maxlength : "최대 {0}글자이상이어야 합니다",
                },
-               EMAIL: {
+               email: {
                    required : "이메일을 입력하세요",
                    minlength : "최소 {0}글자이상이어야 합니다",
                    email : "메일규칙에 어긋납니다"
@@ -242,61 +249,65 @@
        });
     }
 	//서식 선택 팝업(datatable사용) 20220816
+    let dataTb = new Object();
    	const initDataTable = () => {
-        $('#popFormList').DataTable({
-              order: [0, 'desc'],
-              ajax: {
-                  url: "${pageContext.request.contextPath}/admin/form/lists",
-                  type: "post",
-                  headers: {
-                      'Accept': 'application/json',
-                      'Content-Type': 'application/json'
-                  },
-                  data: function (data, settings) {
-
-                      data.fileTp = '100';
-
-                      let orderBy = "";
-                      for (let i = 0; i < data.order.length; i++) {
-                          const {column, dir} = data.order[i];
-                          orderBy = data.columns[column].name + " " + dir
-                      }
-                      data.orderBy = orderBy;
-
-                      if(data.search.value){
-                          data.searchWord = data.search.value;
-                      }
-
-                      return JSON.stringify(data);
-                  },
-                  cache: false,
-                  contentType: 'application/json;charset=UTF-8',
-                  dataType: 'json',
-                  error: function (xhr, status, error) {
-                      if (xhr.status === 403) {
-                          alert(error);
-                      }
-                  },
-              },
-              columns: [
-                  {
-                      data: 'fileSeq',
-                      name: 'FILE_SEQ',
-                      title: 'No',
-                  },
-                  {
-                      data: 'formNm',
-                      name: 'FORM_NM',
-                      title: '서식명'
-                  },
-                  {
-                      data: 'savFileNm',
-                      name: 'SAV_FILE_NM',
-                      title: '파일명'
-                  }
-
-              ],
-             fnDrawCallback: function () { 
+		dataTb = $('#popFormList').DataTable({
+			responsive: true,
+			order: [0, 'desc'],
+			ajax: {
+				url: "${pageContext.request.contextPath}/admin/form/lists",
+				type: "post",
+				headers: {
+		                 'Accept': 'application/json',
+		                 'Content-Type': 'application/json'
+		     				},
+		    	data: function (data, settings) {
+					data.fileTp = '100';
+					let orderBy = "";
+					for (let i = 0; i < data.order.length; i++) {
+						const {column, dir} = data.order[i];
+						orderBy = data.columns[column].name + " " + dir
+					}
+					data.orderBy = orderBy;
+		
+					if(data.search.value){
+						data.searchWord = data.search.value;
+					}
+	
+					return JSON.stringify(data);
+				},//END data
+				cache: false,
+				contentType: 'application/json;charset=UTF-8',
+				dataType: 'json',
+				error: function (xhr, status, error) {
+					if (xhr.status === 403) {
+						alert(error);
+					}
+				},//END error
+			},//END ajax
+			columns: [
+	             {
+	                 data: 'fileSeq',
+	                 name: 'FILE_SEQ',
+	                 title: 'No',
+	             },
+	             {
+	                 data: 'formNm',
+	                 name: 'FORM_NM',
+	                 title: '서식명'
+	             },
+	             {
+	                 data: 'savFileNm',
+	                 name: 'SAV_FILE_NM',
+	                 title: '파일명'
+	             }
+	
+			],//END columns
+	        createdRow : function(row, data, dataIndex, cells ) {
+				console.log("createdRow")
+			},//END createdRow
+			fnDrawCallback: function () { 
+				console.log("fnDrawCallback")
      	        $('#popFormList tbody tr').click(function () {  
      	      		
      	            // get position of the selected row  
@@ -315,9 +326,8 @@
                    	common.contentPopClose('#popFormList');
      	            
      	        })       
-             	
-             }
-        });
-        
-    }
+            }// END fnDrawCallback
+       	})//END DataTable Object
+
+    }//END initDataTable
 </script>

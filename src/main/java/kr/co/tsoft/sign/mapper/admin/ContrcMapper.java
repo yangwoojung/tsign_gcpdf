@@ -16,7 +16,7 @@ public interface ContrcMapper {
 
     TotalRowCount countSelectContrcList(ContractGridDto searchVO);
 
-    int insertContrcReg(HashMap<String, Object> parameter);
+    int insertContrcReg(ContractGridDto paramVO);
 
     int updateContrcPin(HashMap<String, Object> pinParam);
 
