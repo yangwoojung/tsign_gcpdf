@@ -1,7 +1,4 @@
 /* ******************************************************
 	dataTable lib custom
 *******************************************************/
-table.dataTable.table>tbody>tr:hover {
-    background: #E1F5FE;
-    cursor: pointer;
-}
+a.type_01:hover {color: #fff;}  
