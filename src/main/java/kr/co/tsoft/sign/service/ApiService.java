@@ -22,4 +22,9 @@ public class ApiService {
       return retrofitUtils.responseSync(call).orElseThrow(RuntimeException::new);
     }
 
+  public ApiResponse<ApiResponseData.Ocr> processOcr(ApiRequest.Ocr request) {
+	  Call<ApiResponse<ApiResponseData.Ocr>> call = retrofitApi.processOcr(request.getToken(), request.getFile());
+	  return retrofitUtils.responseSync(call).orElseThrow(RuntimeException::new);
+  	}
+
 }

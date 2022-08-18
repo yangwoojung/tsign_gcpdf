@@ -15,6 +15,14 @@ public class ApiRequest {
         private final String token;
         private final MultipartBody.Part file;
     }
+    
+    @Getter
+    @Builder
+    @ToString
+    public static class Ocr {
+    	private final String token;
+    	private final MultipartBody.Part file;
+    }
 
     @Getter
     @Builder

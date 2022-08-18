@@ -999,7 +999,6 @@ var fnUploadFile = function(item, attachCd, attachId) {
 		cache: false,
 		success: function(data) {
 			$('#attachLoading').hide();
-			
 			if(data.result && data.resultMessage == 'S' && !(data.ocrResult)) {
 				fnToggleOcrForm(item, data);
 			} else if(data.result && data.resultMessage == 'S' && data.ocrResult != 'N') {
@@ -1065,15 +1064,16 @@ var removeKor = function(str) {
 
 var fnToggleOcrForm = function(item, data) {
 	var dataCd = getAttrData(item, 'data-cd'); 
-	$(item).find('.form_box.bg [name][name!=ownerNm]').val('');
+// 	$(item).find('.form_box.bg [name][name!=ownerNm]').val('');
 
 	// 신분증 
-	if(dataCd == '008' || dataCd == '009') {
-		if(data.ocrResult && data.ocrResult != 'N') {
+	if(dataCd == '001') {
+		if(data.ocrResult && data.code == '0000') {
 			$(item).find('.form_box:eq(1), .form_box:eq(2)').hide();
-			if(data.ocrResult.cutimgnameString) {
+			
+			if(data.ocrResult.encodeOcrFile) {
 				var cutimgname = 'data:image/jpeg;base64,';
-				cutimgname += data.ocrResult.cutimgnameString;
+				cutimgname += data.ocrResult.encodeOcrFile;
 				$(item).find('.view img').attr('src',cutimgname);
 			} else {
 				alert('[스크래핑 실패] 다시 촬영(첨부)해 주세요.');
@@ -1081,8 +1081,8 @@ var fnToggleOcrForm = function(item, data) {
 				$(item).find('.view').hide();
 			}
 			
-			if(data.ocrResult.regNo) {
-				var regNo = data.ocrResult.regNo;
+			if(data.ocrResult.socialNo) {
+				var regNo = data.ocrResult.socialNo;
 				regNo = regNo.replace(/\D/g, '');
 				var juminNo1 = regNo.substring(0, 6);
 				var juminNo2 = regNo.substring(6);
@@ -1090,17 +1090,19 @@ var fnToggleOcrForm = function(item, data) {
 			
 			if(data.ocrResult.idType) {
 				if(data.ocrResult.idType == '1') {
+					$(item).find('.form_box:eq(1) [name="ownerNm"]').val(data.ocrResult.name);
 					$(item).find('.form_box:eq(1) [name="juminNo1"]').val(removeEx(juminNo1));
 					$(item).find('.form_box:eq(1) [name="juminNo2"]').val(removeEx(juminNo2));
-					if(data.ocrResult.regDt) {
-						data.ocrResult.regDt = (data.ocrResult.regDt).replace(/\D/g,'');
-						$(item).find('.form_box:eq(1) [name="issueDt"]').val(removeEx(data.ocrResult.regDt));
+					if(data.ocrResult.issueDt) {
+						data.ocrResult.issueDt = (data.ocrResult.issueDt).replace(/\D/g,'');
+						$(item).find('.form_box:eq(1) [name="issueDt"]').val(removeEx(data.ocrResult.issueDt));
 					} 
 					$(item).find('.form_box').eq(1).show();
 					$(item).find('.form_box').eq(2).hide();
 				} else if(data.ocrResult.idType == '3') {
+					$(item).find('.form_box:eq(2) [name="ownerNm"]').val(data.ocrResult.name);
 					$(item).find('.form_box:eq(2) [name="juminNo"]').val(removeEx(juminNo1));
-					var licNum = data.ocrResult.licNum;
+					var licNum = data.ocrResult.licenseNo;
 					var licNumArr = licNum.split('-');
 					$(item).find(".form_box:eq(2) [name='licence01'] option:contains('"+licNumArr[0]+"')").prop("selected", "selected");
 					$(item).find(".form_box:eq(2) [name='licence02']").val(removeEx(licNumArr[1]));
@@ -1141,7 +1143,7 @@ var fnToggleOcrForm = function(item, data) {
 	}
 	
 	// 법인인감증명서, 개인 인감증명서
-	if(dataCd == "003" || dataCd == "002" || dataCd == "022") {
+	if(dataCd == "003") {
 		if(data.ocrResult && data.ocrResult != 'N') {
 			var resultArr = (data.ocrResult).split('^');
 			$(item).find('[name="submitter"]').val(resultArr[5]);
@@ -1219,7 +1221,7 @@ var fnFormBoxSubmit = function() {
 	            + $(formBox).find('input[name=issueNo2]').val() + $(formBox).find('input[name=issueNo3]').val());
 	    
 	<%-- 개인인감증명서 --%>
-	} else if (docNum == '6' || docNum == '22') {
+	} else if (docNum == '6') {
 	    targetUrl = '/scrap/psnlSeal';
 	    formData.append('sido', $(formBox).find('select[name=selSido] option:selected').text());
 	    formData.append('sigg', $(formBox).find('select[name=selSigungu] option:selected').text());

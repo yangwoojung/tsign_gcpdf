@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.tsoft.sign.service.AttachService;
@@ -52,20 +53,20 @@ public class AttachController {
 	}
 	
 	@PostMapping("/upload")
-	public String upload(@RequestParam Map<String, Object> param) {
+	@ResponseBody
+	public Map<String, Object> upload(@RequestParam Map<String, Object> param) {
 		logger.info("========upload========");
-		logger.info("param : {}", param);
-
 		Map<String, Object> resultMap = new HashMap<>();
 		
 		try {
 			resultMap = attachService.uploadAttachFile(param);
+			logger.debug("#### /attach/upload >>> resultMap : {}", resultMap);
+			resultMap.put("result", true);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			resultMap.put("result", false);
 		}
-		
-		return null;
+		return resultMap;
 	}
-	
 }
