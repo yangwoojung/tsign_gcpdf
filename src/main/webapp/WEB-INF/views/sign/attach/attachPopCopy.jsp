@@ -322,6 +322,9 @@ const bntAddFileAction = (e) => {
 	   createChildContainer(childAttachArea);
 	   changeChildContainerAttr(targetContainer, childAttachArea, nowAttachCnt);
 	   //파일첨부 체크
+	   chkSelectedDocumentFile();
+	   addClickEvents();
+	   alert(title + '이(가) 추가되었습니다.');
    }
 };
 
@@ -366,5 +369,132 @@ const changeChildContainerAttr = (targetContainer, childContainer, nowAttachCnt)
 };
 
 //구비서류 삭제
+const bntDeleteFileAction = (e) => {
+	const targetContainer = this.closest('li.parent');
+	const childContainer = targetContainer.querySelector('.dep');
+	const nowAttachCnt = childContainer.children.length;
+	
+	const child = this.closest('.list.child');
+	const childNo = child.getAttribute('data-childno');
+	const title = targetContainer.getAttribute('data-title');
+	
+	if(nowAttachCnt != childNo-1) {
+		alert('마지막' + title + '부터 삭제해 주세요.');
+		return false;
+	} else {
+		child.remove();
+		resignChildTitle(targetContainer, childContainer, nowAttachCnt);
+		chkSelectedDocumentFile();
+		alert(title + '이(가) 삭제되었습니다');
+	};
+};
+
+//파일 업로드 실행 시 시작되는 함수
+const btnFileChangeAction = (e) => {
+	const targetContainer = e.target.closest('li.list');
+	const file = e.target.files[0];
+	
+	if(!file.type.match(/image.*|application.*pdf/)) {
+		alert('JPEG 형식만 첨부 가능합니다.');
+		return false;
+	}
+	if(FILE.checkFileSize && file.type.match(/application.*pdf/) && file.size > FILE.limitPdfSize) {
+		alert('파일의 용량은' + (FILE.limitPdfSize / 1024) + 'KB를 초과할 수 없습니다.');
+		return false;
+	}
+	resizingImage(targetContainer, file);
+	selectedFile(targetContainer, this);
+};
+
+//이미지 리사이징
+const resizingImage = (targetContainer, file) => {
+	if(!document.createElement('canvas').getContext) {
+		alert('사용하시는 브라우저는 일부 기능을 제공하지 않습니다. 다른 브라우저를 사용해 주시기 바랍니다.');
+	}
+	// html5 canvas + img 
+	if(file.type.match(/image.*/)) { 
+		var reader = new FileReader();
+		reader.readAsDataURL(file);
+		
+		reader.onload = function(readerEvent) {
+			var base64 = readerEvent.target.result;
+			window.URL = window.URL || window.webkitURL;
+			var blobUrl = window.URL.createObjectURL(base64ToBlob(base64));
+			
+			var image = new Image();
+			image.src = blobUrl;
+			
+			image.onload = function(imageEvent) {
+				var width = image.width;
+				var height = image.height;
+				var maxSize = FILE.maxImgSize;
+				
+				if(width > height && width > maxSize) {
+					if(width > maxSize) {
+						height *= maxSize / width;
+						width = maxSize;
+					}
+				} else {
+					if(height > maxSize) {
+						width *= maxSize / height;
+						height = maxSize;
+					}
+				}
+				
+				var canvas = document.createElement('canvas');	
+				canvas.width = width;
+				canvas.height = height;
+	
+				var ctx = canvas.getContext('2d');
+				ctx.drawImage(image, 0, 0, width, height);
+				base64 = canvas.toDataURL('image/jpeg');
+				targetContainer.querySelector('.uploadbinary').value = base64;				
+				fnUploadFile(targetContainer);
+			}; // -- end image
+		}; // -- end reader 
+	};
+	// pdf
+	if(file.type.match(/application.*pdf/)) {
+		var fileReader = new FileReader();
+		fileReader.readAsDataURL(file);
+		
+		fileReader.onload = function(readerEvent) {
+			var pdfbase64 = readerEvent.target.result;
+			targetContainer.querySelector('.uploadbinary').value = pdfbase64;				
+			fnUploadFile(targetContainer);
+		};
+	};
+};
+
+//파일 업로드 
+const fuUploadFile = (item, attachCd, attachId) => {
+	
+}
+
+//파일 업로드 후 처리
+var selectedFile = function(targetContainer, fileObject) {
+	var itemEl = '';
+
+	if(fileObject.files[0].type.match(/image.*/)) {
+	    itemEl = getDisplayItem(URL.createObjectURL(fileObject.files[0]), 'img');
+	} else {
+	    itemEl = getDisplayItem(fileObject.files[0].name, 'txt');
+	}
+	
+	$(targetContainer).find('.view:eq(0)').empty().prepend(itemEl);
+	$(targetContainer).find('.camera_container:eq(0)').hide();
+	$(targetContainer).find('.view:eq(0)').show();
+	$(targetContainer).addClass('on');
+};	
+
+var getDisplayItem = function (item, type) {
+	var itemEl;
+	if(type == 'txt') {
+		itemEl = '<p class="txt">' + item + '</p>';
+	} else { 
+		itemEl = '<p class="img"><img src="' + item + '" alt=""></p>';
+	}
+	return itemEl;
+}
 
 </script>

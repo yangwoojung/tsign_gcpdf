@@ -764,27 +764,27 @@ var btnAddFileAction = function(e) {
 var btnDeleteFileAction = function(e) {
 //	var targetContainer = $(this).parents('.parent');
 	const targetContainer = this.closest('li.parent');
-	console.log(targetContainer);
 //	var childNoCnt = $(targetContainer).find('ul.dep').children().length;
 //	console.log(childNoCnt);
 	const childContainer = targetContainer.querySelector('.dep');
 	const nowAttachCnt = childContainer.children.length;
-	console.log(nowAttachCnt);
 	
-	var childNo = $(this).parents('.child').attr('data-childno');
-	console.log(childNo);
+//	var childNo = $(this).parents('.child').attr('data-childno');
+	const childNo = this.closest('.list.child').getAttribute('data-childno');
 //	var title = $(targetContainer).attr('data-title');
 	const title = targetContainer.getAttribute('data-title');
-	console.log(title);
 	
-	if(childNoCnt != childNo -1) {
+	if(nowAttachCnt != childNo -1) {
 		alert('마지막 ' + title + '부터 삭제해 주세요.');
 		return false;
 	}
 	
-	$(this).parents('.child').remove();
+//	$(this).parents('.child').remove();
+	const child = this.closest('.list.child');
 	
-	resignChildTitle(targetContainer);
+//	child.remove();
+	this.closest('.list.child').remove();
+	resignChildTitle(targetContainer, childContainer, nowAttachCnt);
 	chkSelectedDocumentFile();
 	
 	alert(title + '이(가) 삭제되었습니다');
@@ -843,8 +843,12 @@ var btnShutterAction = function() {
 
 <%-- 사진 업로드 --%>
 var btnFileChangeAction = function(e) {
-	var targetContainer = $(this).parents('li.list:eq(0)');
-	var file = this.files[0];
+//	var targetContainer = $(this).parents('li.list:eq(0)');
+	const targetContainer = e.target.closest('li.list');
+	console.log(targetContainer);
+//  	var file = this.files[0];
+	const file = e.target.files[0];
+	console.log(file);
 
 	if(!file.type.match(/image.*|application.*pdf/)) {
 		alert('JPEG 형식만 첨부 가능합니다.');
@@ -856,18 +860,15 @@ var btnFileChangeAction = function(e) {
 		return false;
 	}
 	
-	resizingImage(targetContainer, e);
+	resizingImage(targetContainer, file);
 	selectedFile(targetContainer, this);
 };	
 
-var resizingImage = function (targetContainer, e) {
+var resizingImage = function (targetContainer, file) {
 	
 	if(!document.createElement('canvas').getContext) {
 		alert('사용하시는 브라우저는 일부 기능을 제공하지 않습니다. 다른 브라우저를 사용해 주시기바랍니다.');
 	}
-	
-	var file = e.target.files[0];
-
 	// html5 canvas + img 
 	if(file.type.match(/image.*/)) { 
 		var reader = new FileReader();
@@ -905,8 +906,8 @@ var resizingImage = function (targetContainer, e) {
 				var ctx = canvas.getContext('2d');
 				ctx.drawImage(image, 0, 0, width, height);
 				base64 = canvas.toDataURL('image/jpeg');
-				$(targetContainer).find('.uploadbinary:eq(0)').val(base64);
-				
+		//		$(targetContainer).find('.uploadbinary:eq(0)').val(base64);
+				targetContainer.querySelector('.uploadbinary').value = base64;				
 				fnUploadFile(targetContainer);
 	
 			}; // -- end image
@@ -1050,6 +1051,8 @@ var fnUploadFileFormReset = function(item) {
 var fnUploadFile = function(item, attachCd, attachId) {
 	var base64 = $(item).find('.uploadbinary:eq(0)').val();
 	var childDataNo = $(item).attr('data-childno');
+	console.log(childDataNo);
+	
 	if(ComUtil.isNull(childDataNo)) {
 		childDataNo = 1;
 	}
