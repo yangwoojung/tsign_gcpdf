@@ -53,10 +53,23 @@ public class ContrcController {
     }
 
     @RequestMapping(value = "/admin/contract/reg")
-    public ModelAndView adminFormReg(@RequestParam Map<String, Object> parameter) throws Exception {
+    public ModelAndView adminFormReg(@RequestParam(value="contrcSeq",required=false) String contrcSeq) throws Exception {
         Logger.debug(" === /admin/contract/reg");
         ModelAndView mav = new ModelAndView("admin/contract/reg");
-        Map<String, Object> resultMap = new HashMap<String, Object>();
+
+        if (contrcSeq != null) {
+        	Logger.debug(" contrcSeq : "+ contrcSeq);
+            
+            ContractGridDto dto = new ContractGridDto();
+            dto.setContrcSeq(Integer.parseInt(contrcSeq));
+            //수정
+            if (dto.getContrcSeq() != null) {
+            	//해당 계약번호 조회 하여 리턴 
+            	ContractGridDto resultContract = contrcService.selectContrcInfo2(dto);
+            	Logger.debug(resultContract.toString());
+            	mav.addObject("resultContract",resultContract);
+            }
+        }
 
         return mav;
     }
