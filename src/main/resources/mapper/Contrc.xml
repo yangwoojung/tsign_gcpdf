@@ -110,4 +110,22 @@
         where CONTRC_NO = #{CONTRC_NO}
 
     </update>
+    
+    <!-- 계약 단건 조회 // VO-->
+    <select id="selectContrcInfo2" parameterType="HashMap" resultType="kr.co.tsoft.sign.vo.ContrcMgmtVO">
+        /** [SIGN].[ContrcMapper.selectContrcInfo2] */
+        SELECT CONTRC_SEQ
+             , CONTRC_NO
+             , FILE_SEQ
+             , PIN_NO
+             , USER_NM
+             , CELL_NO
+             , EMAIL
+             , SIGN_DUE_SDATE
+             , SIGN_DUE_EDATE
+             , IN_SIGN_DATE
+             , USE_YN
+        FROM contrc_mgmt
+        WHERE CONTRC_NO = #{contractNo}
+    </select>
 </mapper>

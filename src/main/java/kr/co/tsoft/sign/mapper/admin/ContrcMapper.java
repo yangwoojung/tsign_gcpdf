@@ -1,5 +1,6 @@
 package kr.co.tsoft.sign.mapper.admin;
 
+import kr.co.tsoft.sign.vo.ContrcMgmtVO;
 import kr.co.tsoft.sign.vo.admin.ContractGridDto;
 import kr.co.tsoft.sign.vo.common.TotalRowCount;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,5 +20,7 @@ public interface ContrcMapper {
     int insertContrcReg(ContractGridDto paramVO);
 
     int updateContrcPin(HashMap<String, Object> pinParam);
+
+	ContrcMgmtVO selectContrcInfo2(String contractNo);
 
 }

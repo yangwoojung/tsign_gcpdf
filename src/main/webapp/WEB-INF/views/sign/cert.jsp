@@ -45,58 +45,59 @@
 </body>
 <script type="text/javascript">
 
-    const maskedCellNo = '${user.CELL_NO_MASK }';
+// 	const user = '${user}';
+// 	console.log(user);
+// 	const maskedCellNo = '${user.cellNoMask}';
+//     $(function () {
+//         $('#cellNo').val(phoneFormat(maskedCellNo));
+//     });
 
-    $(function () {
-        $('#cellNo').val(phoneFormat(maskedCellNo));
-    });
+//     const checkCellNo = () => {
+//         const cellNoLast = $('#cellNoLast').val();
+//         if(cellNoLast?.length != 4) {
+//             return alert("휴대폰번호 뒷 4자리를 입력해주세요.");
+//         }
 
-    const checkCellNo = () => {
-        const cellNoLast = $('#cellNoLast').val();
-        if(cellNoLast?.length != 4) {
-            return alert("휴대폰번호 뒷 4자리를 입력해주세요.");
-        }
+//         const paramMap = { 'cellNoLast' : cellNoLast };
+//         const requestMap = {
+//             dataParam	: paramMap,
+//             url 		: '/sign/cert/checkCellNumber'
+//         };
 
-        const paramMap = { 'cellNoLast' : cellNoLast };
-        const requestMap = {
-            dataParam	: paramMap,
-            url 		: '/sign/cert/checkCellNumber'
-        };
+//         ComUtil.request(requestMap, function(data) {
+//             if(data?.resultCd == '0000'){
+//                 $('#idPopup').tsPopup('open', '/pin/pinPop');
+//                 ComUtil.certPhone();
+//                 // fnCertificationClose('0000', 'idseed');
+//             } else {
+//                 alert(data.resultMsg);
+//             }
+//         });
 
-        ComUtil.request(requestMap, function(data) {
-            if(data?.resultCd == '0000'){
-                $('#idPopup').tsPopup('open', '/pin/pinPop');
-                ComUtil.certPhone();
-                // fnCertificationClose('0000', 'idseed');
-            } else {
-                alert(data.resultMsg);
-            }
-        });
-
-    }
+//     }
 
     // 본인인증 팝업 종료 시 응답 함수
-    function fnCertificationClose(status, type) {
-        if (type == 'idseed') {
-            if (status == '0000') {
+//     function fnCertificationClose(status, type) {
+//         if (type == 'idseed') {
+//             if (status == '0000') {
 
-                let newForm = $('<form></form>');
-                newForm.attr("method","post");
-                newForm.attr("action","/sign/authenticate");
+//                 let newForm = $('<form></form>');
+//                 newForm.attr("method","post");
+//                 newForm.attr("action","/sign/authenticate");
 
-                newForm.append($('<input/>', {type: 'hidden', name: 'c', value:'${user.CONTRC_NO}' }));
-                newForm.append($('<input/>', {type: 'hidden', name: 'p', value:$('#cellNoLast').val() }));
+//                 newForm.append($('<input/>', {type: 'hidden', name: 'c', value:'${user.CONTRC_NO}' }));
+//                 newForm.append($('<input/>', {type: 'hidden', name: 'p', value:$('#cellNoLast').val() }));
 
-                newForm.appendTo('body');
+//                 newForm.appendTo('body');
 
-                // submit form
-                newForm.submit();
+//                 // submit form
+//                 newForm.submit();
 
-            } else if (status == '0001') {
-                alert('등록된 고객정보와 인증한 정보가 서로 다릅니다.');
-            }
-        }
-    };
+//             } else if (status == '0001') {
+//                 alert('등록된 고객정보와 인증한 정보가 서로 다릅니다.');
+//             }
+//         }
+//     };
 
 </script>
 </html>

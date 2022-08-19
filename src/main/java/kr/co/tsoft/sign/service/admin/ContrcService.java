@@ -18,6 +18,7 @@ import kr.co.tsoft.sign.util.MailHandler;
 import kr.co.tsoft.sign.util.SecurityUtil;
 import kr.co.tsoft.sign.util.SendMessage;
 import kr.co.tsoft.sign.util.SessionUtil;
+import kr.co.tsoft.sign.vo.ContrcMgmtVO;
 import kr.co.tsoft.sign.vo.admin.ContractGridDto;
 import kr.co.tsoft.sign.vo.common.TotalRowCount;
 
@@ -117,5 +118,9 @@ public class ContrcService {
 		 * 2. insert : 수정된 데이터로 새로운 계약 생성
 		 */		
 		return null;
+	}
+
+	public ContrcMgmtVO selectContrcInfo2(String contractNo) {
+		return ContrcMapper.selectContrcInfo2(contractNo);
 	}
 }
