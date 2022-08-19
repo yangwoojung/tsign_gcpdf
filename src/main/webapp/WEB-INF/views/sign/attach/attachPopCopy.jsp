@@ -252,61 +252,119 @@ $(function() {
 	//키인
 	$('.form_box').hide();
 	$('.form_box [name=selSido]').off('change').on('change', fnSelSidoChangeAction);
-	$('.form_box .page_tab ul li').not('li.actived').off('click').on('click', fnToggleKeyInId);
+	$('.form_box .page_tab ul li').not('li.actived').off('click').on('click', fnValidateIDCardTab);
 	$('.form_box [data-name=form_box_submit]').off('click').on('click', fnFormBoxSubmit);
 	$('.form_box [data-name=form_box_reset]').off('click').on('click', fnFormBoxReset);
 
 });
 
-//구비서류 추가 시 자식 컨테이너 생성
-// const createChildContainerSet = () => {
-// 	let childContainerSet = "";
-// 	childContainerSet = `<li class="list child">
-// 							<div class="front">
-// 								<div class="tit"><a href="#" class="btn_delete">삭제</a><span></span></div>
-// 								<ul class="file">
-// 									<li class="btn_file"><input type="file" accept="image/jpg, image/png, image/jpeg, application/pdf" name="uploadfile" class="btn_file_up"></li>
-// 									<li class="btn_camera"><input type="file" accept="image/*;capture=camera" name="uploadfile" class="btn_file_up"></li>
-// 								</ul>
-// 								<input type="hidden" name="uploadbinary" class="uploadbinary child" />
-// 							</div>
-// 							<div class="camera_container">
-// 								<div class="video_container"></div>
-// 								<button type="button" class="shutter"></button>
-// 							</div>
-// 							<div class="view"></div>
-// 						</li>`;
-// 	return childContainerSet;
-// }
-
-var createChildContainerSet = function() {
-	var childContainerSet = '';
-	childContainerSet += '<li class="list child">';
-	childContainerSet += '<div class="front">';
-	childContainerSet += '<div class="tit"><a href="#" class="btn_delete">삭제</a><span></span></div>';
-	childContainerSet += '<ul class="file">';
-	childContainerSet += '<li class="btn_file"><input type="file" accept="image/jpg, image/png, image/jpeg, application/pdf" name="uploadfile" class="btn_file_up"></li>';
-	childContainerSet += '<li class="btn_camera"><input type="file" accept="image/*;capture=camera" name="uploadfile" class="btn_file_up"></li>';
-	childContainerSet += '</ul>';
-	childContainerSet += '<input type="hidden" name="uploadbinary" class="uploadbinary child" />';
-	childContainerSet += '</div>';
-	childContainerSet += '<div class="camera_container">';
-	childContainerSet += '<div class="video_container"></div>';
-	childContainerSet += '<button type="button" class="shutter"></button>';
-	childContainerSet += '</div>';
-	childContainerSet += '<div class="view"></div>';
-	childContainerSet += '</li>';
-	return childContainerSet;
-}
-
 //구비서류 공통값
 const FILE = {
-	checkFileSize: true,
-	limitPdfSize: 1024*1024,
-	maxImgSize: 1280, 
+   checkFileSize: true,
+   limitPdfSize: 1024*1024,
+   maxImgSize: 1280, 
 };
 
+//display none(hide), block(show) 함수
+//다른 곳에서도 jQuery 대신 써먹을 수 있는 방법??
+const fnHideAndShow = (item, type, fn) => {
+   if(type != null) {
+      const selectContainer = item.querySelector('[data-doc-num="' + type + '"]');
+      selectContainer.style.display = fn;
+   }
+}
 
+//주민등록증(data-doc-num=1) / 운전면허증(data-doc-num=2) 토글박스 구분
+const fnValidateIDCardTab = (e) => {
+   const idCardBox = e.target.closest(".form_box");
+   const docNum = idCardBox.getAttribute('data-doc-num');
+   const parentContainer = this.closest('li.list');
 
+   const socialDocNum = 1;
+   const licenseDocNum = 2;
+
+   if(docNum == socialDocNum) {
+      fnHideAndShow(parentContainer, socialDocNum, 'none');
+      fnHideAndShow(parentContainer, licenseDocNum, 'block');
+   } else if (docNum == licenseDocNum) {
+      fnHideAndShow(parentContainer, socialDocNum, 'block');
+      fnHideAndShow(parentContainer, licenseDocNum, 'none');
+   };
+};
+
+var addClickEvents = function() {
+	<%-- 구비 서류 추가/삭제 이벤트 --%>
+	$('li.list .btn_add').off('click').on('click', btnAddFileAction);
+	$('li.list .btn_delete').off('click').on('click', btnDeleteFileAction);
+	
+	<%-- 사진-미사용 --%>
+	$('li.list input[type="button"].btn_file_up').off('click').on('click', btnCameraAction);
+	$('li.list .shutter').off('click').on('click', btnShutterAction);
+	
+	<%-- 파일 업로드 --%>
+	$('li.list input[type="file"].btn_file_up').off('change').on('change', btnFileChangeAction);
+	$('#btnSubmit').off('click').on('click', btnSubmitAction);
+};
+
+//구비서류 첨부란 추가
+const bntAddFileAction = (e) => {
+   const targetContainer = this.closest('li.list');
+   const childAttachArea = targetContainer.querySelector('.dep');
+   
+   const maxAttachCnt = targetContainer.getAttribute('data-uploadaddcnt');
+   const nowAttachCnt = childAttachArea.children.length;
+   
+   if(maxAttachCnt == nowAttachCnt) {
+	   alert('해당 첨부파일은 더이상 추가할 수 없습니다.');
+	   return false;
+   } else {
+	   const title = targetContainer.getAttribute('data-title');
+	   createChildContainer(childAttachArea);
+	   changeChildContainerAttr(targetContainer, childAttachArea, nowAttachCnt);
+	   //파일첨부 체크
+   }
+};
+
+//구비서류 추가 시 자식 컨테이너 생성
+const createChildContainer = (childContainer, nowAttachCnt) => {
+	const li = document.createElement("li");
+	li.classList.add('list', 'child');
+	li.setAttribute('data-childno', nowAttachCnt+2);
+	
+	li.innerHTML = `<div class="front">
+				    	<div class="tit"><a href="#" class="btn_delete">삭제</a><span></span></div>
+			    		<ul class="file">
+					        <li class="btn_file"><input type="file" accept="image/jpg, image/png, image/jpeg, application/pdf" name="uploadfile" class="btn_file_up"></li>
+					        <li class="btn_camera"><input type="file" accept="image/*;capture=camera" name="uploadfile" class="btn_file_up"></li>
+				        </ul>
+			       		<input type="hidden" name="uploadbinary" class="uploadbinary child" />
+				 	</div>
+			     	<div class="camera_container">
+				        <div class="video_container"></div>
+				        <button type="button" class="shutter"></button>
+			     	</div>
+				    <div class="view"></div>`;
+	childContainer.append(li);
+};
+
+//생성된 자식 컨테이너의 속성 변경
+const changeChildContainerAttr = (targetContainer, childContainer, nowAttachCnt) => {
+	const title = targetContainer.getAttribute('data-title');
+	const subReq = targetContainer.getAtttribute('data-subreq');
+	
+	const titleArea = childContainer.querySelectorAll('span');
+	
+	titleArea.forEach((item, index) => {
+		const hiddenArea = item.parentNode.parentNode.querySelector('.uploadbinary.child');
+		
+		if(nowAttachCnt <= index) {
+			const childNo = nowAttachCnt + 2;
+			item.append(title + " - " + childNo);
+			hiddenArea.setAttribute('data-subreq', subReq);
+		}
+	})
+};
+
+//구비서류 삭제
 
 </script>

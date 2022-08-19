@@ -478,24 +478,47 @@ var base64ToBlob = function(base64) {
 	return new Blob(byteArrays, {type: fileType});
 }
 
-var createChildContainerSet = function() {
-	var childContainerSet = '';
-	childContainerSet += '<li class="list child">';
-	childContainerSet += '<div class="front">';
-	childContainerSet += '<div class="tit"><a href="#" class="btn_delete">삭제</a><span></span></div>';
-	childContainerSet += '<ul class="file">';
-	childContainerSet += '<li class="btn_file"><input type="file" accept="image/jpg, image/png, image/jpeg, application/pdf" name="uploadfile" class="btn_file_up"></li>';
-	childContainerSet += '<li class="btn_camera"><input type="file" accept="image/*;capture=camera" name="uploadfile" class="btn_file_up"></li>';
-	childContainerSet += '</ul>';
-	childContainerSet += '<input type="hidden" name="uploadbinary" class="uploadbinary child" />';
-	childContainerSet += '</div>';
-	childContainerSet += '<div class="camera_container">';
-	childContainerSet += '<div class="video_container"></div>';
-	childContainerSet += '<button type="button" class="shutter"></button>';
-	childContainerSet += '</div>';
-	childContainerSet += '<div class="view"></div>';
-	childContainerSet += '</li>';
-	return childContainerSet;
+// var createChildContainerSet = function() {
+// 	var childContainerSet = '';
+// 	childContainerSet += '<li class="list child">';
+// 	childContainerSet += '<div class="front">';
+// 	childContainerSet += '<div class="tit"><a href="#" class="btn_delete">삭제</a><span></span></div>';
+// 	childContainerSet += '<ul class="file">';
+// 	childContainerSet += '<li class="btn_file"><input type="file" accept="image/jpg, image/png, image/jpeg, application/pdf" name="uploadfile" class="btn_file_up"></li>';
+// 	childContainerSet += '<li class="btn_camera"><input type="file" accept="image/*;capture=camera" name="uploadfile" class="btn_file_up"></li>';
+// 	childContainerSet += '</ul>';
+// 	childContainerSet += '<input type="hidden" name="uploadbinary" class="uploadbinary child" />';
+// 	childContainerSet += '</div>';
+// 	childContainerSet += '<div class="camera_container">';
+// 	childContainerSet += '<div class="video_container"></div>';
+// 	childContainerSet += '<button type="button" class="shutter"></button>';
+// 	childContainerSet += '</div>';
+// 	childContainerSet += '<div class="view"></div>';
+// 	childContainerSet += '</li>';
+// 	return childContainerSet;
+// }
+
+const createChildContainerSet = function(childContainer, nowAttachCnt) {
+	const temp = document.createElement("li");
+	temp.classList.add('list', 'child');
+	temp.setAttribute('data-childno', nowAttachCnt+2);
+	//<li class="list child">
+	temp.innerHTML = `
+				        <div class="front">
+					        <div class="tit"><a href="#" class="btn_delete">삭제</a><span></span></div>
+					        <ul class="file">
+					           <li class="btn_file"><input type="file" accept="image/jpg, image/png, image/jpeg, application/pdf" name="uploadfile" class="btn_file_up"></li>
+					           <li class="btn_camera"><input type="file" accept="image/*;capture=camera" name="uploadfile" class="btn_file_up"></li>
+					        </ul>
+					        <input type="hidden" name="uploadbinary" class="uploadbinary child" />
+				    	 </div>
+					     <div class="camera_container">
+					        <div class="video_container"></div>
+					        <button type="button" class="shutter"></button>
+					     </div>
+					     <div class="view"></div>`;
+			//		  </li>`;
+	childContainer.append(temp);
 }
 
 
@@ -661,37 +684,76 @@ var addClickEvents = function() {
 
 
 <%-- 구비서류 추가시 타이틀 변경 --%>
-var resignChildTitle = function (targetContainer) {
-	var parentTitle = $(targetContainer).attr('data-title');
-	var childList = $(targetContainer).find('ul.dep li.child');
-	var subReq = $(targetContainer).attr('data-subreq');
-	var hidden = $(targetContainer).find('ul.dep input.uploadbinary');
+// var resignChildTitle = function (targetContainer) {
+// 	var parentTitle = $(targetContainer).attr('data-title');
+// 	var childList = $(targetContainer).find('ul.dep li.child');
+// 	var subReq = $(targetContainer).attr('data-subreq');
+// 	var hidden = $(targetContainer).find('ul.dep input.uploadbinary');
 
-	for (var i = 0; i < childList.length; i++) {
-		var childNo = i + 2;
-		var childTitle = parentTitle + ' - ' + childNo;
-		$(childList[i]).attr('data-childno', childNo);
-		$(childList[i]).find('div.tit span').html(childTitle);
-		$(hidden[i]).attr('data-subreq', subReq);
-	}
-}
+// 	for (var i = 0; i < childList.length; i++) {
+// 		var childNo = i + 2;
+// 		var childTitle = parentTitle + ' - ' + childNo;
+// 		$(childList[i]).attr('data-childno', childNo);
+// 		$(childList[i]).find('div.tit span').html(childTitle);
+// 		$(hidden[i]).attr('data-subreq', subReq);
+// 	}
+// }
+var resignChildTitle = function (targetContainer, childContainer, nowAttachCnt) {
+// 	var parentTitle = $(targetContainer).attr('data-title');
+// 	var childList = $(targetContainer).find('ul.dep li.child');
+// 	var subReq = $(targetContainer).attr('data-subreq');
+// 	var hidden = $(targetContainer).find('ul.dep input.uploadbinary');
+
+// 	for (var i = 0; i < childList.length; i++) {
+// 		var childNo = i + 2;
+// 		var childTitle = parentTitle + ' - ' + childNo;
+// 		$(childList[i]).attr('data-childno', childNo);
+// 		$(childList[i]).find('div.tit span').html(childTitle);
+// 		$(hidden[i]).attr('data-subreq', subReq);
+// 	}
+	const title = targetContainer.getAttribute('data-title');
+	const subReq = targetContainer.getAttribute('data-subreq');
+
+	const titleArea = childContainer.querySelectorAll('span');
+	
+		titleArea.forEach((item, index) => {
+			const hiddenArea = item.parentNode.parentNode.querySelector('.uploadbinary.child');
+			if(nowAttachCnt <= index) {
+				const childNo = nowAttachCnt + 2;
+				item.append(title + " - " + childNo);
+				hiddenArea.setAttribute('data-subreq', subReq);
+			}
+		});
+};
 
 <%-- 구비서류 추가 --%>
 var btnAddFileAction = function(e) {
-	var targetContainer = $(this).parents('.list:eq(0)');
-	var uploadAddCnt = $(targetContainer).attr('data-uploadaddcnt');
-	var childNo = $(targetContainer).find('ul.dep').children().length;
+//	var targetContainer = $(this).parents('.list:eq(0)');
+   const targetContainer = this.closest('li.list');
+// 	var uploadAddCnt = $(targetContainer).attr('data-uploadaddcnt');
+   const uploadAddCnt = targetContainer.getAttribute('data-uploadaddcnt');
+//	var childNo = $(targetContainer).find('ul.dep').children().length;
+	const childContainer = targetContainer.querySelector('.dep');
+	const nowAttachCnt = childContainer.children.length;
 
-	if(parseInt(uploadAddCnt) == parseInt(childNo)) {
-		alert('해당 첨부 파일은 더이상 추가할 수 없습니다.');
-		return false;
-	}
+// 	if(parseInt(uploadAddCnt) == parseInt(childNo)) {
+// 		alert('해당 첨부 파일은 더이상 추가할 수 없습니다.');
+// 		return false;
+// 	}
+   if(uploadAddCnt == nowAttachCnt) {
+	   alert('해당 첨부파일은 더이상 추가할 수 없습니다.');
+	   return false;
+   }
 	
-	var title = $(targetContainer).attr('data-title');
-	var childContainerSet = createChildContainerSet();
-	$(targetContainer).find('ul.dep').append(childContainerSet);
+//	var title = $(targetContainer).attr('data-title');
 	
-	resignChildTitle(targetContainer);
+	const title = targetContainer.getAttribute('data-title');
+//	var childContainerSet = createChildContainerSet();
+//	$(targetContainer).find('ul.dep').append(childContainerSet);
+	createChildContainerSet(childContainer, nowAttachCnt);
+	
+//	resignChildTitle(targetContainer);
+	resignChildTitle(targetContainer, childContainer, nowAttachCnt);
 	chkSelectedDocumentFile();
 	addClickEvents();
 	
@@ -700,10 +762,20 @@ var btnAddFileAction = function(e) {
 
 <%-- 구비서류 삭제 --%>
 var btnDeleteFileAction = function(e) {
-	var targetContainer = $(this).parents('.parent');
-	var childNoCnt = $(targetContainer).find('ul.dep').children().length;
+//	var targetContainer = $(this).parents('.parent');
+	const targetContainer = this.closest('li.parent');
+	console.log(targetContainer);
+//	var childNoCnt = $(targetContainer).find('ul.dep').children().length;
+//	console.log(childNoCnt);
+	const childContainer = targetContainer.querySelector('.dep');
+	const nowAttachCnt = childContainer.children.length;
+	console.log(nowAttachCnt);
+	
 	var childNo = $(this).parents('.child').attr('data-childno');
-	var title = $(targetContainer).attr('data-title');
+	console.log(childNo);
+//	var title = $(targetContainer).attr('data-title');
+	const title = targetContainer.getAttribute('data-title');
+	console.log(title);
 	
 	if(childNoCnt != childNo -1) {
 		alert('마지막 ' + title + '부터 삭제해 주세요.');
