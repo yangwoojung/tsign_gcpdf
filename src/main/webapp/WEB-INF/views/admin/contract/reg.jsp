@@ -25,17 +25,11 @@
             <tr>
                 <th>대상서식<span class="star">*</span></th>
                 <td>
-                    <c:choose>
-                        <c:when test="${resultContract.size() > 0 }">
-                            <span>${resultContract.FORM_NM }</span>
-                        </c:when>
-                        <c:otherwise>
-                            <a href="javascript:;" onclick="common.contentPopOpen('pop_formList');"
-                               class="btn_small type_01">선택</a>
-                            <input type="hidden" id="FILE_SEQ" name="fileSeq"/>
-                            <span id="FILE_SEQ_span"></span>
-                        </c:otherwise>
-                    </c:choose>
+                     <a href="javascript:;" onclick="common.contentPopOpen('pop_formList');"
+                        class="btn_small type_01">선택</a>
+                     <input type="hidden" name="contrcNo" value="${resultContract.contrcNo }"/>
+                     <input type="hidden" id="FILE_SEQ" name="fileSeq" value="${resultContract.fileSeq }"/>
+                     <span id="FILE_SEQ_span">${resultContract.formNm }</span>
                 </td>
             </tr>
             <tr>
@@ -45,14 +39,14 @@
                         <div class="d_wrap">
                         	<input type="text" name="signDueSdate" id="SDATE"
                                   class="datepicker" style="width:120px"
-                                  value="${resultContract.SIGN_DUE_SDATE }"
+                                  value="${resultContract.signDueSdate }"
                             />
                         </div>
                         <span class="char">~</span>
                         <div class="d_wrap">
                         	<input type="text" name="signDueEdate" id="EDATE"
                                    class="datepicker" style="width:120px"
-                                   value="${resultContract.SIGN_DUE_EDATE }"                                   
+                                   value="${resultContract.signDueEdate }"                                   
                             />
                         </div>
                     </div>
@@ -62,7 +56,7 @@
                 <th>성명<span class="star">*</span></th>
                 <td>
                     <input type="text" name="userNm" id="USER_NM" 
-                    		value="${resultContract.USER_NM }"                           
+                    		value="${resultContract.userNm }"                           
                     />
                 </td>
             </tr>
@@ -70,7 +64,7 @@
                 <th>휴대폰번호<span class="star">*</span></th>
                 <td>
                     <input type="number" name="cellNo" id="CELL_NO" 
-                    		value="${resultContract.CELL_NO }"
+                    		value="${resultContract.cellNo }"
                     />
                 </td>
             </tr>
@@ -78,7 +72,7 @@
                 <th>이메일<span class="star">*</span></th>
                 <td>
                     <input style="width:350px" type="text" name="email" id="EMAIL"
-                           value="${resultContract.EMAIL }"
+                           value="${resultContract.email }"
                     />
                 </td>
             </tr>
@@ -89,7 +83,7 @@
 	        <div class="btn_page text_c">
 	            <a href="/admin/contract/list" class="btn_default type_02">목록</a>
 	            <c:choose>
-	                <c:when test="${empty fileSeq}">
+	                <c:when test="${empty resultContract.contrcSeq}">
 	                    <input type="submit" value="등록" class="btn_default type_01"/>                    
 	                </c:when>
 	                <c:otherwise>
@@ -127,9 +121,10 @@
 	
     $(function () {
         // 달력
+        var seq = "<c:out value='${resultContract.contrcSeq}'/>";
         common.datepicker("#SDATE", 0, null);
-        common.datepicker("#EDATE", null, "+10D")
-		
+        common.datepicker("#EDATE", null, "+10D");
+        
         //서식조회 팝업 내 ajax 테이블 조회
         initDataTable();
 		
@@ -138,7 +133,7 @@
         
     })
     
-    const fn_submit = () => {
+    const fn_submit = (btnType) => {
 		var formJsonObj = $('#insertForm').serializeObject();
 		if (btnType == "등록") {
 			btnUrl = "reg_insert"; 
@@ -146,7 +141,7 @@
 			btnUrl = "reg_update";
 		}
         $.ajax({
-            url: '/admin/contract/reg_insert',
+            url: '/admin/contract/' + btnUrl,
             data: JSON.stringify(formJsonObj),
             contentType: 'application/json',
             type: 'POST',
@@ -176,17 +171,11 @@
            * 유효성이 확인된 후 Ajax를 통해 처리하기에 적합하다.
            */
            submitHandler: function(form) {
-        	   
-        	   var btnType = $("input[type='submit']").val();
+        	   console.log("submitHandler")
                var f = confirm(btnType +"을 하시겠습니까?");
+        	   var btnType = $("input[type='submit']").val();
                if(f){
-            	   //form.submit();            	   
-            	   if ($("input[type='submit']").val() == "등록") {
-						//insert
-        		   		fn_submit();
-            	   } else {
-            			//update
-            	   }
+            	   fn_submit(btnType);
                } else {
                    return false;
                }

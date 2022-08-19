@@ -107,7 +107,23 @@
                     data: 'filePath',
                     name: 'FILE_PATH',
                 },
-            ]
+            ],
+            fnDrawCallback: function () { 
+				console.log("fnDrawCallback")
+				var dt = $("#contractList").dataTable();
+     	        $('#contractList tbody tr').click(function () {  
+     	      		
+     	            // get position of the selected row  
+     	            var position = dt.fnGetPosition(this)  
+     	            // value of the first column (can be hidden)  
+     	            console.log(dt.fnGetData(position));
+     	            
+     	            var contrcSeq = dt.fnGetData(position).contrcSeq;
+                   	
+                   	//계약관리 디테일 페이지로 이동
+                   	location.href = "/admin/contract/reg?contrcSeq="+ contrcSeq;
+     	        })       
+            }// END fnDrawCallback
         });
 
     }

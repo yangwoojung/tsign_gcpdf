@@ -67,6 +67,24 @@
         FROM contrc_mgmt
         WHERE CONTRC_NO = #{CONTRC_NO}
     </select>
+    
+    <!-- 계약 단건 조회 ContractGridDto -->
+    <select id="selectContrcInfo2" parameterType="kr.co.tsoft.sign.vo.admin.ContractGridDto" resultType="kr.co.tsoft.sign.vo.admin.ContractGridDto">
+        /** [SIGN].[ContrcMapper.selectContrcInfo2] */
+        SELECT A.CONTRC_SEQ
+             , A.CONTRC_NO
+             , A.FILE_SEQ
+             , (select ORG_FILE_NM from file_mgmt B where 1=1 AND A.FILE_SEQ = B.FILE_SEQ) FORM_NM
+             , A.PIN_NO
+             , A.USER_NM
+             , A.CELL_NO
+             , A.EMAIL
+             , DATE_FORMAT(A.SIGN_DUE_SDATE,'%Y-%m-%d') SIGN_DUE_SDATE
+             , DATE_FORMAT(A.SIGN_DUE_EDATE,'%Y-%m-%d') SIGN_DUE_EDATE
+             , A.USE_YN
+        FROM contrc_mgmt A
+        WHERE A.CONTRC_SEQ = #{contrcSeq}
+    </select>
 
     <!-- 해당 계약건에 완료된 계약서, 추적표 조회 -->
     <select id="selectCompleteContr" parameterType="HashMap" resultType="HashMap">
@@ -89,8 +107,10 @@
         , SIGN_DUE_SDATE
         , SIGN_DUE_EDATE
         , REG_ID
-        , MOD_ID)
-        values ( #{contrcNo}
+        , REG_DATE
+        , MOD_ID
+        , MOD_DATE
+       ) values ( #{contrcNo}
                , #{fileSeq}
                , #{userNm}
                , #{cellNo}
@@ -98,7 +118,20 @@
                , #{signDueSdate}
                , #{signDueEdate}
                , #{regId}
-               , #{modId})
+               , current_timestamp() 
+               , #{modId}
+               , current_timestamp() 
+               )
+    </insert>
+    
+    <!-- 계약 삭제(use_yn = 'n') -->
+    <insert id="updateContrcReg" parameterType="kr.co.tsoft.sign.vo.admin.ContractGridDto">
+        /** [SIGN].[ContrcMapper.updateContrcReg] */
+        update contrc_mgmt 
+		set  USE_YN = 'N'
+		    , MOD_ID =  #{modId}
+		    , MOD_DATE = current_timestamp() 
+		where CONTRC_NO = #{contrcNo}
     </insert>
 
     <!-- 계약 pin번호 업데이트 -->
@@ -107,6 +140,7 @@
         update contrc_mgmt
         set PIN_NO = #{PIN_NO}
           , MOD_ID = #{MOD_ID}
+          , MOD_DATE = current_timestamp() 
         where CONTRC_NO = #{CONTRC_NO}
 
     </update>

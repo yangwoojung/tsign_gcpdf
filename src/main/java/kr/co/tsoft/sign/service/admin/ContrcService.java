@@ -77,7 +77,7 @@ public class ContrcService {
             Logger.debug("== 계약서 저장 실패 ");
             resultMap.put("insert", "fail");
         }
-        ;
+        
 		/*
 		// TODO 문자 전송
 		String custPhone = (String) parameter.get("CELL_NO");
@@ -106,18 +106,44 @@ public class ContrcService {
             mail.send(toMail, title, content, null);
         } catch (Exception e) {
             Logger.debug("== 메일 전송 실패");
-            e.printStackTrace();
         }
 
         return resultMap;
     }
 
 	public HashMap<String, Object> contrcRegUpdate(ContractGridDto paramVO) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		/*
 		 * 1. update : 기존 계약 USE_YN = 'N'
 		 * 2. insert : 수정된 데이터로 새로운 계약 생성
-		 */		
-		return null;
+		 */
+		//TODO 테스트 필요
+		//1. update : 기존 계약 USE_YN = 'N'
+		SecurityUtil su = new SecurityUtil();
+		paramVO.setModId(su.getAdminUserDetails().getUsername());//로그인한 사용자 ID
+		if (ContrcMapper.updateContrcReg(paramVO) > 0) {
+            Logger.debug("== 계약서 수정");
+            try {
+            	//2. insert : 수정된 데이터로 새로운 계약 생성
+            	resultMap = contrcReg(paramVO);
+			} catch (Exception e) {
+				Logger.debug("== 계약 등록 실패 ");
+			}
+        } else {
+            Logger.debug("== 계약 사용안함 수정 실패 ");
+        }
+        
+		return resultMap;
+	}
+
+	/**
+	 * 계약등록 화면
+	 * 단건 조회 
+	 * @param paramVO
+	 * @return
+	 */
+	public ContractGridDto selectContrcInfo2(ContractGridDto paramVO) {
+		return ContrcMapper.selectContrcInfo2(paramVO);
 	}
 
 	public ContrcMgmtVO selectContrcInfo2(String contractNo) {
