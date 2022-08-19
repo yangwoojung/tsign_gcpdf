@@ -63,13 +63,13 @@ public class ContrcController {
 
     @RequestMapping(value = "/admin/contract/reg_insert", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap<String, Object> adminContractRegInsert(@RequestParam HashMap<String, Object> parameter
-    ) throws Exception {
+    public HashMap<String, Object> adminContractRegInsert(
+    		@RequestBody ContractGridDto paramVO) throws Exception {
         Logger.debug(" === /admin/contract/reg_insert");
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
         // 계약저장 => 성공시 : 문자 전송 , 메일 전송
-        HashMap<String, Object> result = contrcService.contrcReg(parameter);
+        HashMap<String, Object> result = contrcService.contrcReg(paramVO);
         resultMap.putAll(result);
 
         return resultMap;

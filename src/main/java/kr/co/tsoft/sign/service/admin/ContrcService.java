@@ -1,20 +1,25 @@
 package kr.co.tsoft.sign.service.admin;
 
-import kr.co.tsoft.sign.mapper.admin.ContrcMapper;
-import kr.co.tsoft.sign.util.MailHandler;
-import kr.co.tsoft.sign.util.SendMessage;
-import kr.co.tsoft.sign.vo.admin.ContractGridDto;
-import kr.co.tsoft.sign.vo.common.TotalRowCount;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import kr.co.tsoft.sign.config.security.CommonUserDetails;
+import kr.co.tsoft.sign.mapper.admin.ContrcMapper;
+import kr.co.tsoft.sign.util.MailHandler;
+import kr.co.tsoft.sign.util.SecurityUtil;
+import kr.co.tsoft.sign.util.SendMessage;
+import kr.co.tsoft.sign.util.SessionUtil;
+import kr.co.tsoft.sign.vo.admin.ContractGridDto;
+import kr.co.tsoft.sign.vo.common.TotalRowCount;
 
 @Service
 public class ContrcService {
@@ -39,27 +44,32 @@ public class ContrcService {
         return ContrcMapper.countSelectContrcList(searchVO);
     }
 
-    public HashMap<String, Object> contrcReg(HashMap<String, Object> parameter) throws Exception {
+   
+    public HashMap<String, Object> contrcReg(ContractGridDto paramVO) throws Exception {
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
+        
         // 계약 번호 생성
         //cmi : 핸드폰가운데번호 일시
         String match = "[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]";
-        String sdate = ((String) parameter.get("SIGN_DUE_SDATE")).replaceAll(match, "");
-        String edate = ((String) parameter.get("SIGN_DUE_EDATE")).replaceAll(match, "");
+        
+        String sdate = ((String) paramVO.getSignDueSdate()).replaceAll(match, "");
+        String edate = ((String) paramVO.getSignDueEdate()).replaceAll(match, "");
 
         Date today = new Date();
         SimpleDateFormat time = new SimpleDateFormat("yyyyMMddHHmmss");//등록일시
 
-        String contrNo = time.format(today) + "_" + ((String) parameter.get("CELL_NO")).substring(3, 7);
-        parameter.put("CONTRC_NO", contrNo);
-        // TODO REG_ID
-        parameter.put("SIGN_DUE_SDATE", sdate);
-        parameter.put("SIGN_DUE_EDATE", edate);
-        parameter.put("REG_ID", "admin");
-        parameter.put("MOD_ID", "admin");
-
+        String contrNo = time.format(today) + "_" + ((String) paramVO.getCellNo()).substring(3, 7);
+        
+        SecurityUtil su = new SecurityUtil();
+        
+        paramVO.setContrcNo(contrNo);
+        paramVO.setSignDueSdate(sdate);
+        paramVO.setSignDueEdate(edate);
+        paramVO.setRegId(su.getAdminUserDetails().getUsername());//로그인한 사용자 ID
+        paramVO.setModId(su.getAdminUserDetails().getUsername());//로그인한 사용자 ID
+        
 //		// TODO 계약 저장
-        if (ContrcMapper.insertContrcReg(parameter) > 0) {
+        if (ContrcMapper.insertContrcReg(paramVO) > 0) {
             Logger.debug("== 계약서 저장");
             resultMap.put("result", "success");
         } else {
@@ -88,7 +98,7 @@ public class ContrcService {
         try {
             Logger.debug("== 메일 전송");
             MailHandler mail = new MailHandler();
-            String toMail = (String) parameter.get("EMAIL");
+            String toMail = (String) paramVO.getEmail();
             String title = "(주)티소프트 전자계약을 진행해 주세요.";
             String content = "<html><body>(주)티소프트 전자계약을 진행해 주세요.<br/> https://sign.tsoft.co.kr/cmi/" + contrNo + "</body></html>";
 

@@ -58,6 +58,8 @@ var common = {
         } else {
             $('body').attr('style', '');
         }
+        
+        window.dispatchEvent(new Event('resize'));
         common.htmlAddFix();
     },
 
