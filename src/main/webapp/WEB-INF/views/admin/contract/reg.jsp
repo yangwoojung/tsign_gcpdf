@@ -90,7 +90,7 @@
 	            <a href="/admin/contract/list" class="btn_default type_02">목록</a>
 	            <c:choose>
 	                <c:when test="${empty fileSeq}">
-	                    <input type="submit" value="저장" class="btn_default type_01"/>                    
+	                    <input type="submit" value="등록" class="btn_default type_01"/>                    
 	                </c:when>
 	                <c:otherwise>
 						<input type="submit" value="수정" class="btn_default type_01"/>
@@ -140,7 +140,11 @@
     
     const fn_submit = () => {
 		var formJsonObj = $('#insertForm').serializeObject();
-
+		if (btnType == "등록") {
+			btnUrl = "reg_insert"; 
+		} else if (btnType == "수정") {
+			btnUrl = "reg_update";
+		}
         $.ajax({
             url: '/admin/contract/reg_insert',
             data: JSON.stringify(formJsonObj),
@@ -177,7 +181,7 @@
                var f = confirm(btnType +"을 하시겠습니까?");
                if(f){
             	   //form.submit();            	   
-            	   if ($("input[type='submit']").val() == "저장") {
+            	   if ($("input[type='submit']").val() == "등록") {
 						//insert
         		   		fn_submit();
             	   } else {

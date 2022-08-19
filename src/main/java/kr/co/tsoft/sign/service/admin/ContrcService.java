@@ -110,4 +110,12 @@ public class ContrcService {
 
         return resultMap;
     }
+
+	public HashMap<String, Object> contrcRegUpdate(ContractGridDto paramVO) {
+		/*
+		 * 1. update : 기존 계약 USE_YN = 'N'
+		 * 2. insert : 수정된 데이터로 새로운 계약 생성
+		 */		
+		return null;
+	}
 }

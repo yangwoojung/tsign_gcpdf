@@ -68,8 +68,22 @@ public class ContrcController {
         Logger.debug(" === /admin/contract/reg_insert");
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
-        // 계약저장 => 성공시 : 문자 전송 , 메일 전송
+        // 계약등록 => 성공시 : 문자 전송 , 메일 전송
         HashMap<String, Object> result = contrcService.contrcReg(paramVO);
+        resultMap.putAll(result);
+
+        return resultMap;
+    }
+    
+    @RequestMapping(value = "/admin/contract/reg_update", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap<String, Object> adminContractRegUpdate(
+    		@RequestBody ContractGridDto paramVO) throws Exception {
+        Logger.debug(" === /admin/contract/reg_update");
+        HashMap<String, Object> resultMap = new HashMap<String, Object>();
+
+        // 계약 수정
+        HashMap<String, Object> result = contrcService.contrcRegUpdate(paramVO);
         resultMap.putAll(result);
 
         return resultMap;
