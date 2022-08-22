@@ -130,7 +130,7 @@
                     <dt>성명</dt>
                     <dd>
                         <p>
-                            <input id="userNm" type="text" class="input_ty" readonly value="${userNm }">
+                            <input id="userNm" type="text" class="input_ty" readonly value="${user.userNm}">
                         </p>
                     </dd>
                 </dl>
@@ -231,7 +231,7 @@
                     <dt>이메일</dt>
                     <dd>
                         <p>
-                            <input type="text" value="${email }" class="input_ty"
+                            <input type="text" value="${user.email}" class="input_ty"
                                    placeholder="이메일 입력(예 : ts@tsoft.co.kr)" maxlength="100"
                                    onkeyup="removeSpaces(event)" id="etaxEmail"/>
                         </p>
@@ -273,7 +273,7 @@
 
 <form action="/sign/pdf/view" id="viewForm" method="post">
 <%--<form action="/sign/report/viewReport" id="reportForm" name="reportForm" target="report" method="post">--%>
-    <input type="hidden" name="contrcNo" id="contrcNo" value="${contrcNo}"/>
+    <input type="hidden" name="contrcNo" id="contrcNo" value="${user.contrcNo}"/>
     <input type="hidden" name="inputResidentNo1" id="inputResidentNo1" value=""/>
     <input type="hidden" name="inputResidentNo2" id="inputResidentNo2" value=""/>
     <input type="hidden" name="inputBankCd" id="inputBankCd" value=""/>
@@ -289,7 +289,7 @@
 <!-- <div id="idPopup" class="ts_popup"></div> -->
 <script src="/resources/sign/js/fabric.js"></script>
 <script type="text/javascript">
-    var contrcNo = '${contrcNo}';
+    var contrcNo = '${user.contrcNo}';
 
     var isView = false;
     /**
