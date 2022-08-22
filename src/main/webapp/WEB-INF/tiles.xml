@@ -17,11 +17,6 @@
         <put-attribute name="container" expression="/WEB-INF/views/sign/{1}.jsp"/>
     </definition>
 
-   	<!-- pop -->
-	<definition name="sign/attach/attachPop" extends="sign">
-     	<put-attribute name="container" expression="/WEB-INF/views/sign/attach/attachPop.jsp"/>
-    </definition>
-    
 	<!-- error -->
 	<definition name="sign/error/*" extends="sign">
      	<put-attribute name="container" expression="/WEB-INF/views/sign/error/{1}.jsp"/>

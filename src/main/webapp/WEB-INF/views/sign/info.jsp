@@ -12,10 +12,10 @@
         <div class="txt_msg_box cont">개인 신용정보 <span class="point">수집·이용·제공·취급·위탁</span>에<br>대해 동의해 주세요.</div>
         <div class="progress">
             <div class="box-progress-bar">
-                <span class="box-progress" style="width: 75%;"></span>
+                <span class="box-progress" style="width: 66.6666%;"></span>
             </div>
             <div class="number">
-                <span class="active">3</span>/4
+                <span class="active">2</span>/3
             </div>
         </div>
 
@@ -161,7 +161,8 @@
     $(function () {
 
         $('#nextBtn').on('click', function () {
-            $('#submitReportForm').trigger('click');
+            /*$('#submitReportForm').trigger('click');*/
+            location.href = '/sign/attach/attachPop'
         });
 
         // $('textarea').on('keyup', function (e) {
