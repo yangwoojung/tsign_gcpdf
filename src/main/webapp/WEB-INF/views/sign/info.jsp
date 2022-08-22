@@ -30,7 +30,8 @@
                         <dt>성명</dt>
                         <dd>
                             <p>
-                                <input id="userNm" type="text" class="input_ty" value="${userNm}" autocomplete="off"
+                                <input id="userNm" type="text" class="input_ty focusNone" value="${userNm}"
+                                       autocomplete="off"
                                        readonly required>
                             </p>
                         </dd>
@@ -38,10 +39,12 @@
                     <dl class="list">
                         <dt>주민등록번호</dt>
                         <dd class="half">
-                            <input id="inResidentNo1" type="tel" class="input_ty" placeholder="6자리숫자" maxlength="6"
+                            <input id="inResidentNo1" type="tel" class="input_ty focusNone" placeholder="6자리숫자"
+                                   maxlength="6"
                                    onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" autocomplete="off"
                                    required/>
-                            <input id="inResidentNo2" type="tel" class="input_ty" placeholder="7자리숫자" maxlength="7"
+                            <input id="inResidentNo2" type="tel" class="input_ty focusNone" placeholder="7자리숫자"
+                                   maxlength="7"
                                    onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" autocomplete="off"
                                    required/>
                         </dd>
@@ -49,7 +52,7 @@
                     <dl class="list">
                         <dt>주소</dt>
                         <dd>
-                            <textarea id="addr1" type="text" class="input_ty" placeholder="도로명 주소/동,호수까지 입력"
+                            <textarea id="addr1" type="text" class="input_ty focusNone" placeholder="도로명 주소/동,호수까지 입력"
                                       autocomplete="off" required></textarea>
                         </dd>
                     </dl>
@@ -128,7 +131,7 @@
                     <dl class="list">
                         <dt>계좌 번호</dt>
                         <dd class="half03">
-                            <input type="tel" class="input_ty" placeholder="-없이 숫자만 입력" maxlength="30"
+                            <input type="tel" class="input_ty focusNone" placeholder="-없이 숫자만 입력" maxlength="30"
                                    onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" id="stlmAccNo"
                                    autocomplete="off" required/>
                         </dd>
@@ -137,7 +140,7 @@
                         <dt>이메일</dt>
                         <dd>
                             <p>
-                                <input type="email" value="${email}" class="input_ty"
+                                <input type="email" value="${email}" class="input_ty focusNone"
                                        placeholder="이메일 입력(예 : ts@tsoft.co.kr)" maxlength="100"
                                        onkeyup="removeSpaces(event)" id="etaxEmail" autocomplete="off" required/>
                             </p>

@@ -988,7 +988,7 @@ ul.description li:before {
 .form_box .list dd.half .input_ty {
     width: calc(50% - 15px);
 }
-.form_box .list dd input:focus, .form_box .list dd textarea:focus {
+.form_box .list dd input.focusNone:focus, .form_box .list dd textarea.focusNone:focus {
     box-shadow: none;
     border: none;
 }
