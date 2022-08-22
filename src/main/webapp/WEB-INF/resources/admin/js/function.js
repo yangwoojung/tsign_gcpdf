@@ -254,3 +254,29 @@ function fnMakePagingForAjax(totalRecord, pageSize, blockSize, currentPage, isMo
 
     target.html(html)
 }
+
+function setValueFromObject(selector, data) {
+    const $target = $(selector);
+    $target.find('input').each(function (index, element) {
+        let $element = $(element);
+        let name = $element.attr("name");
+
+        if (data.hasOwnProperty(name)) {
+            let value = data[name];
+            $element.val(value);
+        }
+    });
+}
+
+(function ($) {
+
+    $.fn.initValidation = function () {
+
+        $(this).removeData("validator");
+        $(this).removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse(this);
+
+        return this;
+    };
+
+}(jQuery));

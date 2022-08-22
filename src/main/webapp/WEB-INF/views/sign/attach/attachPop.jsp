@@ -19,8 +19,8 @@
 			<!-- accordion_ty -->
 			<ul class="accordion_ty">
 				<c:forEach items="${docList}" var="doc" varStatus="status">
-					<li class="list parent" data-no="${status.count}" data-cd="${doc.docCd}"
-							data-title="${doc.docNm}" data-uploadaddcnt="${doc.maxCnt -1}" data-ocr-cnt="0">
+					<li class="list parent" data-no="${status.count}" data-cd="${doc.docCd}" data-subReq="${doc.subReq}"
+							data-title="${doc.docNm}" data-uploadaddcnt="${doc.maxCnt -1}" data-ocr-cnt="0" >
 						<!-- front -->
 						<div class="front">
 							<div class="tit">
@@ -446,6 +446,7 @@
 
 <script type="text/javascript">
 
+//사업자등록증명원용
 var removeSymbol = function(el) {
 	var returnStr = $(el).val();
 	if(returnStr)
@@ -496,6 +497,7 @@ var createChildContainerSet = function() {
 	childContainerSet += '</li>';
 	return childContainerSet;
 }
+
 
 var fnSelSidoChangeAction = function() {
 	var formBox = $(this).closest('.form_box');
@@ -999,7 +1001,6 @@ var fnUploadFile = function(item, attachCd, attachId) {
 		cache: false,
 		success: function(data) {
 			$('#attachLoading').hide();
-			
 			if(data.result && data.resultMessage == 'S' && !(data.ocrResult)) {
 				fnToggleOcrForm(item, data);
 			} else if(data.result && data.resultMessage == 'S' && data.ocrResult != 'N') {
@@ -1065,15 +1066,16 @@ var removeKor = function(str) {
 
 var fnToggleOcrForm = function(item, data) {
 	var dataCd = getAttrData(item, 'data-cd'); 
-	$(item).find('.form_box.bg [name][name!=ownerNm]').val('');
+// 	$(item).find('.form_box.bg [name][name!=ownerNm]').val('');
 
 	// 신분증 
-	if(dataCd == '008' || dataCd == '009') {
-		if(data.ocrResult && data.ocrResult != 'N') {
+	if(dataCd == '001') {
+		if(data.ocrResult && data.code == '0000') {
 			$(item).find('.form_box:eq(1), .form_box:eq(2)').hide();
-			if(data.ocrResult.cutimgnameString) {
+			
+			if(data.ocrResult.encodeOcrFile) {
 				var cutimgname = 'data:image/jpeg;base64,';
-				cutimgname += data.ocrResult.cutimgnameString;
+				cutimgname += data.ocrResult.encodeOcrFile;
 				$(item).find('.view img').attr('src',cutimgname);
 			} else {
 				alert('[스크래핑 실패] 다시 촬영(첨부)해 주세요.');
@@ -1081,8 +1083,8 @@ var fnToggleOcrForm = function(item, data) {
 				$(item).find('.view').hide();
 			}
 			
-			if(data.ocrResult.regNo) {
-				var regNo = data.ocrResult.regNo;
+			if(data.ocrResult.socialNo) {
+				var regNo = data.ocrResult.socialNo;
 				regNo = regNo.replace(/\D/g, '');
 				var juminNo1 = regNo.substring(0, 6);
 				var juminNo2 = regNo.substring(6);
@@ -1090,17 +1092,19 @@ var fnToggleOcrForm = function(item, data) {
 			
 			if(data.ocrResult.idType) {
 				if(data.ocrResult.idType == '1') {
+					$(item).find('.form_box:eq(1) [name="ownerNm"]').val(data.ocrResult.name);
 					$(item).find('.form_box:eq(1) [name="juminNo1"]').val(removeEx(juminNo1));
 					$(item).find('.form_box:eq(1) [name="juminNo2"]').val(removeEx(juminNo2));
-					if(data.ocrResult.regDt) {
-						data.ocrResult.regDt = (data.ocrResult.regDt).replace(/\D/g,'');
-						$(item).find('.form_box:eq(1) [name="issueDt"]').val(removeEx(data.ocrResult.regDt));
+					if(data.ocrResult.issueDt) {
+						data.ocrResult.issueDt = (data.ocrResult.issueDt).replace(/\D/g,'');
+						$(item).find('.form_box:eq(1) [name="issueDt"]').val(removeEx(data.ocrResult.issueDt));
 					} 
 					$(item).find('.form_box').eq(1).show();
 					$(item).find('.form_box').eq(2).hide();
 				} else if(data.ocrResult.idType == '3') {
+					$(item).find('.form_box:eq(2) [name="ownerNm"]').val(data.ocrResult.name);
 					$(item).find('.form_box:eq(2) [name="juminNo"]').val(removeEx(juminNo1));
-					var licNum = data.ocrResult.licNum;
+					var licNum = data.ocrResult.licenseNo;
 					var licNumArr = licNum.split('-');
 					$(item).find(".form_box:eq(2) [name='licence01'] option:contains('"+licNumArr[0]+"')").prop("selected", "selected");
 					$(item).find(".form_box:eq(2) [name='licence02']").val(removeEx(licNumArr[1]));
@@ -1141,7 +1145,7 @@ var fnToggleOcrForm = function(item, data) {
 	}
 	
 	// 법인인감증명서, 개인 인감증명서
-	if(dataCd == "003" || dataCd == "002" || dataCd == "022") {
+	if(dataCd == "003") {
 		if(data.ocrResult && data.ocrResult != 'N') {
 			var resultArr = (data.ocrResult).split('^');
 			$(item).find('[name="submitter"]').val(resultArr[5]);
@@ -1184,23 +1188,23 @@ var fnFormBoxSubmit = function() {
 	var targetUrl = '';
 	var formData = new FormData();
 
-	<%-- (신분증) 주민등록증 --%>
- 		if(docNum == '2') {
-		targetUrl = '/scrap/idCard';
-		formData.append('ownerNm', $(formBox).find('input[name=ownerNm]').val());
-		formData.append('juminNo', $(formBox).find('input[name=juminNo1]').val() + $(formBox).find('input[name=juminNo2]').val());
-		formData.append('issueDt', $(formBox).find('input[name=issueDt]').val());
-		
-	<%-- (신분증) 운전면허증 --%>
-	} else if(docNum == '3') {
-		targetUrl = '/scrap/licCard';
-		formData.append('ownerNm', $(formBox).find('input[name=ownerNm]').val());
-		formData.append('juminNo', $(formBox).find('input[name=juminNo]').val());
-		formData.append('licence01', $(formBox).find('select[name=licence01] option:selected').val());
-		formData.append('licence02', $(formBox).find('input[name=licence02]').val());
-		formData.append('licence03', $(formBox).find('input[name=licence03]').val());
-		formData.append('licence04', $(formBox).find('input[name=licence04]').val());
-
+	<%-- (신분증) 주민등록증, 운전면허증 --%>
+ 		if(docNum == '2' || docNum == '3') {
+		targetUrl = '/sign/attach/scrap';
+			formData.append('col1', $(formBox).find('input[name=ownerNm]').val());
+			if(docNum == '2') {
+				formData.append('type', '001');
+				formData.append('col2', $(formBox).find('input[name=juminNo1]').val() + $(formBox).find('input[name=juminNo2]').val());
+				formData.append('col3', $(formBox).find('input[name=issueDt]').val());
+			} else if(docNum = '3') {
+				formData.append('type', '002');
+				formData.append('col2', $(formBox).find('input[name=juminNo]').val());
+				formData.append('col3', $(formBox).find('select[name=licence01] option:selected').val());
+				formData.append('col4', $(formBox).find('input[name=licence02]').val());
+				formData.append('col5', $(formBox).find('input[name=licence03]').val());
+				formData.append('col6', $(formBox).find('input[name=licence04]').val());
+			}
+			
 	<%-- 법인등기부등본 --%>
 	} else if(docNum == '4') {
 		targetUrl = '/scrap/corpRgst';	
@@ -1219,7 +1223,7 @@ var fnFormBoxSubmit = function() {
 	            + $(formBox).find('input[name=issueNo2]').val() + $(formBox).find('input[name=issueNo3]').val());
 	    
 	<%-- 개인인감증명서 --%>
-	} else if (docNum == '6' || docNum == '22') {
+	} else if (docNum == '6') {
 	    targetUrl = '/scrap/psnlSeal';
 	    formData.append('sido', $(formBox).find('select[name=selSido] option:selected').text());
 	    formData.append('sigg', $(formBox).find('select[name=selSigungu] option:selected').text());
@@ -1262,32 +1266,39 @@ var fnFormBoxSubmit = function() {
 };
 
 var checkScrapping = function(data, docNum, formBox) {
+	
+	console.log(data);
+	console.log(data.data[0]);
+	console.log(docNum);
+	console.log(formBox);
 
 	var formBoxConfirm = '';
 	var errMsg = '';
 	
-	if (data.errYn == "N") {
+	const responseData = data.data[0].data.outB0001;
+	
+	if (data.code = '0000') {
 		if (docNum == "2") {
 			// 신분증 - 주민등록증
-			if (data.outB0001.errYn == "N") {
-				if (data.outB0001.truthYn == "Y") {
+			if (responseData.errYn == "N") {
+				if (responseData.truthYn == "Y") {
 					formBoxConfirm = "Y";
 				} else {
-					errMsg = data.outB0001.truthMsg;
+					errMsg = responseData.truthMsg;
 				}
 			} else {
-				errMsg = data.outB0001.errMsg;
+				errMsg = responseData.errMsg;
 			}
 		} else if (docNum == "3") {
 			// 신분증 - 운전면허증
-			if (data.outB0001.errYn == "N") {
-				if (data.outB0001.licenceTruthYn == "Y") {
+			if (responseData.errYn == "N") {
+				if (responseData.licenceTruthYn == "Y") {
 					formBoxConfirm = "Y";
 				} else {
-					errMsg = data.outB0001.licenceTruthMsg;
+					errMsg = responseData.licenceTruthMsg;
 				}
 			} else {
-				errMsg = data.outB0001.errMsg;
+				errMsg = responseData.errMsg;
 			}
 		} else if (docNum == "4") {
 			// 법인등기부등본
@@ -1375,14 +1386,13 @@ var btnSubmitAction = function(e) {
 				alert( fileName + '파일을 촬영(첨부)해 주세요.');
 			}
 			return false;
-
+		}
 		// 구비서류 스크래핑 체크
 		var notConfirmedData = chkScrapData();
 		if(notConfirmedData != '') {
 			alert(notConfirmedData + ' 정보 확인을 완료해 주세요.');
 			return false;
 		}
-	}
 	
 	var parentList = $('li.parent');
 	var docList = [];
@@ -1409,7 +1419,7 @@ var btnSubmitAction = function(e) {
 	alert('계약서류를 구비서류와 함께 해당 기관에 제출하고 있습니다.\n!!주의!!\n전송 완료 후 본 화면은 자동으로 닫힙니다. 절대 화면을 강제로 닫으시면 안됩니다. (5초 ~ 최장 60초)');
 
 	$.ajax({
-	    url: '/attach/submission',
+	    url: '/sign/attach/submission',
 	    data: formData,
 	    processData: false,
 	    contentType: false,

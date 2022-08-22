@@ -58,6 +58,8 @@ var common = {
         } else {
             $('body').attr('style', '');
         }
+        
+        window.dispatchEvent(new Event('resize'));
         common.htmlAddFix();
     },
 
@@ -258,3 +260,179 @@ $(window).on("resize", function () {
     common.resize();
 
 });
+
+/******************************************************
+ @ DATATABLES COMMON CONFIG
+ ******************************************************/
+$.extend(true, $.fn.dataTable.defaults, {
+    processing: true,
+    searching: true,
+    search: {
+        return: true,
+    },
+    ordering: true,
+    serverSide: true,
+    responsive: true,
+    lengthChange: true,
+    // dom: 'Bfltip',
+    scrollCollapse: true,
+    // deferRender: true,
+    scrollX: true,
+    scroller: {
+        loadingIndicator: true
+    },
+    columnDefs: [
+        {
+            className: 'dt-center', targets: '_all'
+        },
+        {
+            defaultContent: "", targets: '_all'
+        },
+    ],
+    ajax: {
+        data: function (data, settings) {
+
+            let orderBy = "";
+            for (let i = 0; i < data.order.length; i++) {
+                const {column, dir} = data.order[i];
+                orderBy = data.columns[column].name + " " + dir
+            }
+            data.orderBy = orderBy;
+
+            if (data.search.value) {
+                data.searchWord = data.search.value;
+            }
+            return JSON.stringify(data);
+
+        },
+    },
+    language: {
+        "emptyTable": "데이터가 없습니다",
+        "info": "_START_ - _END_ \/ _TOTAL_",
+        "infoEmpty": "0 - 0 \/ 0",
+        "infoFiltered": "(총 _MAX_ 개)",
+        "infoThousands": ",",
+        // "lengthMenu": "페이지당 줄수 _MENU_",
+        "lengthMenu": "_MENU_",
+        // "loadingRecords": "읽는중...",
+        "loadingRecords": "<div class=\"spinner\"></div>",
+        "processing": "처리중...",
+        // "search": "검색:",
+        "search": "",
+        "zeroRecords": "검색 결과가 없습니다",
+        "paginate": {
+            "first": "처음",
+            "last": "마지막",
+            "next": "다음",
+            "previous": "이전"
+        },
+        "aria": {
+            "sortAscending": ": 오름차순 정렬",
+            "sortDescending": ": 내림차순 정렬"
+        },
+        "buttons": {
+            "copyKeys": "ctrl키 나 u2318 + C키로 테이블 데이터를 시스텝 복사판에서 복사하고 취소하려면 이 메시지를 클릭하거나 ESC키를 누르면됩니다. to copy the table data to your system clipboard. To cancel, click this message or press escape.",
+            "copySuccess": {
+                "_": "%d행을 복사판에서 복사됨",
+                "1": "1행을 복사판에서 복사됨"
+            },
+            "copyTitle": "복사판에서 복사",
+            "csv": "CSV",
+            "excel": "엑설",
+            "pageLength": {
+                "-1": "모든 행 보기",
+                "_": "%d행 보기"
+            },
+            "pdf": "PDF",
+            "print": "인쇄",
+            "collection": "집합 <span class=\"ui-button-icon-primary ui-icon ui-icon-triangle-1-s\"><\/span>",
+            "colvis": "컬럼 보기",
+            "colvisRestore": "보기 복원",
+            "copy": "복사"
+        },
+        "searchBuilder": {
+            "add": "조건 추가",
+            "button": {
+                "0": "빌더 조회",
+                "_": "빌더 조회(%d)"
+            },
+            "clearAll": "모두 지우기",
+            "condition": "조건",
+            "data": "데이터",
+            "deleteTitle": "필터 규칙을 삭제",
+            "logicAnd": "And",
+            "logicOr": "Or",
+            "title": {
+                "0": "빌더 조회",
+                "_": "빌더 조회(%d)"
+            },
+            "value": "값"
+        },
+        "autoFill": {
+            "cancel": "취소",
+            "fill": "모든 셀에서 <i>%d<i>을(를) 삽입<\/i><\/i>",
+            "fillHorizontal": "수평 셀에서 값을 삽입",
+            "fillVertical": "수직 설에서 값을 삽입"
+        }
+    }
+});
+
+/******************************************************
+ @ SWEET ALERT2 COMMON CONFIG
+ ******************************************************/
+
+/*
+    * SWEET ALERT 공통 설정
+    */
+const swal = Swal.mixin({
+    width: 320,
+    confirmButtonColor: '#5A75FF',
+    confirmButtonText: '확인'
+});
+
+const alert2 = (msg = "", fnSuccess) => {
+    if (typeof fnSuccess != "function") {
+        fnSuccess = function () {
+        };
+    }
+    swal.fire({
+        text: msg,
+        didClose: () => fnSuccess()
+    })
+}
+
+const confirm2 = (title, msg = "", fnSuccess, fnCancel) => {
+    if (!fnSuccess || typeof fnSuccess != "function") {
+        fnSuccess = () => {
+        };
+    }
+    if (!fnCancel || typeof fnSuccess != "function") {
+        fnCancel = () => {
+        };
+    }
+    swal.fire({
+        title: title,
+        text: msg,
+        showCancelButton: true,
+        scrollbarPadding: false,
+        allowOutsideClick: false,
+    })
+        .then((result) => {
+            if (result.value) {
+                fnSuccess();
+            } else {
+                fnCancel();
+            }
+        });
+}
+
+/******************************************************
+ @ Jquery Validation
+ ******************************************************/
+//validate 전화번호 형식 추가
+$.validator.addMethod("phone", function (phone_number, element) {
+    console.log(phone_number)
+    console.log(element)
+    phone_number = phone_number.replace(/\s+/g, "");
+    return this.optional(element) || phone_number.length > 9 && phone_number.match(/^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$/);
+}, "잘못된 입력 형식입니다");

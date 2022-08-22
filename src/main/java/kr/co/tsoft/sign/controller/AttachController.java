@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.tsoft.sign.service.AttachService;
+import kr.co.tsoft.sign.vo.ApiResponse;
+import kr.co.tsoft.sign.vo.ApiResponseData;
 
 @Controller
 @RequestMapping("/sign/attach")
@@ -52,20 +55,35 @@ public class AttachController {
 	}
 	
 	@PostMapping("/upload")
-	public String upload(@RequestParam Map<String, Object> param) {
+	@ResponseBody
+	public Map<String, Object> upload(@RequestParam Map<String, Object> param) {
 		logger.info("========upload========");
-		logger.info("param : {}", param);
-
 		Map<String, Object> resultMap = new HashMap<>();
 		
 		try {
 			resultMap = attachService.uploadAttachFile(param);
+			resultMap.put("result", true);
+			logger.debug("#### [ attach/upload ] resultMap : {}", resultMap);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			resultMap.put("result", false);
 		}
-		
-		return null;
+		return resultMap;
+	}
+	
+	@PostMapping("/scrap")
+	@ResponseBody
+	public ApiResponse<ApiResponseData.Scrap> scrapping(@RequestParam Map<String, Object> param) {
+		logger.info(" ##### [ attach/scrap] start scrap #####");
+		return attachService.scrapping(param);
+	}
+	
+	@PostMapping("/submission")
+	@ResponseBody
+	public Map<String, Object> submission() {
+		logger.info(" ##### [ attach/submission] start submission #####");
+		return attachService.submission();
 	}
 	
 }

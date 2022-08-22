@@ -33,4 +33,35 @@
         ,#{user}
         )
     </insert>
+
+    <!-- 파일경로 저장 -->
+    <insert id="insertFileUpload2" parameterType="kr.co.tsoft.sign.vo.admin.FormGridDto">
+        insert into FILE_MGMT
+        ( FILE_TP
+        <if test="contrcNo != null and contrcNo != ''">
+            ,CONTRC_NO
+        </if>
+        <if test="formNm != null and formNm != ''">
+            ,FORM_NM
+        </if>
+        ,ORG_FILE_NM
+        ,SAV_FILE_NM
+        ,FILE_PATH
+        ,REG_ID
+        ,MOD_ID
+        ) values (
+        #{fileTp}
+        <if test="contrcNo != null and contrcNo != ''">
+            ,#{contrcNo}
+        </if>
+        <if test="formNm != null and formNm != ''">
+            ,#{formNm}
+        </if>
+        ,#{orgFileNm}
+        ,#{savFileNm}
+        ,#{filePath}
+        ,#{regId}
+        ,#{modId}
+        )
+    </insert>
 </mapper>

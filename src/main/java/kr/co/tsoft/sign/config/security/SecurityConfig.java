@@ -79,7 +79,7 @@ public class SecurityConfig {
 
     @Configuration
     @Order(2)
-    public class SecurityAdminConfig extends WebSecurityConfigurerAdapter {
+    public static class SecurityAdminConfig extends WebSecurityConfigurerAdapter {
 
         @Override
         public void configure(WebSecurity web) throws Exception {

@@ -21,6 +21,7 @@
     <script src="/resources/sign/js/template.js"></script>
     <script src="/resources/sign/js/tsoft.js"></script>
     <script src="/resources/sign/js/sweetalert2.all.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
 <!-- wrap -->
@@ -61,5 +62,20 @@
 
 </script>
 </body>
+<style>
+.camera_container {
+	display: none;
+}
+.customCssCamera {
+	float:right;
+	margin-right:10px;
+	width: 40px;
+	height: 31px;
+	background-size: 230px 260px;
+}
+.customCssBtn_type4 {
+	background-color: #555 !important;
+}
+</style>
 </html>
 

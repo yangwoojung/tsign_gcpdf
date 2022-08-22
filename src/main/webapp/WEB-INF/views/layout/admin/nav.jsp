@@ -24,26 +24,17 @@
         <li>
             <a href="/admin/test">test</a>
         </li>
-        <!-- <li>
-            <a href="/admin/form/list">서식관리</a>
-        </li>
         <li>
-            <a href="#">개인정보취급관리</a>
-        </li>
-        <li>
-            <a href="#">로그인이력관리</a>
-        </li>-->
-        <li>
-            <a href="#">서식관리</a>
-            <div class="snb">
+            <a href="/admin/forms/page">서식관리</a>
+            <%--<div class="snb">
                 <ul>
-                    <li><a href="/admin/form/list">서식리스트</a></li>
+                    <li><a href="/admin/forms">서식리스트</a></li>
                     <li><a href="/admin/form/reg">서식등록</a></li>
                 </ul>
-            </div>
+            </div>--%>
         </li>
         <li>
-            <a href="#">계약관리</a>
+            <a href="/admin/contracts">계약관리</a>
             <div class="snb">
                 <ul>
                     <li><a href="/admin/contract/list">계약리스트</a></li>

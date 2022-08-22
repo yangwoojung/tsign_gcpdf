@@ -48,6 +48,7 @@
         WHERE 1=1
         <if test="searchWord != null and searchWord != ''">
             AND FORM_NM LIKE CONCAT('%',#{searchWord},'%')
+            OR SAV_FILE_NM LIKE CONCAT('%',#{searchWord},'%')
         </if>
         <if test="fileTp != null and fileTp != ''">
             AND FILE_TP = #{fileTp}
@@ -73,7 +74,7 @@
         FROM file_mgmt
         <include refid="where_condition_list"/>
         <if test="orderBy != null and orderBy != ''">
-            ORDER BY #{orderBy}
+            ORDER BY ${orderBy}
         </if>
         <![CDATA[ 	LIMIT #{length} OFFSET #{start} 		]]>
     </select>
@@ -82,14 +83,6 @@
         SELECT COUNT(1) AS ROW_COUNT FROM file_mgmt
         <include refid="where_condition_list"/>
     </select>
-
-
-<!--    <select id="countSelectFormList" resultType="int">-->
-<!--        SELECT COUNT(*) FROM file_mgmt-->
-<!--        <if test="searchWord != null and searchWord != ''">-->
-<!--            WHERE FORM_NM LIKE CONCAT('%',#{searchWord},'%')-->
-<!--        </if>-->
-<!--    </select>-->
 
     <!-- 원본서식 pdf -->
     <select id="selectContrcFormInfo" resultType="HashMap">

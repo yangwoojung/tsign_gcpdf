@@ -12,9 +12,6 @@ public interface FormMapper {
 
     List<FormGridDto> selectFormList(FormGridDto parameter);
     TotalRowCount countSelectFormList(FormGridDto parameter);
-//    List<Map<String, Object>> selectFormList(Map<String, Object> parameter);
-//
-//    int countSelectFormList(Map<String, Object> parameter);
 
     List<HashMap<String, Object>> selectContrcFormList(HashMap<String, String> paramMap);
 
