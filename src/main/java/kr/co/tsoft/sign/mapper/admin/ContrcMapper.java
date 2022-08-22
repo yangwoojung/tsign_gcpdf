@@ -21,6 +21,9 @@ public interface ContrcMapper {
 
     int updateContrcPin(HashMap<String, Object> pinParam);
 
-	ContrcMgmtVO selectContrcInfo2(String contractNo);
+    int updateContrcReg(ContractGridDto paramVO);
+
+    ContractGridDto selectContrcInfo2(ContractGridDto paramVO);
+
 
 }

@@ -21,18 +21,12 @@ public class AgreeController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @GetMapping
-    public ModelAndView agree(SecurityUtil su) {
+    public ModelAndView agree() {
         logger.info("=== sign/agree");
-        CommonUserDetails detail = su.getSignUserDetails();
-        Map<String, Object> user = SessionUtil.getUser();
-
-        logger.info("#### AGREE DETAIL : {} ", detail);
-        logger.info("#### AGREE USER : {} ", user);
+        CommonUserDetails detail = SessionUtil.getUser();
 
         ModelAndView mav = new ModelAndView("sign/agree");
-        mav.addObject("contrcNo", detail.getContractNo());
-        mav.addObject("userNm", detail.getUserNm());
-        mav.addObject("email", detail.getEmail());
+        mav.addObject("user", detail);
 
         return mav;
     }

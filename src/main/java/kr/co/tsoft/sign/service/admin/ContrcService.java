@@ -146,7 +146,4 @@ public class ContrcService {
 		return ContrcMapper.selectContrcInfo2(paramVO);
 	}
 
-	public ContrcMgmtVO selectContrcInfo2(String contractNo) {
-		return ContrcMapper.selectContrcInfo2(contractNo);
-	}
 }

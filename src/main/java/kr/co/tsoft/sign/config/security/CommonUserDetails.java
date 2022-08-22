@@ -17,7 +17,7 @@ public class CommonUserDetails implements UserDetails {
     private String adminNm;
     private String adminCellNo;
     // sign user info
-    private String contractNo;
+    private String contrcNo;
     private long fileSeq;
     private String userNm;
     private String cellNo;
@@ -33,7 +33,7 @@ public class CommonUserDetails implements UserDetails {
     //진행중 업데이트
     private String pdfPageCnt;        //계약서 pdf페이지 수
     private String contrcState;        //계약상태
-    private LinkedList<HashMap<String, String>> historyList = new LinkedList<>();
+    private String historyList;
     //본인인증
     private Date ctrtCfmDt;
     private Date ownSignDt;
@@ -101,12 +101,12 @@ public class CommonUserDetails implements UserDetails {
         this.adminCellNo = adminCellNo;
     }
 
-    public String getContractNo() {
-        return contractNo;
+    public String getContrcNo() {
+        return contrcNo;
     }
 
-    public void setContractNo(String contractNo) {
-        this.contractNo = contractNo;
+    public void setContrcNo(String contractNo) {
+        this.contrcNo = contrcNo;
     }
 
     public long getFileSeq() {
@@ -213,15 +213,11 @@ public class CommonUserDetails implements UserDetails {
         this.contrcState = contrcState;
     }
 
-    public LinkedList<HashMap<String, String>> getHistoryList() {
+    public String getHistoryList() {
         return historyList;
     }
 
-    public void setHistoryList(HashMap<String, String> map) {
-        this.historyList.add(map);
-    }
-
-    public void setHistoryList(LinkedList<HashMap<String, String>> historyList) {
+    public void setHistoryList(String historyList) {
         this.historyList = historyList;
     }
 

@@ -1,9 +1,5 @@
 package kr.co.tsoft.sign.controller;
 
-import java.util.HashMap;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import kr.co.tsoft.sign.config.security.CommonUserDetails;
+import kr.co.tsoft.sign.service.UserLoginService;
 import kr.co.tsoft.sign.service.admin.ContrcService;
 import kr.co.tsoft.sign.util.SessionUtil;
 import kr.co.tsoft.sign.util.StringMaskUtil;
@@ -26,6 +24,9 @@ public class CmiController {
 
     @Autowired
     ContrcService contrcService;
+    
+    @Autowired
+    UserLoginService userService;
     
     @Value("${spring.profiles.active}")
     private String active;
@@ -54,15 +55,24 @@ public class CmiController {
     @RequestMapping(value = "/cmi/{contractNo}", method = RequestMethod.GET)
     public String entry(@PathVariable(name = "contractNo", required = true) String contractNo, Model model) throws Exception {
         //vo 테스트
-        ContrcMgmtVO contrcVO = contrcService.selectContrcInfo2(contractNo);
-        logger.info(" ##### [CmiController > entry ] : {} #####", contrcVO);
+        ContrcMgmtVO contrcVO = userService.selectContractInfoForVO(contractNo);
+        
+        logger.info("contrcVO : {}", contrcVO);
 
         String cell_no_mask = StringMaskUtil.maskPhone(contrcVO.getCellNo());
         contrcVO.setCellNoMask(cell_no_mask);
+        
+        CommonUserDetails user = new CommonUserDetails();
+        //TODO: contrcVO에 있는 user정보 CommonUserDetails에 옮겨담기
+        	user.setContrcNo(contrcVO.getContrcNo());
+        	user.setFileSeq(contrcVO.getFileSeq());
+        	user.setUserNm(contrcVO.getUserNm());
+        	user.setCellNo(contrcVO.getCellNo());
+        	user.setEmail(contrcVO.getEmail());
+        	user.setSignDueSdate(contrcVO.getSignDueSdate());
+        	user.setSignDueEdate(contrcVO.getSignDueEdate());
 
-        logger.info(" ##### [CmiController > entry + cell_no_mask ] : {} #####", contrcVO);
-
-        SessionUtil.setUser(contrcVO);
+        SessionUtil.setUser(user);
         
         logger.info("#### INIT SESSION ID : {}", SessionUtil.getSessionId());
         model.addAttribute("user", contrcVO);
