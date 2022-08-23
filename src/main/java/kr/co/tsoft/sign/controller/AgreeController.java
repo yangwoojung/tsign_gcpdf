@@ -24,7 +24,7 @@ public class AgreeController {
     public ModelAndView agree(SecurityUtil su) {
         logger.info("=== sign/agree");
         CommonUserDetails detail = su.getSignUserDetails();
-        Map<String, Object> user = SessionUtil.getUser();
+        CommonUserDetails user = SessionUtil.getUser();
 
         logger.info("#### AGREE DETAIL : {} ", detail);
         logger.info("#### AGREE USER : {} ", user);

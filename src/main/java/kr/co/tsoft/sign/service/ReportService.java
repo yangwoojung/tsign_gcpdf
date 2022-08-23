@@ -287,8 +287,8 @@ public class ReportService {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 
-		Map<String, Object> user = SessionUtil.getUser();
-		String contNo = (String) user.get("CONTRC_NO");
+		CommonUserDetails user = SessionUtil.getUser();
+		String contNo = user.getContractNo();
 		
 		String repKey = (String) param.get("repKey");
 		log.debug("repKey : " + repKey);

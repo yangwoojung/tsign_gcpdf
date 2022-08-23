@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import kr.co.tsoft.sign.config.security.CommonUserDetails;
 import kr.co.tsoft.sign.service.admin.ContrcService;
 import kr.co.tsoft.sign.util.FileUtil;
 import kr.co.tsoft.sign.util.MailHandler;
@@ -64,12 +65,12 @@ public class AttachService {
 
 		logger.info("##### [attach > uploadAttachFile Service] #####");
 
-		Map<String, Object> user = SessionUtil.getUser();
+		CommonUserDetails user = SessionUtil.getUser();
 		Map<String, Object> resultMap = new HashMap<>();
 
 		String attachCd = (String) param.get("attach_cd");
 		String attachChildId = (String) param.get("attach_child_id");
-		String contNo = (String) user.get("CONTRC_NO");
+		String contNo = user.getContractNo();
 
 		String imgNm = contNo + "_" + attachCd + "_" + attachChildId;
 		String img = (String) param.get("fileData");
@@ -169,12 +170,8 @@ public class AttachService {
 	}
 
 	public Map<String, Object> submission() {
-		Map<String, Object> user = SessionUtil.getUser();
-		String contNo = (String) user.get("CONTRC_NO");
-//		ContrcMgmtVO contrMgmt;
-//		user = contrcService.selectContrcInfo(contNo);
-		
-		
+		CommonUserDetails user = SessionUtil.getUser();
+		String contNo = user.getContractNo();		
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		String filePath = CONTRACT_PATH + contNo;

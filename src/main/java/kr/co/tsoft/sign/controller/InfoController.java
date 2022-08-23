@@ -23,13 +23,12 @@ public class InfoController {
     @GetMapping
     public ModelAndView agree(SecurityUtil su) {
         logger.info("=== sign/info");
-        CommonUserDetails detail = su.getSignUserDetails();
-        Map<String, Object> user = SessionUtil.getUser();
+        CommonUserDetails detail = SessionUtil.getUser();
 
         logger.info("#### AGREE DETAIL : {} ", detail);
-        logger.info("#### AGREE USER : {} ", user);
 
         ModelAndView mav = new ModelAndView("sign/info");
+        
         mav.addObject("contrcNo", detail.getContractNo());
         mav.addObject("userNm", detail.getUserNm());
         mav.addObject("email", detail.getEmail());
