@@ -39,10 +39,11 @@
 
 <script>
 
-    const maskedCellNo = '${user.CELL_NO_MASK }';
+    const MAKSED_CELL_NO = '${user.CELL_NO_MASK }';
+    const ACTIVE_PROFILE = '${profilesActive}';
 
     $(function() {
-        $('#cellNo').val(phoneFormat(maskedCellNo));
+        $('#cellNo').val(phoneFormat(MAKSED_CELL_NO));
 
         $('#cellNoLast').on('change keyup', function(){
             const isValid = this.value.length === 4;
@@ -52,8 +53,11 @@
         });
 
         $('#nextBtn').on('click', function(){
-            // checkCellNo();
-            fnCertificationClose('0000', 'idseed');
+            if(ACTIVE_PROFILE === 'local') {
+                fnCertificationClose('0000', 'idseed');
+            } else {
+                checkCellNo();
+            }
         });
     });
 
@@ -70,7 +74,7 @@
         };
 
         ComUtil.request(requestMap, function(data) {
-            if(data?.resultCd == '0000'){
+            if(data?.resultCd === '0000'){
                 ComUtil.certPhone();
             } else {
                 alert(data.resultMsg);
@@ -81,8 +85,8 @@
 
     // 본인인증 팝업 종료 시 응답 함수
     function fnCertificationClose(status, type) {
-        if (type == 'idseed') {
-            if (status == '0000') {
+        if (type === 'idseed') {
+            if (status === '0000') {
 
                 let newForm = $('<form></form>');
                 newForm.attr("method","post");
@@ -96,7 +100,7 @@
                 // submit form
                 newForm.submit();
 
-            } else if (status == '0001') {
+            } else if (status === '0001') {
                 alert('등록된 고객정보와 인증한 정보가 서로 다릅니다.');
             }
         }
