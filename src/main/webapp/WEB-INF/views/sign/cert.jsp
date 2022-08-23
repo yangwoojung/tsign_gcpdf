@@ -1,22 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html lang="ko">
-<body>
-<!-- wrap -->
-<div id="wrap">
 
-    <!-- header -->
     <header>
-        <h2 class="title">(주)티소프트 전자계약</h2>
+        <h2 class="title">본인인증</h2>
     </header>
-    <!-- //header -->
 
     <!-- container -->
     <div id="container">
 
         <!-- cont_area -->
         <div class="cont_area">
-            <div class="txt_msg_box cont">계약자의 휴대폰번호 뒷 4자리를 입력하신 후 휴대폰 본인인증을 해주세요.</div>
+            <div class="txt_msg_box cont">계약자의 휴대폰 번호 <span class="point">뒤 4자리를 입력</span>하신 후<br>휴대폰 <span class="point">본인인증</span>을 해주세요.</div>
+            <div class="progress">
+                <div class="box-progress-bar">
+                    <span class="box-progress" style="width: 25%;"></span>
+                </div>
+                <div class="number">
+                    <span class="active">1</span>/4
+                </div>
+            </div>
             <div class="form_box sub">
                 <dl class="list">
                     <dt>휴대폰번호</dt>
@@ -27,33 +28,44 @@
                 <dl class="list">
                     <dt>뒤 4자리</dt>
                     <dd>
-                        <input id="cellNoLast" name="cellNoLast" type="text" class="input_ty" value="" maxlength="4"/>
+                        <input id="cellNoLast" name="cellNoLast" type="tel" class="input_ty" maxlength="4"/>
                     </dd>
                 </dl>
-            </div>
-            <div class="btn_area">
-                <a href="javascript:void(0);" class="btn_m btn_ty02" onclick="checkCellNo()">휴대폰본인인증</a>
             </div>
         </div>
         <!-- //cont_area -->
     </div>
     <!-- //container -->
 
-</div>
-<!-- //wrap -->
+<script>
 
-</body>
-<script type="text/javascript">
-
+<<<<<<< HEAD
 	const user = '${user}';
 	const maskedCellNo = '${user.cellNoMask}';
     $(function () {
+=======
+    const maskedCellNo = '${user.CELL_NO_MASK }';
+
+    $(function() {
+>>>>>>> b6de373ff4a2323481c8429aeb95d13ecd81b474
         $('#cellNo').val(phoneFormat(maskedCellNo));
+
+        $('#cellNoLast').on('change keyup', function(){
+            const isValid = this.value.length === 4;
+            $('#nextBtn').attr('disabled', !isValid);
+
+            if(isValid) ComUtil.hideKeyboard($(this));
+        });
+
+        $('#nextBtn').on('click', function(){
+            // checkCellNo();
+            fnCertificationClose('0000', 'idseed');
+        });
     });
 
     const checkCellNo = () => {
         const cellNoLast = $('#cellNoLast').val();
-        if(cellNoLast?.length != 4) {
+        if(cellNoLast?.length !== 4) {
             return alert("휴대폰번호 뒷 4자리를 입력해주세요.");
         }
 
@@ -76,8 +88,13 @@
 
     }
 
+<<<<<<< HEAD
  //   본인인증 팝업 종료 시 응답 함수
     function fnCertificationClose(status, type) {
+=======
+    // 본인인증 팝업 종료 시 응답 함수
+    const fnCertificationClose = (status, type) => {
+>>>>>>> b6de373ff4a2323481c8429aeb95d13ecd81b474
         if (type == 'idseed') {
             if (status == '0000') {
 
@@ -97,7 +114,6 @@
                 alert('등록된 고객정보와 인증한 정보가 서로 다릅니다.');
             }
         }
-    };
+    }
 
 </script>
-</html>

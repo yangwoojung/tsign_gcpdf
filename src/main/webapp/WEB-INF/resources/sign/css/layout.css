@@ -2,14 +2,16 @@
 /*
     Layout.css
 */
-
 /***** layout *****/
+html {
+    height: calc(var(--vh, 1vh) * 100);
+}
 body {
     min-width: 320px;
-    background: #f6f6f6;
-    color: #666;
+    background: #fff;
+    color: #222;
     font-family: 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     line-height: 20px;
     -webkit-text-size-adjust: none;
@@ -17,19 +19,19 @@ body {
     word-wrap: break-word;
     word-break: keep-all;
     white-space: normal;
-    overflow-y: scroll;
+/*    overflow-y: auto;*/
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    position: relative;
 }
 
 body.pop {
     background: #fff;
 }
 
-body.bg {
-    background: #189AAD;
-}
 
 body.bg #wrap {
-    background: #189AAD;
+    /*background: #189AAD;*/
 }
 
 #wrap {
@@ -38,21 +40,21 @@ body.bg #wrap {
     max-width: 770px;
     margin: 0 auto;
     background: #fff;
-    overflow: hidden;
+    padding-bottom: 80px;
 }
 
+.point {color: #e11f27;}
 /*** Header ***/
 header {
-    position: fixed;
-    left: 0;
-    top: 0;
     width: 100%;
     max-width: 770px;
     height: 50px;
-    background: #189AAD;
     z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
 }
-
+/*
 header:before {
     position: absolute;
     left: 0;
@@ -61,7 +63,7 @@ header:before {
     height: 1px;
     background: rgba(255, 255, 255, 0.1);
     content: "";
-}
+}*/
 
 header .logo {
     position: absolute;
@@ -87,12 +89,12 @@ header .logo_s {
 
 header .title {
     position: relative;
-    padding: 0;
-    color: #fff;
-    font-size: 18px;
-    font-weight: 900;
-    line-height: 50px;
+    padding: 0 12px;
+    color: #222;
+    font-size: 20px;
+    font-weight: bold;
     text-align: center;
+    letter-spacing: -0.3px;
 }
 
 header .btn_back {
@@ -253,11 +255,39 @@ header .txt_app {
 /** cont_area **/
 .cont_area {
     position: relative;
-    padding: 30px 15px 20px 15px;
+    padding: 0 20px;
 }
 
+.progress {
+    display: flex;
+    justify-content: center;
+}
+.box-progress-bar {
+    width: 90px;
+    height: 3px;
+    border-radius: 8px;
+    background-color: #efefef;
+    margin: 8px 0;
+}
+
+.box-progress {
+    display: block;
+    height: 3px;
+    border-radius: 8px;
+    background-color: #e11f27;
+}
+.number {
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #aeaeae;
+    padding-left: 12px;
+}
+.active {
+    font-weight: bold;
+    color: #000;
+}
 .cont {
-    margin-bottom: 36px;
+    margin-bottom: 5px;
 }
 
 .cont:last-child {
@@ -415,7 +445,7 @@ header .txt_app {
 }
 
 .page_tab ul li.actived {
-    border-bottom-color: #189AAD
+    /*border-bottom-color: #189AAD*/
 }
 
 .page_tab ul li.actived a {
@@ -472,7 +502,7 @@ header .txt_app {
     position: relative;
     min-height: 400px;
     padding: 22px 15px 50px 15px;
-    background: #189AAD;
+    /*background: #189AAD;*/
     box-sizing: border-box;
     color: #fff;
 }
@@ -640,18 +670,27 @@ header .txt_app {
 
 /*** Footer ***/
 footer {
-    position: relative;
-    padding: 25px 15px;
-    background: #f6f6f6;
+    position: fixed;
+    padding: 0 10px;
     box-sizing: border-box;
-    font-size: 12px;
+    font-size: 10px;
     line-height: 18px;
     text-align: center;
-    text-transform: uppercase;
+    color: #aeaeae;
+    background: linear-gradient(to top, #fff 80%, transparent 100%);
+    height: 80px;
+    bottom:0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+footer .btn_area {
+    width: 100%;
+}
 footer .copyright {
-    margin: -5px 0;
+    padding: 20px 0;
 }
 
 footer .btn_pc_view {
@@ -677,7 +716,7 @@ footer.app_footer {
     position: relative;
     height: 51px;
     padding: 0;
-    background: #189AAD url(/resources/sign/images/layout/txt_footer_app.png) center/220px 50px no-repeat;
+    /*background: #189AAD url(/resources/sign/images/layout/txt_footer_app.png) center/220px 50px no-repeat;*/
 }
 
 footer.app_footer:before {
@@ -939,28 +978,28 @@ footer .lang_select a:after {
 /** box_ty **/
 .box_ty {
     position: relative;
-    padding: 15px;
-    background: #f8f8f8;
-    border-top: 1px solid #ccc;
+    padding: 15px 0 0 0;
     box-sizing: border-box;
+    border-top: 1px solid #ddd;
 }
 
 .box_ty .list li {
     position: relative;
-    margin-top: 15px;
-    padding-right: 55px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
 }
 
 .box_ty .list li:first-child {
     margin-top: 0;
 }
-
-.box_ty .list li .btn {
-    position: absolute;
-    right: 0;
-    top: 0;
+.popOpen {
+    padding-right: 10px;
 }
-
+.popOpen a {
+    display: block;
+}
 .box_ty .list li .btn a {
     display: block;
     width: 50px;
@@ -1026,7 +1065,6 @@ footer .lang_select a:after {
 /*** Btn ***/
 /** btn_area **/
 .btn_area {
-    margin: 25px -5px 0 -5px;
     font-size: 0;
 }
 
@@ -1037,14 +1075,14 @@ footer .lang_select a:after {
 
 .btn_area a:only-child {
     display: block;
-    width: calc(100% - 10px);
-    margin: 0 5px;
+    width: calc(100% - 20px);
+    margin: 0 10px;
 }
 
 .btn_area button:only-child {
     display: block;
-    width: calc(100% - 10px);
-    margin: 0 5px;
+    width: calc(100% - 20px);
+    margin: 0 10px;
 }
 
 /** btn_area_s **/
@@ -1102,10 +1140,10 @@ footer .lang_select a:after {
 .btn_m {
     display: inline-block;
     width: 100%;
-    height: 50px;
-    font-size: 16px;
-    font-weight: 900;
-    line-height: 50px;
+    height: 46px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 46px;
     text-align: center;
 }
 
@@ -1155,9 +1193,15 @@ footer .lang_select a:after {
 }
 
 .btn_ty02 {
-    background: #189AAD;
+    background: #e11f27;
     color: #fff;
     transition: all 0.4s;
+    border-radius: 8px;
+}
+
+.btn_ty02[disabled] {
+    opacity: 0.4;
+    /*background: #d0d0d0;*/
 }
 
 .btn_ty02:focus {
@@ -1170,7 +1214,7 @@ footer .lang_select a:after {
 
 .btn_ty03 {
     background: #fff;
-    border: 1px solid #189AAD;
+    /*border: 1px solid #189AAD;*/
     box-sizing: border-box;
     color: #189AAD;
     transition: all 0.4s;
@@ -1229,4 +1273,38 @@ footer .lang_select a:after {
 
 .mb02 {
     margin-bottom: 10px
+}
+
+.exImg-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+}
+.exImg-wrap > div {
+    background: #222;
+    margin: 0 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.exImg-wrap .horizontal {
+    width: 55%;
+    height: 120px;
+}
+.exImg-wrap .vertical {
+    width: 28%;
+    height: 120px;
+}
+.exImg-wrap .frame {
+    width: 90%;
+    height: 90%;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: space-between;
+    flex-grow: 2;
+}
+.exImg-wrap .frame > div {
+    border: 1px solid #fff;
+    width: 10px;
+    height: 10px;
 }

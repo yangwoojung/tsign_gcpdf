@@ -13,7 +13,7 @@
     padding: 0;
     overflow: hidden;
     z-index: 10;
-    min-height: 800px;
+    /*min-height: 800px;*/
 }
 
 .ts_popup .inner {
@@ -30,4 +30,129 @@
     overflow: hidden;
     z-index: 10;
     min-height: 800px;
+}
+
+.ts_popup iframe {
+    background: #fff;
+}
+
+h2.popTitle {
+    font-size: 16px;
+    font-weight: bold;
+    color: #222;
+    border-bottom: 1px solid #ddd;
+    line-height: 38px;
+    padding: 35px 0 5px 0;
+    letter-spacing: -0.3px;
+    font-style: normal;
+    margin: 0;
+}
+
+.pop {
+    padding: 34px 0 80px 0;
+}
+.pop .btn_area {
+    width: 100%;
+    display: flex;
+    height: 80px;
+    position: fixed;
+    bottom: 0;
+    align-items: center;
+    background: linear-gradient(to top, #fff 80%, transparent 100%);
+}
+.pop .btn_m {
+    display: block;
+    width: calc(100% - 40px);
+    height: 46px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 46px;
+    text-align: center;
+}
+
+.pop .btn_ty02 {
+    background: #e11f27;
+    color: #fff;
+    transition: all 0.4s;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.pop p {
+    font-weight: bold;
+    letter-spacing: -0.3px;
+}
+
+.pop .subTitle p {
+    font-size: 14px;
+}
+
+.pop .popList {
+    margin-top: 30px;
+}
+
+.pop .popList p {
+    font-size: 12.5px;
+    margin: 0;
+}
+.pop .popList ul {
+    list-style: none;
+    padding-left: 15px;
+    margin: 10px 0;
+}
+.pop .popList li {
+    font-size: 11px;
+    margin: 8px 0;
+    display: flex;
+    word-break: keep-all;
+    letter-spacing: -0.2px;
+}
+.pop .popList li:before {
+    line-height: 13px;
+    margin-right: 5px;
+}
+.pop .popList li:first-of-type:before {
+    content: '①';
+}
+.pop .popList li:nth-of-type(2):before {
+    content: '②';
+}
+.pop .popList li:nth-of-type(3):before {
+    content: '③';
+}
+.pop .popList li:nth-of-type(4):before {
+    content: '④';
+}
+.pop .popList li:nth-of-type(5):before {
+    content: '⑤';
+}
+.pop .popList li:nth-of-type(6):before {
+    content: '⑥';
+}
+.pop .popList li:nth-of-type(7):before {
+    content: '⑦';
+}
+.pop .popList li:nth-of-type(8):before {
+    content: '⑧';
+}
+.pop .popList li:nth-of-type(9):before {
+    content: '⑨';
+}
+.pop .popList li:nth-of-type(10):before {
+    content: '⑩';
+}
+.pop .popList li:nth-of-type(11):before {
+    content: '⑪';
+}
+.pop .popList li:nth-of-type(12):before {
+    content: '⑫';
+}
+.pop .popList li:nth-of-type(13):before {
+    content: '⑬';
+}
+.pop .popList li:nth-of-type(14):before {
+    content: '⑭';
+}
+.pop .popList li:nth-of-type(15):before {
+    content: '⑮';
 }

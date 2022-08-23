@@ -6,20 +6,17 @@
 
     <!-- sign -->
     <definition name="sign" template="/WEB-INF/views/layout/sign/default.jsp">
-        <put-attribute name="header" value="/WEB-INF/views/layout/sign/header.jsp"/>
         <put-attribute name="footer" value="/WEB-INF/views/layout/sign/footer.jsp"/>
     </definition>
-    
+
+    <definition name="sign/agreePop1" template="/WEB-INF/views/layout/sign/single.jsp">
+        <put-attribute name="container" expression="/WEB-INF/views/sign/agreePop1.jsp"/>
+    </definition>
+
     <definition name="sign/*" extends="sign">
-        <put-attribute name="pageTab" value="/WEB-INF/views/layout/sign/pageTab.jsp"/>
         <put-attribute name="container" expression="/WEB-INF/views/sign/{1}.jsp"/>
     </definition>
 
-   	<!-- attachPop -->
-	<definition name="sign/attach/attachPop" extends="sign">
-     	<put-attribute name="container" expression="/WEB-INF/views/sign/attach/attachPop.jsp"/>
-    </definition>
-    
 	<!-- error -->
 	<definition name="sign/error/*" extends="sign">
      	<put-attribute name="container" expression="/WEB-INF/views/sign/error/{1}.jsp"/>
@@ -31,7 +28,6 @@
     </definition>
 
     <definition name="sign/*/*" extends="sign">
-        <put-attribute name="pageTab" value="/WEB-INF/views/layout/sign/pageTab.jsp"/>
         <put-attribute name="container" expression="/WEB-INF/views/sign/{1}/{2}.jsp"/>
     </definition>
     
