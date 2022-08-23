@@ -156,9 +156,9 @@
                         <canvas id="signCanvas"></canvas>
                     </div>
                     <!-- //sign_area -->
-                    <p class="t_text">
-                        * 위 서명란에 자필서명해 주세요 (예 : 홍길동)<br/>
-                    </p>
+                    <ul class="description">
+                        <li>위 서명란에 자필서명해 주세요 (예 : 홍길동)</li>
+                    </ul>
                 </div>
             </form>
             <!-- //form_box -->
@@ -167,14 +167,21 @@
     <!-- //cont_area -->
 </div>
 <!-- //container -->
-<script src="/resources/sign/js/fabric.js"></script>
+
+<footer>
+    <div class="btn_area">
+        <a href="javascript:" id="nextBtn" class="btn_m btn_ty02" disabled="">다음</a>
+    </div>
+</footer>
+
+<script src="${pageContext.request.contextPath}/resources/sign/js/fabric.js"></script>
 <script>
 
     $(function () {
 
         $('#nextBtn').on('click', function () {
-            $('#submitReportForm').trigger('click');
-            // location.href = '/sign/attach/attachPop'
+            // $('#submitReportForm').trigger('click');
+            location.href = '/sign/attach'
         });
 
         initSignCanvas();

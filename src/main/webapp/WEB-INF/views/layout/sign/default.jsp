@@ -10,32 +10,29 @@
     <meta name="theme-color" content="#fff">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>(주)티소프트 전자계약</title>
-    <link rel="shortcut icon" href="/resources/sign/images/layout/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="/resources/sign/images/layout/apple-touch-icon.png">
-    <link rel="stylesheet" type="text/css" href="/resources/sign/css/style.css">
-    <link rel="stylesheet" type="text/css" href="/resources/sign/css/tsoft.css">
-    <script src="/resources/sign/js/jquery-1.12.4.min.js"></script>
-    <script src="/resources/sign/js/jquery-ui.js"></script>
-    <script src="/resources/sign/js/ui.js"></script>
-    <script src="/resources/sign/js/common.js"></script>
-    <script src="/resources/sign/js/template.js"></script>
-    <script src="/resources/sign/js/tsoft.js"></script>
-    <script src="/resources/sign/js/sweetalert2.all.min.js"></script>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/sign/images/layout/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/sign/images/layout/apple-touch-icon.png">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/sign/css/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/sign/css/tsoft.css">
+    <script src="${pageContext.request.contextPath}/resources/sign/js/jquery-1.12.4.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/sign/js/jquery-ui.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/sign/js/ui.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/sign/js/common.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/sign/js/template.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/sign/js/tsoft.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/sign/js/sweetalert2.all.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
 <!-- wrap -->
 <div id="wrap">
-    <section id="contents">
-        <tiles:insertAttribute name="container"/>
-    </section>
+    <tiles:insertAttribute name="container"/>
 </div>
 <!-- //wrap -->
-<tiles:insertAttribute name="footer"/>
 
 <div id="idPopup" class="ts_popup">
     <script type="text/javascript">
-        $(function() {
+        $(function () {
             $("#idPopup").tsPopup();
         });
     </script>
@@ -43,11 +40,10 @@
 <div id="idPopup2" class="ts_popup"></div>
 
 <script>
-    /* jshint esversion: 6 */
     const cpath = '${pageContext.request.contextPath}';
 
     history.pushState(null, null, location.href);
-    window.onpopstate = function() {
+    window.onpopstate = function () {
         history.go(1);
     };
 
@@ -62,19 +58,4 @@
 
 </script>
 </body>
-<style>
-.camera_container {
-	display: none;
-}
-.customCssCamera {
-	float:right;
-	margin-right:10px;
-	width: 40px;
-	height: 31px;
-	background-size: 230px 260px;
-}
-.customCssBtn_type4 {
-	background-color: #555 !important;
-}
-</style>
 </html>

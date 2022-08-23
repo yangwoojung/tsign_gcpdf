@@ -116,6 +116,12 @@
 </div>
 <!-- //container -->
 
+<footer>
+    <div class="btn_area">
+        <a href="javascript:" id="nextBtn" class="btn_m btn_ty02" disabled="">다음</a>
+    </div>
+</footer>
+
 <script>
 
     $(function () {

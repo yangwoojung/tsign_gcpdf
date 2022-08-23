@@ -37,6 +37,13 @@
     </div>
     <!-- //container -->
 
+    <footer>
+        <div class="btn_area">
+            <a href="javascript:" id="nextBtn" class="btn_m btn_ty02" disabled="">다음</a>
+        </div>
+    </footer>
+
+
 <script>
 	
     const MAKSED_CELL_NO = '${user.cellNoMask}';
