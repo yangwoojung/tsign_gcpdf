@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.text.Normalizer;
 import java.util.*;
 
 @Component
@@ -61,7 +60,7 @@ public class MultipartFileHandler {
 
         String orgFileName = multipartFile.getOriginalFilename();
         String savedName = UUID.randomUUID().toString();
-        String pathByFileType = findPathByFileType(form.getFileTp());
+        String pathByFileType = findPathByFileType(form.getFileType());
         String finalPath = uploadDir + File.separatorChar + pathByFileType + File.separatorChar;
 
         form.setOrgFileNm(orgFileName);

@@ -3,39 +3,12 @@
 
 <mapper namespace="kr.co.tsoft.sign.mapper.UserLoginMapper">
 
-    <select id="selectContractInfo" parameterType="HashMap" resultType="HashMap">
-        SELECT
-            /** [SIGN].[selectContractInfo] */
-            CONTRC_NO
-             , FILE_SEQ
-             , PIN_NO
-             , USER_NM
-             , CELL_NO
-             , EMAIL
-             , SIGN_DUE_SDATE
-             , SIGN_DUE_EDATE
-             , IN_SIGN_DATE
-        FROM tsign.CONTRC_MGMT
-        WHERE 1 = 1
-          AND USE_YN = 'Y'
-          AND CONTRC_NO = #{contrc_no}
-    </select>
-    
     <select id="selectContractInfoForVO" resultType="kr.co.tsoft.sign.vo.ContrcMgmtVO">
+        /** [SIGN].[selectContractInfoForVO] */
         SELECT
-            /** [SIGN].[selectContractInfoForVO] */
-            CONTRC_NO
-             , FILE_SEQ
-             , PIN_NO
-             , USER_NM
-             , CELL_NO
-             , EMAIL
-             , SIGN_DUE_SDATE
-             , SIGN_DUE_EDATE
-             , IN_SIGN_DATE
-        FROM tsign.CONTRC_MGMT
-        WHERE 1 = 1
-          AND USE_YN = 'Y'
-          AND CONTRC_NO = #{contractNo}
+          *
+        FROM contrc_mgmt
+        WHERE USE_YN = 'Y'
+          AND CONTRACT_NO = #{contractNo}
     </select>
 </mapper>

@@ -1,9 +1,11 @@
 package kr.co.tsoft.sign.controller;
 
-import java.util.HashMap;
-
-import javax.servlet.http.HttpServletRequest;
-
+import kr.co.tsoft.sign.config.security.CommonUserDetails;
+import kr.co.tsoft.sign.service.UserLoginService;
+import kr.co.tsoft.sign.service.admin.ContrcService;
+import kr.co.tsoft.sign.util.SessionUtil;
+import kr.co.tsoft.sign.util.StringMaskUtil;
+import kr.co.tsoft.sign.vo.ContrcMgmtVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import kr.co.tsoft.sign.config.security.CommonUserDetails;
-import kr.co.tsoft.sign.service.UserLoginService;
-import kr.co.tsoft.sign.service.admin.ContrcService;
-import kr.co.tsoft.sign.util.SessionUtil;
-import kr.co.tsoft.sign.util.StringMaskUtil;
-import kr.co.tsoft.sign.vo.ContrcMgmtVO;
 
 @Controller
 public class CmiController {
@@ -47,7 +42,7 @@ public class CmiController {
         logger.info("contrcVO : {}", contrcVO);
         
         CommonUserDetails user = CommonUserDetails.builder()
-        											.contractNo(contrcVO.getContrcNo())
+        											.contractNo(contrcVO.getContractNo())
         											.fileSeq(contrcVO.getFileSeq())
         											.userNm(contrcVO.getUserNm())
         											.cellNo(contrcVO.getCellNo())
@@ -62,19 +57,6 @@ public class CmiController {
         model.addAttribute("profilesActive", active);
 
         return "sign/cert";
-    }
-
-    @RequestMapping(value = "/sign/pin")
-    public String signPin(HttpServletRequest req, Model model) throws Exception {
-
-        @SuppressWarnings("unchecked")
-        HashMap<String, Object> user = (HashMap<String, Object>) req.getAttribute("user");
-
-        String cell_no_mask = StringMaskUtil.maskPhone((String) user.get("CELL_NO"));
-        user.put("CELL_NO_MASK", cell_no_mask);
-        model.addAttribute("user", user);
-
-        return "sign/pin";
     }
 
 }

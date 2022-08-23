@@ -1,8 +1,8 @@
 package kr.co.tsoft.sign.config.security;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import kr.co.tsoft.sign.mapper.UserLoginMapper;
+import kr.co.tsoft.sign.service.UserLoginService;
+import kr.co.tsoft.sign.vo.ContrcMgmtVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import kr.co.tsoft.sign.mapper.UserLoginMapper;
-import kr.co.tsoft.sign.service.UserLoginService;
-import kr.co.tsoft.sign.vo.ContrcMgmtVO;
+import java.util.ArrayList;
 
 @Service
 public class SignUserDetailsService implements UserDetailsService {
@@ -43,8 +41,8 @@ public class SignUserDetailsService implements UserDetailsService {
 		
 		CommonUserDetails userDetails = CommonUserDetails.builder()
 														.authorities(authorities)
-														.username(contractInfo.getContrcNo())
-														.contractNo(contractInfo.getContrcNo())
+														.username(contractInfo.getContractNo())
+														.contractNo(contractInfo.getContractNo())
 														.userNm(contractInfo.getUserNm())
 														.cellNo(contractInfo.getCellNo())
 														.email(contractInfo.getEmail())

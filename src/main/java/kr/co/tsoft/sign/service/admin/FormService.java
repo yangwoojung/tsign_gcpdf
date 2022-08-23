@@ -8,13 +8,10 @@ import kr.co.tsoft.sign.vo.admin.FormGridDto;
 import kr.co.tsoft.sign.vo.common.GridResponse;
 import kr.co.tsoft.sign.vo.common.TotalRowCount;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -60,7 +57,7 @@ public class FormService {
     public FormGridDto insertForm(FormGridDto form) throws Exception {
 
         //원본 계약서(100), 원본 추적표(101), 생성된 계약서(102), 생성된 추적표(103)
-        form.setFileTp("100");
+        form.setFileType("100");
 
         // 서버에 파일 저장
         form = multipartFileHandler.handleFiles(form);

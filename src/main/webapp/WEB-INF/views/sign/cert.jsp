@@ -94,7 +94,7 @@
                 newForm.attr("method","post");
                 newForm.attr("action","/sign/authenticate");
 
-                newForm.append($('<input/>', {type: 'hidden', name: 'c', value:'${user.contrcNo}' }));
+                newForm.append($('<input/>', {type: 'hidden', name: 'c', value:'${user.contractNo}' }));
                 newForm.append($('<input/>', {type: 'hidden', name: 'p', value:$('#cellNoLast').val() }));
 
                 newForm.appendTo('body');

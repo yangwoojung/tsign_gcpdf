@@ -3,74 +3,21 @@
 
 <mapper namespace="kr.co.tsoft.sign.mapper.admin.FormMapper">
 
-    <!--    <select id="selectFormList" parameterType="HashMap" resultType="HashMap">-->
-    <!--        /** [SIGN].[FormMapper.selectFileList] */-->
-
-    <!--        select B.* from (-->
-    <!--        SELECT A.*-->
-    <!--        <![CDATA[-->
-    <!--				,(@row_number := @row_number + 1) RN-->
-    <!--				]]>-->
-    <!--        FROM (SELECT-->
-    <!--        FILE_SEQ-->
-    <!--        ,FILE_TP-->
-    <!--        ,CONTRC_NO-->
-    <!--        ,FORM_NM-->
-    <!--        ,ORG_FILE_NM-->
-    <!--        ,SAV_FILE_NM-->
-    <!--        ,FILE_PATH-->
-    <!--        ,USE_YN-->
-    <!--        ,REG_DATE-->
-    <!--        ,REG_ID-->
-    <!--        ,MOD_DATE-->
-    <!--        ,MOD_ID-->
-    <!--        FROM file_mgmt-->
-    <!--        <![CDATA[-->
-    <!--							  ,(SELECT @row_number := 0) AA-->
-    <!--						]]>-->
-    <!--        WHERE 1=1-->
-    <!--        <if test="searchWord != null and searchWord != ''">-->
-    <!--            AND FORM_NM LIKE CONCAT('%',#{searchWord},'%')-->
-    <!--        </if>-->
-    <!--        <if test="fileType != null and fileType != ''">-->
-    <!--            AND FILE_TP = #{fileType}-->
-    <!--        </if>-->
-    <!--        ORDER BY FILE_SEQ desc-->
-    <!--        ) A-->
-    <!--        ) B-->
-    <!--        <![CDATA[-->
-    <!--		WHERE B.RN >= #{pagingVO.start}-->
-    <!--		  AND B.RN <= #{pagingVO.end}	  -->
-    <!--		]]>-->
-    <!--    </select>-->
-
     <sql id="where_condition_list">
         WHERE 1=1
         <if test="searchWord != null and searchWord != ''">
             AND FORM_NM LIKE CONCAT('%',#{searchWord},'%')
             OR SAV_FILE_NM LIKE CONCAT('%',#{searchWord},'%')
         </if>
-        <if test="fileTp != null and fileTp != ''">
-            AND FILE_TP = #{fileTp}
+        <if test="fileType != null and fileType != ''">
+            AND FILE_TYPE = #{fileType}
         </if>
     </sql>
 
     <select id="selectFormList" resultType="kr.co.tsoft.sign.vo.admin.FormGridDto">
         /** [SIGN].[FormMapper.selectFileList] */
-
         SELECT
-        FILE_SEQ
-        ,FILE_TP
-        ,CONTRC_NO
-        ,FORM_NM
-        ,ORG_FILE_NM
-        ,SAV_FILE_NM
-        ,FILE_PATH
-        ,USE_YN
-        ,REG_DATE
-        ,REG_ID
-        ,MOD_DATE
-        ,MOD_ID
+        *
         FROM file_mgmt
         <include refid="where_condition_list"/>
         <if test="orderBy != null and orderBy != ''">
@@ -86,11 +33,7 @@
 
     <!-- 원본서식 pdf -->
     <select id="selectContrcFormInfo" resultType="HashMap">
-        select fm.FILE_TP
-             , fm.FORM_NM
-             , fm.SAV_FILE_NM
-             , fm.ORG_FILE_NM
-             , fm.FILE_PATH
+        select *
         from file_mgmt fm
         where fm.FILE_SEQ = (select FILE_SEQ from contrc_mgmt cm where CONTRC_NO = #{contrcNo} and USE_YN = 'Y')
           and FILE_TP = #{fileType}

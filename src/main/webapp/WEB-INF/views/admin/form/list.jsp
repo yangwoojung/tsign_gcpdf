@@ -104,7 +104,7 @@
                     'Content-Type': 'application/json'
                 },
                 data: function (data, settings) {
-
+                    console.log(data)
                     let orderBy = "";
                     for (let i = 0; i < data?.order.length; i++) {
                         const {column, dir} = data?.order[i];
@@ -113,10 +113,12 @@
                     data.orderBy = orderBy;
 
                     return {
-                        fileTp: '100',
                         draw: data.draw,
+                        start: data.start,
+                        length : data.length,
+                        searchWord: data.search.value,
+                        fileTp: '100',
                         orderBy: orderBy,
-                        searchWord: data.search.value
                     };
                 },
                 cache: false,
