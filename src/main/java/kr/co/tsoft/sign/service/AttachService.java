@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import kr.co.tsoft.sign.config.security.CommonUserDetails;
 import kr.co.tsoft.sign.service.admin.ContrcService;
 import kr.co.tsoft.sign.util.FileUtil;
 import kr.co.tsoft.sign.util.MailHandler;
@@ -60,16 +61,66 @@ public class AttachService {
 		return docList;
 	}
 
+//	public ApiResponse<ApiResponseData.Ocr> uploadAttachFile(Map<String, Object> param) throws Exception {
+//
+//		logger.info("##### [attach > uploadAttachFile Service] #####");
+//
+//		CommonUserDetails user = SessionUtil.getUser();
+//		Map<String, Object> resultMap = new HashMap<>();
+//
+//		String attachCd = (String) param.get("attach_cd");
+//		String attachChildId = (String) param.get("attach_child_id");
+//		String contNo = user.getContrcNo();
+//
+//		String imgNm = contNo + "_" + attachCd + "_" + attachChildId;
+//		String img = (String) param.get("fileData");
+//
+//		String savePath = CONTRACT_PATH + contNo + File.separator + "attach" + File.separator;
+//
+//		switch (attachCd) {
+//		case "001": savePath = savePath + "신분증"; break;
+//		case "002": savePath = savePath + "통장사본"; break;
+//		}
+//
+//		File uploadAttach = transferDecryptDataToDestFile(savePath, imgNm, img);
+//
+//		// OCR 연결
+//		if ("001".equals(attachCd)) {
+//			MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", uploadAttach.getName(),
+//					okhttp3.RequestBody.create(MediaType.parse("image/*"), uploadAttach));
+//
+//			ApiRequest.Ocr request = ApiRequest.Ocr.builder().token("WuL299MCpJEwTs5ArcpoYJB4GaQ0PQ") // 운영토큰
+//					.file(filePart).build();
+//
+//			logger.info("#### OCR API Request : {} ", request);
+//			ApiResponse<ApiResponseData.Ocr> response = apiService.processOcr(request);
+//			
+//			resultMap.put("code", response.getData().get(0).getCode());
+//			resultMap.put("ocrResult", response.getData().get(0).getData());
+//			resultMap.put("resultMessage", response.getData().get(0).getStatus());
+//			
+//			return response;
+//			
+//		} else {
+//			File Directory = new File(savePath);
+//			if (Directory.exists()) {
+//				resultMap.put("code", "0000");
+//				resultMap.put("resultMessage", "S");
+//			}
+//		}
+//
+//		return resultMap;
+//	}
 	public Map<String, Object> uploadAttachFile(Map<String, Object> param) throws Exception {
 
 		logger.info("##### [attach > uploadAttachFile Service] #####");
 
-		Map<String, Object> user = SessionUtil.getUser();
+		CommonUserDetails user = SessionUtil.getUser();
 		Map<String, Object> resultMap = new HashMap<>();
 
 		String attachCd = (String) param.get("attach_cd");
 		String attachChildId = (String) param.get("attach_child_id");
-		String contNo = (String) user.get("CONTRC_NO");
+		String contNo = user.getContrcNo();
 
 		String imgNm = contNo + "_" + attachCd + "_" + attachChildId;
 		String img = (String) param.get("fileData");
@@ -77,12 +128,8 @@ public class AttachService {
 		String savePath = CONTRACT_PATH + contNo + File.separator + "attach" + File.separator;
 
 		switch (attachCd) {
-		case "001":
-			savePath = savePath + "신분증";
-			break;
-		case "002":
-			savePath = savePath + "통장사본";
-			break;
+		case "001": savePath = savePath + "신분증"; break;
+		case "002": savePath = savePath + "통장사본"; break;
 		}
 
 		File uploadAttach = transferDecryptDataToDestFile(savePath, imgNm, img);
@@ -97,9 +144,11 @@ public class AttachService {
 
 			logger.info("#### OCR API Request : {} ", request);
 			ApiResponse<ApiResponseData.Ocr> response = apiService.processOcr(request);
+			
 			resultMap.put("code", response.getData().get(0).getCode());
 			resultMap.put("ocrResult", response.getData().get(0).getData());
 			resultMap.put("resultMessage", response.getData().get(0).getStatus());
+			
 		} else {
 			File Directory = new File(savePath);
 			if (Directory.exists()) {
@@ -169,12 +218,8 @@ public class AttachService {
 	}
 
 	public Map<String, Object> submission() {
-		Map<String, Object> user = SessionUtil.getUser();
-		String contNo = (String) user.get("CONTRC_NO");
-//		ContrcMgmtVO contrMgmt;
-//		user = contrcService.selectContrcInfo(contNo);
-		
-		
+		CommonUserDetails user = SessionUtil.getUser();
+		String contNo = user.getContrcNo();
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		String filePath = CONTRACT_PATH + contNo;

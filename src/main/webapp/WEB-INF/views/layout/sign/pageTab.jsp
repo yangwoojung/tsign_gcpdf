@@ -2,9 +2,9 @@
 
 <div class="page_tab">
 	<ul>
-		<li data-url="cmi"><a href="javascript:void(0);">1.본인인증</a></li>
-		<li data-url="agree"><a href="javascript:void(0);" >2.계약서</a></li>
-		<li data-url="attach"><a href="javascript:void(0);" >3.구비서류</a></li>
+		<li data-url="cmi"><a href="javascript:void(0);">본인인증</a></li>
+		<li data-url="agree"><a href="javascript:void(0);" >계약서</a></li>
+		<li data-url="attach"><a href="javascript:void(0);" >구비서류</a></li>
 	</ul>
 </div>
 

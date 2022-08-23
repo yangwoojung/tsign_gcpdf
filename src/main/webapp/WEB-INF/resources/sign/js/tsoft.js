@@ -6,7 +6,8 @@ var ts = {};
             this.addClass('ts_popup');
         },
         open: function (src) {
-            this.html('<iframe scrolling="no" name="iframeName' + this.attr('id') + '"></iframe>');
+            // this.html('<iframe scrolling="no" name="iframeName' + this.attr('id') + '"></iframe>');
+            this.html('<iframe name="iframeName' + this.attr('id') + '"></iframe>');
             this.find('iframe').attr('src', src).show();
             $('#wrap').hide();
         },

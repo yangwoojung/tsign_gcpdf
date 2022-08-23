@@ -4,7 +4,7 @@
 */
 
 * {
-    max-height: 1000000px;
+/*    max-height: 1000000px;*/
     margin: 0;
     padding: 0;
 }
@@ -108,4 +108,8 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 strong {
     font-weight: 900;
+}
+
+.hidden {
+    display: none;
 }
