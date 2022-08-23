@@ -38,8 +38,8 @@
     <!-- //container -->
 
 <script>
-
-    const MAKSED_CELL_NO = '${user.CELL_NO_MASK }';
+	
+    const MAKSED_CELL_NO = '${user.cellNoMask}';
     const ACTIVE_PROFILE = '${profilesActive}';
 
     $(function() {
@@ -92,7 +92,7 @@
                 newForm.attr("method","post");
                 newForm.attr("action","/sign/authenticate");
 
-                newForm.append($('<input/>', {type: 'hidden', name: 'c', value:'${user.CONTRC_NO}' }));
+                newForm.append($('<input/>', {type: 'hidden', name: 'c', value:'${user.contractNo}' }));
                 newForm.append($('<input/>', {type: 'hidden', name: 'p', value:$('#cellNoLast').val() }));
 
                 newForm.appendTo('body');

@@ -20,4 +20,22 @@
           AND USE_YN = 'Y'
           AND CONTRC_NO = #{contrc_no}
     </select>
+    
+    <select id="selectContractInfoForVO" resultType="kr.co.tsoft.sign.vo.ContrcMgmtVO">
+        SELECT
+            /** [SIGN].[selectContractInfoForVO] */
+            CONTRC_NO
+             , FILE_SEQ
+             , PIN_NO
+             , USER_NM
+             , CELL_NO
+             , EMAIL
+             , SIGN_DUE_SDATE
+             , SIGN_DUE_EDATE
+             , IN_SIGN_DATE
+        FROM tsign.CONTRC_MGMT
+        WHERE 1 = 1
+          AND USE_YN = 'Y'
+          AND CONTRC_NO = #{contractNo}
+    </select>
 </mapper>
