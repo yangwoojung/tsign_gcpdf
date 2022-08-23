@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 public class ContractGridDto extends GridRequest {
-    private Integer contrcSeq;
-    private String contrcNo;
+    private Integer contractSeq;
+    private String contractNo;
     private Integer fileSeq;
     private String pinNo;
     private String userNm;
@@ -23,6 +23,5 @@ public class ContractGridDto extends GridRequest {
 
     private String formNm;
     private String filePath;
-
 
 }

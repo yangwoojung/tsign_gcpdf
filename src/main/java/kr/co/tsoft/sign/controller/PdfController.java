@@ -5,10 +5,12 @@ import kr.co.tsoft.sign.service.ComService;
 import kr.co.tsoft.sign.service.PdfService;
 import kr.co.tsoft.sign.service.admin.FormService;
 import kr.co.tsoft.sign.util.SecurityUtil;
+import kr.co.tsoft.sign.vo.FileMgmtVO;
+import kr.co.tsoft.sign.vo.InfoVO;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,49 +20,48 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping(value = {"/sign/pdf"})
 public class PdfController {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
-	@Autowired
-	ComService comService;
-	@Autowired
-	private PdfService pdfService;
-//	@Autowired
-//	private ConvertHtmlToPdf covertPdf;
-	@Autowired
-	private FormService formService;
+
+	private final ComService comService;
+	private final PdfService pdfService;
+	private final FormService formService;
+
 	@Value("${config.upload.dir}")
 	private String uploadDir;
 	@Value("${config.pdf.temp.dir}")
 	private String pdfTempDir;
 
 	@RequestMapping("/view")
-	public ModelAndView viewReport(@RequestParam HashMap<String, String> paramMap
-			, Locale locale
-			, SecurityUtil su) throws Exception {
+	public ModelAndView viewReport(InfoVO infoVO) throws Exception {
 
 		ModelAndView mv = new ModelAndView();
 		logger.debug("===== /pdf/view 이동  ======");
 
-		//서식 원본 조회 
-		paramMap.put("fileType", "100");
-		HashMap<String, String> formInfo = formService.selectContrcFormInfo(paramMap);
-		if (formInfo.isEmpty()) {
+		//서식 원본 조회
+		FileMgmtVO fileMgmtVO = FileMgmtVO.builder()
+				.contractNo(infoVO.getContractNo())
+				.fileType("100")
+				.build();
+
+		FileMgmtVO formInfo = formService.selectContrcFormInfo(fileMgmtVO);
+		if (null == formInfo) {
 			throw new Exception("서식파일이 존재하지 않습니다.");
 		}
+
 		String lastPath = "form";
 
-		String savedFormPath = formInfo.get("FILE_PATH") + formInfo.get("SAV_FILE_NM");
-		String fileFullName = savedFormPath;//uploadDir + File.separatorChar + lastPath + File.separatorChar + formList.get(0).get("");
+		String fileFullName = formInfo.getFilePath() + formInfo.getSavFileNm();
 		File oriFile = new File(fileFullName);
 
 		//상대경로에 pdf가 존재해야 하는 이유로 temp파일로 복사해서 사용
-		String newFileFullName = pdfTempDir + File.separatorChar + (String) formInfo.get("SAV_FILE_NM");
+		String newFileFullName = pdfTempDir + File.separatorChar + formInfo.getSavFileNm();
 		File copyFile = new File(newFileFullName);
 
 		logger.debug("어드민에서 저장한 서식 경로 : " + oriFile);
@@ -90,7 +91,7 @@ public class PdfController {
 		}
 
 		//사인이미지 처리 inputSignCan
-		String encodeSignData = paramMap.get("inputSignCan");
+		String encodeSignData = infoVO.getSignCanvasData();
 		String fileName = pdfTempDir + File.separatorChar + "testSignImg.png";
 		byte[] signImgBytes = Base64.decodeBase64(encodeSignData.getBytes());
 		try {
@@ -103,43 +104,28 @@ public class PdfController {
 			e.printStackTrace();
 		}
 
-		String residentNo1 = paramMap.get("inputResidentNo1");
-		String residentNo2 = paramMap.get("inputResidentNo2");
-		String address = paramMap.get("inputAddr");
-		String bankNm = paramMap.get("inputBankNm");
-		String accountNo = paramMap.get("inputAcnutNo");
-
-		su.setResidentNo(residentNo1 + "-" + residentNo2);// 주민번호 세션에 저장
-		su.setAddress(address);            // 주소 세션에 저장
-		su.setInAccountNo(accountNo);    // 계좌번호 세션에 저장
-		su.setInBankNm(bankNm);            // 은행 세션에 저장
-		//이력
-		su.setHistoryList(su.getSignUserDetails().getUserNm() + "님의 계약서 생성");
-
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-
 		String pdfPath = "/upload/temp/";
-		//서식 상대경로
-		resultMap.put("pdfPath", pdfPath);
-		//서식 파일명
-		resultMap.put("pdfFileNm", (String) formInfo.get("SAV_FILE_NM"));
-		//생성한 계약서 저장할 파일명
-		resultMap.put("savedNewPdfFileNm", "(계약서)" + su.getSignUserDetails().getUserNm() + "_" + su.getSignUserDetails().getContractNo() + ".pdf");
+//		//서식 상대경로
+//		resultMap.put("pdfPath", pdfPath);
+//		//서식 파일명
+//		resultMap.put("pdfFileNm", (String) formInfo.get("SAV_FILE_NM"));
+//		//생성한 계약서 저장할 파일명
+//		resultMap.put("savedNewPdfFileNm", "(계약서)" + su.getSignUserDetails().getUserNm() + "_" + su.getSignUserDetails().getContractNo() + ".pdf");
+//
+//		resultMap.put("inputResidentNo1", residentNo1);
+//		resultMap.put("inputResidentNo2", residentNo2);
+//		resultMap.put("inputBankCd", paramMap.get("inputBankCd"));
+//		resultMap.put("inputBankNm", bankNm);
+//		resultMap.put("inputAcnutNo", accountNo);
+//		resultMap.put("inputAddr", address);
+////		resultMap.put("inputUserNm", 		paramMap.get("inputUserNm"));
+////		resultMap.put("inputEmail", 		paramMap.get("inputEmail"));
+//		resultMap.put("encodedSignCan", encodeSignData);//인코드 된 사인
+//		resultMap.put("decodedSignCan", signImgBytes);//디코드 된 사인
+//		resultMap.put("contrcNo", paramMap.get("contrcNo"));//계약번호
 
-		resultMap.put("inputResidentNo1", residentNo1);
-		resultMap.put("inputResidentNo2", residentNo2);
-		resultMap.put("inputBankCd", paramMap.get("inputBankCd"));
-		resultMap.put("inputBankNm", bankNm);
-		resultMap.put("inputAcnutNo", accountNo);
-		resultMap.put("inputAddr", address);
-//		resultMap.put("inputUserNm", 		paramMap.get("inputUserNm"));
-//		resultMap.put("inputEmail", 		paramMap.get("inputEmail"));
-		resultMap.put("encodedSignCan", encodeSignData);//인코드 된 사인
-		resultMap.put("decodedSignCan", signImgBytes);//디코드 된 사인
-		resultMap.put("contrcNo", paramMap.get("contrcNo"));//계약번호
-
-		logger.debug("## //	resultMap	: " + resultMap);
-		mv.addObject("user", resultMap);
+//		logger.debug("## //	resultMap	: " + resultMap);
+		mv.addObject("info", infoVO);
 		mv.setViewName("sign/pdfViewer");
 		return mv;
 	}

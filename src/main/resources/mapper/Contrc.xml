@@ -15,10 +15,9 @@
         /** [SIGN].[ContrcMapper.selectContrcList] */
 
         SELECT
-        A.CONTRC_SEQ
-        ,A.CONTRC_NO
+        A.CONTRACT_SEQ
+        ,A.CONTRACT_NO
         ,A.FILE_SEQ
-        ,A.PIN_NO
         ,A.USER_NM
         ,A.CELL_NO
         ,A.EMAIL
@@ -53,10 +52,9 @@
     <!-- 계약 단건 조회 -->
     <select id="selectContrcInfo" parameterType="HashMap" resultType="HashMap">
         /** [SIGN].[ContrcMapper.selectContrcInfo] */
-        SELECT CONTRC_SEQ
-             , CONTRC_NO
+        SELECT CONTRACT_SEQ
+             , CONTRACT_NO
              , FILE_SEQ
-             , PIN_NO
              , USER_NM
              , CELL_NO
              , EMAIL
@@ -65,17 +63,16 @@
              , IN_SIGN_DATE
              , USE_YN
         FROM contrc_mgmt
-        WHERE CONTRC_NO = #{CONTRC_NO}
+        WHERE CONTRACT_NO = #{CONTRACT_NO}
     </select>
     
     <!-- 계약 단건 조회 ContractGridDto -->
     <select id="selectContrcInfo2" parameterType="kr.co.tsoft.sign.vo.admin.ContractGridDto" resultType="kr.co.tsoft.sign.vo.admin.ContractGridDto">
         /** [SIGN].[ContrcMapper.selectContrcInfo2] */
-        SELECT A.CONTRC_SEQ
-             , A.CONTRC_NO
+        SELECT A.CONTRACT_SEQ
+             , A.CONTRACT_NO
              , A.FILE_SEQ
              , (select ORG_FILE_NM from file_mgmt B where 1=1 AND A.FILE_SEQ = B.FILE_SEQ) FORM_NM
-             , A.PIN_NO
              , A.USER_NM
              , A.CELL_NO
              , A.EMAIL
@@ -83,7 +80,7 @@
              , DATE_FORMAT(A.SIGN_DUE_EDATE,'%Y-%m-%d') SIGN_DUE_EDATE
              , A.USE_YN
         FROM contrc_mgmt A
-        WHERE A.CONTRC_SEQ = #{contrcSeq}
+        WHERE A.CONTRACT_SEQ = #{contractSeq}
     </select>
 
     <!-- 해당 계약건에 완료된 계약서, 추적표 조회 -->
@@ -91,7 +88,7 @@
         /** [SIGN].[ContrcMapper.selectCompleteContr] */
         select *
         from file_mgmt
-        WHERE CONTRC_NO = #{CONTRC_NO}
+        WHERE CONTRACT_NO = #{CONTRACT_NO}
           and USE_YN = 'Y'
     </select>
 
@@ -99,7 +96,7 @@
     <insert id="insertContrcReg" parameterType="kr.co.tsoft.sign.vo.admin.ContractGridDto">
         /** [SIGN].[ContrcMapper.insertContrcReg] */
         insert into contrc_mgmt
-        ( CONTRC_NO
+        ( CONTRACT_NO
         , FILE_SEQ
         , USER_NM
         , CELL_NO
@@ -110,7 +107,7 @@
         , REG_DATE
         , MOD_ID
         , MOD_DATE
-       ) values ( #{contrcNo}
+       ) values ( #{contractNo}
                , #{fileSeq}
                , #{userNm}
                , #{cellNo}
@@ -131,17 +128,7 @@
 		set  USE_YN = 'N'
 		    , MOD_ID =  #{modId}
 		    , MOD_DATE = current_timestamp() 
-		where CONTRC_NO = #{contrcNo}
+		where CONTRACT_NO = #{contractNo}
     </insert>
 
-    <!-- 계약 pin번호 업데이트 -->
-    <update id="updateContrcPin" parameterType="HashMap">
-        /** [SIGN].[ContrcMapper.updateContrcPin] */
-        update contrc_mgmt
-        set PIN_NO = #{PIN_NO}
-          , MOD_ID = #{MOD_ID}
-          , MOD_DATE = current_timestamp() 
-        where CONTRC_NO = #{CONTRC_NO}
-
-    </update>
 </mapper>

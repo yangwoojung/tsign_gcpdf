@@ -80,12 +80,12 @@
             },
             columns: [
                 {
-                    data: 'contrcSeq',
-                    name: 'CONTRC_SEQ',
+                    data: 'contractSeq',
+                    name: 'CONTRACT_SEQ',
                 },
                 {
-                    data: 'contrcNo',
-                    name: 'CONTRC_NO',
+                    data: 'contractNo',
+                    name: 'CONTRACT_NO',
                 },
                 {
                     data: 'regDate',
@@ -118,10 +118,10 @@
      	            // value of the first column (can be hidden)  
      	            console.log(dt.fnGetData(position));
      	            
-     	            var contrcSeq = dt.fnGetData(position).contrcSeq;
+     	            var contrcSeq = dt.fnGetData(position).contractSeq;
                    	
                    	//계약관리 디테일 페이지로 이동
-                   	location.href = "/admin/contract/reg?contrcSeq="+ contrcSeq;
+                   	location.href = "/admin/contract/reg?contractSeq="+ contractSeq;
      	        })       
             }// END fnDrawCallback
         });

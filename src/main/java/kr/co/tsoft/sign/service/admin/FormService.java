@@ -4,6 +4,7 @@ import kr.co.tsoft.sign.mapper.admin.FormMapper;
 import kr.co.tsoft.sign.service.ComService;
 import kr.co.tsoft.sign.util.MultipartFileHandler;
 import kr.co.tsoft.sign.util.SecurityUtil;
+import kr.co.tsoft.sign.vo.FileMgmtVO;
 import kr.co.tsoft.sign.vo.admin.FormGridDto;
 import kr.co.tsoft.sign.vo.common.GridResponse;
 import kr.co.tsoft.sign.vo.common.TotalRowCount;
@@ -11,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -30,8 +30,8 @@ public class FormService {
         return formMapper.countSelectFormList(parameter);
     }
 
-    public HashMap<String, String> selectContrcFormInfo(HashMap<String, String> paramMap) {
-        return formMapper.selectContrcFormInfo(paramMap);
+    public FileMgmtVO selectContrcFormInfo(FileMgmtVO fileMgmtVO) {
+        return formMapper.selectContrcFormInfo(fileMgmtVO);
     }
 
     public GridResponse getFormList(FormGridDto searchVO) {

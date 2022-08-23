@@ -1,25 +1,21 @@
 package kr.co.tsoft.sign.service.admin;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import kr.co.tsoft.sign.mapper.admin.ContrcMapper;
+import kr.co.tsoft.sign.util.MailHandler;
+import kr.co.tsoft.sign.util.SecurityUtil;
+import kr.co.tsoft.sign.util.SendMessage;
+import kr.co.tsoft.sign.vo.admin.ContractGridDto;
+import kr.co.tsoft.sign.vo.common.TotalRowCount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import kr.co.tsoft.sign.config.security.CommonUserDetails;
-import kr.co.tsoft.sign.mapper.admin.ContrcMapper;
-import kr.co.tsoft.sign.util.MailHandler;
-import kr.co.tsoft.sign.util.SecurityUtil;
-import kr.co.tsoft.sign.util.SendMessage;
-import kr.co.tsoft.sign.util.SessionUtil;
-import kr.co.tsoft.sign.vo.admin.ContractGridDto;
-import kr.co.tsoft.sign.vo.common.TotalRowCount;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class ContrcService {
@@ -62,7 +58,7 @@ public class ContrcService {
         
         SecurityUtil su = new SecurityUtil();
         
-        paramVO.setContrcNo(contrNo);
+        paramVO.setContractNo(contrNo);
         paramVO.setSignDueSdate(sdate);
         paramVO.setSignDueEdate(edate);
         paramVO.setRegId(su.getAdminUserDetails().getUsername());//로그인한 사용자 ID

@@ -21,8 +21,8 @@
 
         <div class="cont">
             <!-- form_box -->
-            <form action="/sign/report/viewReport" id="reportForm" name="reportForm" target="report" method="post">
-                <input type="hidden" name="contrcNo" id="contrcNo" value="${contrcNo}"/>
+            <form id="reportForm" method="post" action="/sign/pdf/view" onsubmit="return fnMoveNext()">
+                <input type="hidden" name="contrcNo" id="contrcNo" value="${user.contractNo}"/>
                 <input type="submit" id="submitReportForm" class="hidden"/>
 
                 <div class="form_box typeSide">
@@ -30,7 +30,7 @@
                         <dt>성명</dt>
                         <dd>
                             <p>
-                                <input id="userNm" type="text" class="input_ty focusNone" value="${userNm}"
+                                <input id="userNm" name="userNm" type="text" class="input_ty focusNone" value="${user.userNm}"
                                        autocomplete="off"
                                        readonly required>
                             </p>
@@ -39,11 +39,11 @@
                     <dl class="list">
                         <dt>주민등록번호</dt>
                         <dd class="half">
-                            <input id="inResidentNo1" type="tel" class="input_ty focusNone" placeholder="6자리숫자"
+                            <input id="inResidentNo1" name="inResidentNo1" type="tel" class="input_ty focusNone" placeholder="6자리숫자"
                                    maxlength="6"
                                    onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" autocomplete="off"
                                    required/>
-                            <input id="inResidentNo2" type="tel" class="input_ty focusNone" placeholder="7자리숫자"
+                            <input id="inResidentNo2" name="inResidentNo2" type="tel" class="input_ty focusNone" placeholder="7자리숫자"
                                    maxlength="7"
                                    onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" autocomplete="off"
                                    required/>
@@ -52,7 +52,7 @@
                     <dl class="list">
                         <dt>주소</dt>
                         <dd>
-                            <textarea id="addr1" type="text" class="input_ty focusNone" placeholder="도로명 주소/동,호수까지 입력"
+                            <textarea id="addr1" name="addr1" type="text" class="input_ty focusNone" placeholder="도로명 주소/동,호수까지 입력"
                                       autocomplete="off" required></textarea>
                         </dd>
                     </dl>
@@ -60,7 +60,7 @@
                         <dt>은행 선택</dt>
                         <dd class="half03">
                             <p>
-                                <select id="stlmAccBank" required>
+                                <select id="stlmAccBank" name="stlmAccBank" required>
                                     <option value="" selected>은행선택</option>
                                     <option value="003">기업은행</option>
                                     <option value="004">국민은행</option>
@@ -131,7 +131,7 @@
                     <dl class="list">
                         <dt>계좌 번호</dt>
                         <dd class="half03">
-                            <input type="tel" class="input_ty focusNone" placeholder="-없이 숫자만 입력" maxlength="30"
+                            <input type="tel" name="tel" class="input_ty focusNone" placeholder="-없이 숫자만 입력" maxlength="30"
                                    onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" id="stlmAccNo"
                                    autocomplete="off" required/>
                         </dd>
@@ -140,7 +140,7 @@
                         <dt>이메일</dt>
                         <dd>
                             <p>
-                                <input type="email" value="${email}" class="input_ty focusNone"
+                                <input type="email" name="email" value="${user.email}" class="input_ty focusNone"
                                        placeholder="이메일 입력(예 : ts@tsoft.co.kr)" maxlength="100"
                                        onkeyup="removeSpaces(event)" id="etaxEmail" autocomplete="off" required/>
                             </p>
@@ -150,6 +150,15 @@
                         <li>기재한 주민등록번호는 세금신고용도로 사용됩니다.</li>
                         <li>기재되어 있는 메일로 계약서 원본 발송됩니다.</li>
                     </ul>
+
+                    <!-- sign_area -->
+                    <div class="sign_area" id="sign_area">
+                        <canvas id="signCanvas"></canvas>
+                    </div>
+                    <!-- //sign_area -->
+                    <p class="t_text">
+                        * 위 서명란에 자필서명해 주세요 (예 : 홍길동)<br/>
+                    </p>
                 </div>
             </form>
             <!-- //form_box -->
@@ -158,15 +167,17 @@
     <!-- //cont_area -->
 </div>
 <!-- //container -->
-
+<script src="/resources/sign/js/fabric.js"></script>
 <script>
 
     $(function () {
 
         $('#nextBtn').on('click', function () {
-            /*$('#submitReportForm').trigger('click');*/
-            location.href = '/sign/attach/attachPop'
+            $('#submitReportForm').trigger('click');
+            // location.href = '/sign/attach/attachPop'
         });
+
+        initSignCanvas();
 
         // $('textarea').on('keyup', function (e) {
         //     $(this).css('height', 'auto');
@@ -175,58 +186,26 @@
 
     });
 
-    // let isOpenedView = false;
-
-    //클립소프트 crf 전자서식으로 오픈
-    /** 전자 서명 */
-    // var viewReport = function () {
-    //     // if (fnValidateInput()) {
-    //         $('#inputResidentNo1').val($('#inResidentNo1').val());
-    //         $('#inputResidentNo2').val($('#inResidentNo2').val());
-    //         $('#inputBankCd').val($('#stlmAccBank option:selected').val());
-    //         $('#inputBankNm').val($('#stlmAccBank option:selected').text());
-    //         $('#inputAcnutNo').val($('#stlmAccNo').val());
-    //         $('#inputAddr').val($('#inAddr').val());
-    //         $('#inputUserNm').val($('#userNm').val());
-    //         $('#inputEmail').val($('#etaxEmail').val());
-    //
-    //         isView = true;
-    //         //report popup
-    //         var popup = window.open('', 'report');
-    //         console.log(popup);
-    //         //리포트 호출할 주소 연결
-    //         document.reportForm.submit();
-    //     // }
-    // };
-
-    // var closeReport = function (status) {
-    //     if (status === '0000') {
-    //         ComUtil.submit('/sign/attach');
-    //     } else {
-    //         alert('다시 진행해주시기 바랍니다.');
-    //     }
-    // };
 
     // 다음 단계로 이동
-    /*function fnMoveNext() {
-        // 핸드폰 본인인증
-// 	var checkM = true;
-        if (!$('#chk01').is(':checked')) {
-            return;
+    function fnMoveNext() {
+
+        if(isCanvasBlank(document.getElementById('signCanvas'))){
+            alert("입력된 자필서명이 없습니다.");
+            return false;
         }
 
-        if (!isOpenedView) {
-            alert('\'계약서pdf[보기]\'를 클릭 후 진행해 주세요.');
-            return;
-        }
+        const data = $('#reportForm').serializeObject();
+        console.log(data)
 
-        ComUtil.submit('/sign/cert', paramMap);//휴대폰 본인인증
-        return;
+        const canvas = document.getElementById('signCanvas');
+        let dataUrl = canvas.toDataURL();
+
+        return true;
 
 // 	if (fnValidateInput()) {
         if (true) {
             var paramMap_dev = {
-                agree: $('input:checkbox[id="chk01"]').is(':checked') ? 'Y' : 'N',
                 inResidentNo1: "920322",//$('#inResidentNo1').val(),
                 inResidentNo2: "2222222",//$('#inResidentNo2').val(),
                 inBankCd: "007",//$('#stlmAccBank option:selected').val(),
@@ -256,13 +235,13 @@
                 if (data.result == "success") {
 // 				ComUtil.submit('/sign', null, 'post');
 
-                    var canvas = document.getElementById('signCan');
-                    var dataUrl = canvas.toDataURL();
+                    const canvas = document.getElementById('signCanvas');
+                    let dataUrl = canvas.toDataURL();
 
                     dataUrl = dataUrl.substring(dataUrl.indexOf('base64,') + 7, dataUrl.length);
                     paramMap['signImgHash'] = dataUrl;
+
                     ComUtil.submit('/cert', paramMap);//휴대폰 본인인증
-                    console.log("본인인증 ", paramMap);
                 } else {
                     alert(data.resMsg);
                 }
@@ -270,70 +249,42 @@
                 alert("입력된 정보를 확인하신 후 다시 시도해주세요.");
             });
         }
-    };*/
-
-    /*function fnValidateInput() {//개발중 true
-        var result = false;
-        if (ComUtil.isNull($('#inResidentNo1').val()) || $('#inResidentNo1').val().length != 6) {
-            $('#inResidentNo1').focus();
-            alert("주민등록번호를 올바르게 입력해 주세요");
-        } else if (ComUtil.isNull($('#inResidentNo2').val()) || $('#inResidentNo2').val().length != 7) {
-            $('#inResidentNo2').focus();
-            alert("주민등록번호를 올바르게 입력해 주세요");
-        } else if (ComUtil.isNull($('#inAddr').val())) {
-            $('#inAddr').focus();
-            alert("주소를 올바르게 입력해 주세요");
-        } else if (ComUtil.isNull($('#stlmAccBank option:selected').val())) {
-            $('#stlmAccBank').focus();
-            alert("계좌 은행을 선택해주세요.");
-        } else if (ComUtil.isNull($('#stlmAccNo').val())) {
-            $('#stlmAccNo').focus();
-            alert("계좌정보를 올바르게 입력해 주세요");
-        } else if (ComUtil.isNull($('#etaxEmail').val()) || !matchEmail($('#etaxEmail').val())) {
-            $('#etaxEmail').focus();
-            alert("계약서 수신 EMAIL을 올바르게 입력해 주세요");
-        } else {
-            result = true;
-        }
-        return result;
-    }*/
-
-    /*function chkBizNo1(obj) {
-        if (!ComUtil.isNull($(obj).val()) && $(obj).val().length == 3) {
-            $('#bizNo2').focus();
-            chkNextBtn();
-        }
     }
 
-    function chkBizNo2(obj) {
-        if (!ComUtil.isNull($(obj).val()) && $(obj).val().length == 2) {
-            $('#bizNo3').focus();
-            chkNextBtn();
-        }
+    const initSignCanvas = () => {
+
+        const canvas = new fabric.Canvas('signCanvas', {
+            isDrawingMode: true,
+            width: document.getElementById('sign_area').clientWidth,
+            height: document.getElementById('sign_area').clientHeight,
+        });
+
+        canvas.freeDrawingBrush = new fabric['PencilBrush'](canvas);
+        canvas.freeDrawingBrush.color = '#000000';
+        canvas.freeDrawingBrush.width = 2;
+
+
+
+        $('#delSign').on('click', function () {
+            canvas.clear();
+            $('#nextBtn').attr('disabled', true);
+        });
+
     }
 
-    function chkBizNo3(obj) {
-        chkNextBtn();
+    // returns true if all color channels in each pixel are 0 (or "blank")
+    function isCanvasBlank(canvas) {
+        return !canvas.getContext('2d')
+            .getImageData(0, 0, canvas.width, canvas.height).data
+            .some(channel => channel !== 0);
     }
 
-    function chkNextBtn() {
-        if ($('#chk_all').is(':checked') && $('input:radio[name="apply"]:checked').length != 0
-            && $('#bizNo1').val().length == 3 && $('#bizNo2').val().length == 2
-            && $('#bizNo3').val().length == 5) {
-            $('#idBtnRequest').removeClass('btn_ty01').addClass('btn_ty02');
-        } else {
-            $('#idBtnRequest').removeClass('btn_ty02').addClass('btn_ty01');
-        }
-    }
-
-    function matchEmail(str) {
-        var returnBool = false;
-        if (str) {
-            var emailRegx = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-            returnBool = str.match(emailRegx) == null ? false : true;
-        }
-        return returnBool;
-    }
-*/
+    // var closeReport = function (status) {
+    //     if (status === '0000') {
+    //         ComUtil.submit('/sign/attach');
+    //     } else {
+    //         alert('다시 진행해주시기 바랍니다.');
+    //     }
+    // };
 
 </script>

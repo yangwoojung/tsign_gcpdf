@@ -32,18 +32,18 @@
     </select>
 
     <!-- 원본서식 pdf -->
-    <select id="selectContrcFormInfo" resultType="HashMap">
+    <select id="selectContrcFormInfo" resultType="kr.co.tsoft.sign.vo.FileMgmtVO">
         select *
         from file_mgmt fm
-        where fm.FILE_SEQ = (select FILE_SEQ from contrc_mgmt cm where CONTRC_NO = #{contrcNo} and USE_YN = 'Y')
-          and FILE_TP = #{fileType}
+        where fm.FILE_SEQ = (select FILE_SEQ from contrc_mgmt cm where CONTRACT_NO = #{contractNo} and USE_YN = 'Y')
+          and FILE_TYPE = #{fileType}
     </select>
 
     <!-- 계약결과 pdf -->
     <select id="selectContrcResultList" resultType="HashMap">
         select *
         from file_mgmt
-        where CONTRC_NO = #{contrcNo}
-          and FILE_TP = #{fileType}
+        where CONTRACT_NO = #{contractNo}
+          and FILE_TYPE = #{fileType}
     </select>
 </mapper>

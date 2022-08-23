@@ -27,7 +27,7 @@
                 <td>
                      <a href="javascript:;" onclick="common.contentPopOpen('pop_formList');"
                         class="btn_small type_01">선택</a>
-                     <input type="hidden" name="contrcNo" value="${resultContract.contrcNo }"/>
+                     <input type="hidden" name="contractNo" value="${resultContract.contractNo}"/>
                      <input type="hidden" id="FILE_SEQ" name="fileSeq" value="${resultContract.fileSeq }"/>
                      <span id="FILE_SEQ_span">${resultContract.formNm }</span>
                 </td>
@@ -83,7 +83,7 @@
 	        <div class="btn_page text_c">
 	            <a href="/admin/contract/list" class="btn_default type_02">목록</a>
 	            <c:choose>
-	                <c:when test="${empty resultContract.contrcSeq}">
+	                <c:when test="${empty resultContract.contractSeq}">
 	                    <input type="submit" value="등록" class="btn_default type_01"/>                    
 	                </c:when>
 	                <c:otherwise>
@@ -121,7 +121,7 @@
 	
     $(function () {
         // 달력
-        var seq = "<c:out value='${resultContract.contrcSeq}'/>";
+        var seq = "<c:out value='${resultContract.contractSeq}'/>";
         common.datepicker("#SDATE", 0, null);
         common.datepicker("#EDATE", null, "+10D");
         

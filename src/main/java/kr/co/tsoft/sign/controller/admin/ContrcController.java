@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class ContrcController {
@@ -53,17 +52,17 @@ public class ContrcController {
     }
 
     @RequestMapping(value = "/admin/contract/reg")
-    public ModelAndView adminFormReg(@RequestParam(value="contrcSeq",required=false) String contrcSeq) throws Exception {
+    public ModelAndView adminFormReg(@RequestParam(value="contrcSeq",required=false) String contractSeq) throws Exception {
         Logger.debug(" === /admin/contract/reg");
         ModelAndView mav = new ModelAndView("admin/contract/reg");
 
-        if (contrcSeq != null) {
-        	Logger.debug(" contrcSeq : "+ contrcSeq);
+        if (contractSeq != null) {
+        	Logger.debug(" contrcSeq : "+ contractSeq);
             
             ContractGridDto dto = new ContractGridDto();
-            dto.setContrcSeq(Integer.parseInt(contrcSeq));
+            dto.setContractSeq(Integer.parseInt(contractSeq));
             //수정
-            if (dto.getContrcSeq() != null) {
+            if (dto.getContractSeq() != null) {
             	//해당 계약번호 조회 하여 리턴 
             	ContractGridDto resultContract = contrcService.selectContrcInfo2(dto);
             	Logger.debug(resultContract.toString());
