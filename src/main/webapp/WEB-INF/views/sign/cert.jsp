@@ -39,15 +39,9 @@
 
 <script>
 
-<<<<<<< HEAD
 	const user = '${user}';
 	const maskedCellNo = '${user.cellNoMask}';
     $(function () {
-=======
-    const maskedCellNo = '${user.CELL_NO_MASK }';
-
-    $(function() {
->>>>>>> b6de373ff4a2323481c8429aeb95d13ecd81b474
         $('#cellNo').val(phoneFormat(maskedCellNo));
 
         $('#cellNoLast').on('change keyup', function(){
@@ -88,13 +82,8 @@
 
     }
 
-<<<<<<< HEAD
- //   본인인증 팝업 종료 시 응답 함수
-    function fnCertificationClose(status, type) {
-=======
     // 본인인증 팝업 종료 시 응답 함수
     const fnCertificationClose = (status, type) => {
->>>>>>> b6de373ff4a2323481c8429aeb95d13ecd81b474
         if (type == 'idseed') {
             if (status == '0000') {
 
