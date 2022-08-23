@@ -9,31 +9,12 @@
         <put-attribute name="footer" value="/WEB-INF/views/layout/sign/footer.jsp"/>
     </definition>
 
-    <definition name="sign/agreePop1" template="/WEB-INF/views/layout/sign/single.jsp">
-        <put-attribute name="container" expression="/WEB-INF/views/sign/agreePop1.jsp"/>
-    </definition>
-
     <definition name="sign/*" extends="sign">
         <put-attribute name="container" expression="/WEB-INF/views/sign/{1}.jsp"/>
     </definition>
 
-	<!-- error -->
-	<definition name="sign/error/*" extends="sign">
-     	<put-attribute name="container" expression="/WEB-INF/views/sign/error/{1}.jsp"/>
-    </definition>
-    
-	<!-- done -->
-	<definition name="sign/done/*" extends="sign">
-     	<put-attribute name="container" expression="/WEB-INF/views/sign/done/{1}.jsp"/>
-    </definition>
-
     <definition name="sign/*/*" extends="sign">
         <put-attribute name="container" expression="/WEB-INF/views/sign/{1}/{2}.jsp"/>
-    </definition>
-    
-    <!-- report 화면 -->
-    <definition name="sign/report" template="/WEB-INF/views/layout/sign/single.jsp">
-        <put-attribute name="container" expression="/WEB-INF/views/sign/report.jsp"/>
     </definition>
 
     <!-- pdf 레이아웃 -->

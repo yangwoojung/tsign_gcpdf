@@ -10,7 +10,7 @@ body {
     min-width: 320px;
     background: #fff;
     color: #222;
-    font-family: 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
+    font-family: 'Arita-dotum-Medium', 'NotoSansKR', 'Malgun Gothic', '맑은 고딕', Apple Gothic, arial, helvetica, sans-serif;
     font-size: 13px;
     font-weight: 600;
     line-height: 20px;
@@ -1403,7 +1403,6 @@ footer .lang_select a:after {
 }
 .imgConts .right span {
     font-size:42px;
-    padding-bottom: 4px;
 }
 
 .imgFooter {
@@ -1412,19 +1411,24 @@ footer .lang_select a:after {
     margin: 0 auto;
 }
 .imgBar {
-    height: 1px;
+    height: 1%;
     background-color: #e11f27;
     position: absolute;
     width: calc(100% - 30%);
     margin: 0 15%;
-    animation: barAnimation 2s linear infinite alternate;
+    animation: barAnimation 1.2s ease-in-out infinite alternate;
 }
 @keyframes barAnimation{
     0%{
         top: 0;
+        opacity: 0.3;
+    }
+    50%{
+        opacity: 1;
     }
     100%{
         top: 149px;
+        opacity: 0.3;
     }
 }
 .imgDesc {

@@ -81,6 +81,10 @@
 
     $(function () {
 
+        $('#nextBtn').on('click', function(){
+
+        });
+
     });
 
     // 신분증촬영 및 제출 (팝업 닫기)
