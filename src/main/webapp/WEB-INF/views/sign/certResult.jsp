@@ -5,8 +5,8 @@
     <script type="text/javascript">
 
         var fnCertResult_Pop = function () {
-            var type = '${type}';
-            var status = '${status}';
+            var type = '${cert.type}';
+            var status = '${cert.status}';
 
             if (type === 'idseed') {
                 if (status === '0000') {

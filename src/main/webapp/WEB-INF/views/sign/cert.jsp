@@ -41,6 +41,8 @@
 	
     const MAKSED_CELL_NO = '${user.cellNoMask}';
     const ACTIVE_PROFILE = '${profilesActive}';
+    
+    console.log('${user}');
 
     $(function() {
         $('#cellNo').val(phoneFormat(MAKSED_CELL_NO));
@@ -74,7 +76,7 @@
         };
 
         ComUtil.request(requestMap, function(data) {
-            if(data?.resultCd === '0000'){
+        	if("SUCCESS" == data?.result){
                 ComUtil.certPhone();
             } else {
                 alert(data.resultMsg);
@@ -92,7 +94,7 @@
                 newForm.attr("method","post");
                 newForm.attr("action","/sign/authenticate");
 
-                newForm.append($('<input/>', {type: 'hidden', name: 'c', value:'${user.contractNo}' }));
+                newForm.append($('<input/>', {type: 'hidden', name: 'c', value:'${user.contrcNo}' }));
                 newForm.append($('<input/>', {type: 'hidden', name: 'p', value:$('#cellNoLast').val() }));
 
                 newForm.appendTo('body');

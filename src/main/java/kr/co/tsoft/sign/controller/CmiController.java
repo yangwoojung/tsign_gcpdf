@@ -37,22 +37,24 @@ public class CmiController {
 
     @RequestMapping(value = "/cmi/{contractNo}", method = RequestMethod.GET)
     public String entry(@PathVariable(name = "contractNo", required = true) String contractNo, Model model) throws Exception {
+    	logger.info("contractNo : {}", contractNo);
         //vo 테스트
         ContrcMgmtVO contrcVO = userService.selectContractInfoForVO(contractNo);
 
         String cell_no_mask = StringMaskUtil.maskPhone(contrcVO.getCellNo());
         contrcVO.setCellNoMask(cell_no_mask);
         
-        CommonUserDetails user = new CommonUserDetails();
-        //TODO: contrcVO에 있는 user정보 CommonUserDetails에 옮겨담기.... 좀 더 짧게.......
-        	user.setContractNo(contrcVO.getContractNo());
-        	user.setFileSeq(contrcVO.getFileSeq());
-        	user.setUserNm(contrcVO.getUserNm());
-        	user.setCellNo(contrcVO.getCellNo());
-        	user.setEmail(contrcVO.getEmail());
-        	user.setSignDueSdate(contrcVO.getSignDueSdate());
-        	user.setSignDueEdate(contrcVO.getSignDueEdate());
-
+        logger.info("contrcVO : {}", contrcVO);
+        
+        CommonUserDetails user = CommonUserDetails.builder()
+        											.contractNo(contrcVO.getContrcNo())
+        											.fileSeq(contrcVO.getFileSeq())
+        											.userNm(contrcVO.getUserNm())
+        											.cellNo(contrcVO.getCellNo())
+        											.email(contrcVO.getEmail())
+        											.signDueSdate(contrcVO.getSignDueSdate())
+        											.signDueEdate(contrcVO.getSignDueEdate())
+        											.build();
         SessionUtil.setUser(user);
         
         logger.info("#### INIT SESSION ID : {}", SessionUtil.getSessionId());

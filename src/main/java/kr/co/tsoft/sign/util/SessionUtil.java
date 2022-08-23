@@ -3,6 +3,8 @@ package kr.co.tsoft.sign.util;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import kr.co.tsoft.sign.config.security.CommonUserDetails;
+
 import java.util.Map;
 
 public class SessionUtil {
@@ -28,8 +30,8 @@ public class SessionUtil {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Map<String, Object> getUser() {
-		return (Map<String, Object>) getAttribute("user");
+	public static CommonUserDetails getUser() {
+		return (CommonUserDetails) getAttribute("user");
 	}
 
 }
