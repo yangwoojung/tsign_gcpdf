@@ -1204,9 +1204,9 @@ footer .lang_select a:after {
     /*background: #d0d0d0;*/
 }
 
-.btn_ty02:focus {
-    background: #333;
-}
+/*.btn_ty02:focus {*/
+/*    background: #333;*/
+/*}*/
 
 .btn_ty02:disabled {
     background: #fff;
