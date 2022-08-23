@@ -51,7 +51,7 @@ public class SecurityConfig {
                     .formLogin()
                     .loginPage("/sign/error/401")
                     .loginProcessingUrl("/sign/authenticate")
-                    .defaultSuccessUrl("/sign/agree", true)
+                    .defaultSuccessUrl("/sign/info", true)
                     .usernameParameter("c")
                     .passwordParameter("p")
                     .failureUrl("/sign/error/401")

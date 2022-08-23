@@ -71,9 +71,7 @@
 
         ComUtil.request(requestMap, function(data) {
             if(data?.resultCd == '0000'){
-                $('#idPopup').tsPopup('open', '/pin/pinPop');
                 ComUtil.certPhone();
-                // fnCertificationClose('0000', 'idseed');
             } else {
                 alert(data.resultMsg);
             }
@@ -82,7 +80,7 @@
     }
 
     // 본인인증 팝업 종료 시 응답 함수
-    const fnCertificationClose = (status, type) => {
+    function fnCertificationClose(status, type) {
         if (type == 'idseed') {
             if (status == '0000') {
 

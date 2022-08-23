@@ -29,6 +29,11 @@ public class CertificationController {
     @Value("${spring.profiles.active}")
     private String active;
 
+    @RequestMapping("/result")
+    public String getResultPhoneCert() {
+        return "sign/certResult";
+    }
+
     @RequestMapping("/checkCellNumber")
     @ResponseBody
     public HashMap<String, String> checkCellNumber(@RequestBody HashMap<String, Object> paramMap) {
