@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class ContrcMgmtVO {
     private Integer contrcSeq;
-    private String contractNo;
+    private String contrcNo;
     private Integer fileSeq;
     private String pinNo;
     private String userNm;

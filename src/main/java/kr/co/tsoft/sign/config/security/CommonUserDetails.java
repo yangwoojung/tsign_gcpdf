@@ -1,12 +1,15 @@
 package kr.co.tsoft.sign.config.security;
 
-import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
+import lombok.Builder;
+
+@Builder
 public class CommonUserDetails implements UserDetails {
 
     private String username;

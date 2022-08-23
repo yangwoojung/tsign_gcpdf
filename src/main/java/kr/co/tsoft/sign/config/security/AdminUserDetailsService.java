@@ -21,7 +21,6 @@ public class AdminUserDetailsService implements UserDetailsService {
 
     @Override
     public CommonUserDetails loadUserByUsername(String adminId) throws UsernameNotFoundException {
-        CommonUserDetails userDetails = new CommonUserDetails();
 
         HashMap<String, Object> param = new HashMap<String, Object>();
         param.put("adm_id", adminId);
@@ -38,12 +37,14 @@ public class AdminUserDetailsService implements UserDetailsService {
         roleGroup.setRoleName("ROLE_ADMIN");
         authorities.add(roleGroup);
 
-        userDetails.setAuthorities(authorities);
-        userDetails.setUsername((String) adminInfo.get("ADM_ID"));
-        userDetails.setPassword((String) adminInfo.get("ADM_PWD"));
-        userDetails.setAdminNm((String) adminInfo.get("ADM_NM"));
-        userDetails.setAdminCellNo((String) adminInfo.get("ADM_CELL_NO"));
-
+        CommonUserDetails userDetails = CommonUserDetails.builder()
+        												.authorities(authorities)
+        												.username((String) adminInfo.get("ADM_ID"))
+        												.password((String) adminInfo.get("ADM_PWD"))
+        												.adminNm((String) adminInfo.get("ADM_NM"))
+        												.adminCellNo((String) adminInfo.get("ADM_CELL_NO"))
+        												.build();
+        
         return userDetails;
     }
 }
