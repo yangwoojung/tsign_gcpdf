@@ -15,7 +15,7 @@
                     <span class="box-progress" style="width: 25%;"></span>
                 </div>
                 <div class="number">
-                    <span class="active">1</span>/4
+                    <span class="active">1</span>/3
                 </div>
             </div>
             <div class="form_box sub">
