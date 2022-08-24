@@ -50,7 +50,7 @@
         ,REG_ID
         ,MOD_ID
         ) values (
-        #{fileTp}
+        #{fileType}
         <if test="contractNo != null and contractNo != ''">
             ,#{contractNo}
         </if>
