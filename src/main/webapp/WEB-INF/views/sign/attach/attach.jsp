@@ -85,7 +85,7 @@
 
     $(function () {
 
-        // 1. 계약자에 해당하는 서류 리스트 데이터 가져오기 (AJAX)
+        // 1. 계약자에 해당하는 구비서류(리스트) 데이터 가져오기 (AJAX)
 
         // 2. 서류 리스트 순서대로 페이지 표출 및 진행
 
@@ -229,19 +229,19 @@
             encType: 'multipart/form-data',
             cache: false,
             success: function (data) {
-                $('#attachLoading').hide();
+                // $('#attachLoading').hide();
 
             }, error: function (xhr, data) {
-                $('#attachLoading').hide();
+                // $('#attachLoading').hide();
                 alert('[e] 파일 첨부 실패 - 다시 촬영(첨부)해 주세요\n장시간 미사용 상태거나, 인터넷이 끊기신 경우 처음부터 진행해 주세요.');
                 if (xhr.status === 403) {
                     location.href = '/sign/error/401';
                 }
 
             }, beforeSend: function () {
-                $('#attachLoading').show();
+                // $('#attachLoading').show();
             }, complete: function () {
-                $('#attachLoading').hide();
+                // $('#attachLoading').hide();
             }
 
         });

@@ -87,23 +87,44 @@ public class AttachService {
 
 		File uploadAttach = transferDecryptDataToDestFile(savePath, imgNm, img);
 
-		ApiResponse<ApiResponseData.Ocr> response = null;
+		ApiResponse<ApiResponseData.Ocr> ocrResponse = null;
 				
 		// OCR 연결
 		if ("001".equals(attachCd)) {
 			MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", uploadAttach.getName(),
 					okhttp3.RequestBody.create(MediaType.parse("image/*"), uploadAttach));
 
-			ApiRequest.Ocr request = ApiRequest.Ocr.builder().token("WuL299MCpJEwTs5ArcpoYJB4GaQ0PQ") // 운영토큰
+			ApiRequest.Ocr ocrRequest = ApiRequest.Ocr.builder().token("WuL299MCpJEwTs5ArcpoYJB4GaQ0PQ") // 운영토큰
 					.file(filePart).build();
 
-			logger.info("### OCR API Request : {} ", request);
-			response = apiService.processOcr(request);
-			logger.info("### OCR API Response : {} ", response);
+			logger.info("### OCR API Request : {} ", ocrRequest);
+			ocrResponse = apiService.processOcr(ocrRequest);
+			logger.info("### OCR API Response : {} ", ocrResponse);
 
-//			resultMap.put("code", response.getData().get(0).getCode());
-//			resultMap.put("ocrResult", response.getData().get(0).getData());
-//			resultMap.put("resultMessage", response.getData().get(0).getStatus());
+//			resultMap.put("code", ocrResponse.getData().get(0).getCode());
+//			resultMap.put("ocrResult", ocrResponse.getData().get(0).getData());
+//			resultMap.put("resultMessage", ocrResponse.getData().get(0).getStatus());
+
+			if("0000".equals(ocrResponse.getCode())){
+				ApiResponseData<ApiResponseData.Ocr> ocr = ocrResponse.getData().get(0);
+				if("0000".equals(ocr.getCode())) {
+					ApiResponseData.Ocr data = ocr.getData();
+
+					ApiRequest.Scrap scrapRequest = ApiRequest.Scrap.builder().token("fc2yilEkhclyP1xGnWRNVFFIptXTLd")
+							.type(attachCd)
+							.col1(data.getName())
+							.col2(data.getSocialNo())
+							.col3(data.getIssueDt())
+							.build();
+
+					logger.info("#### Scrap API Request : {} ", scrapRequest);
+					ApiResponse<ApiResponseData.Scrap> scrapResponse = apiService.processScrap(scrapRequest);
+					logger.info("#### Scrap API Response : {} ", scrapResponse);
+
+				}
+
+			}
+
 		} else {
 			File Directory = new File(savePath);
 			if (Directory.exists()) {
@@ -111,7 +132,7 @@ public class AttachService {
 			}
 		}
 
-		return CommonResponse.success(response);
+		return CommonResponse.success(ocrResponse);
 	}
 
 	public File transferDecryptDataToDestFile(String filePath, String fileName, String fileData) throws IOException {
