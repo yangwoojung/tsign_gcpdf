@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.tsoft.sign.service.CertificationService;
-import kr.co.tsoft.sign.vo.CertificationVO;
+import kr.co.tsoft.sign.vo.CertificationDTO;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
 
 
@@ -43,13 +43,13 @@ public class CertificationController {
     
     @RequestMapping("/initPhone")
     @ResponseBody
-    public CertificationVO getInitPhoneCert() {
+    public CertificationDTO getInitPhoneCert() {
         return certService.initPhoneCert();
     }
 
     @RequestMapping("/idseed")
     public ModelAndView getResultPhoneCert(@RequestParam("retInfo") String retInfo) {
-    	CertificationVO cert = certService.getResultPhoneCert(retInfo);
+    	CertificationDTO cert = certService.getResultPhoneCert(retInfo);
 
     	ModelAndView mv = new ModelAndView("/sign/certResult");
         mv.addObject("cert", cert);

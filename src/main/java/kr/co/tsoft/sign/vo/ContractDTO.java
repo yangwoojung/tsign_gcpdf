@@ -1,27 +1,26 @@
-package kr.co.tsoft.sign.vo.admin;
+package kr.co.tsoft.sign.vo;
 
-import kr.co.tsoft.sign.vo.common.GridRequest;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class ContractGridDto extends GridRequest {
-    private Integer contractSeq;
+@Builder
+public class ContractDTO {
+    private Integer contrcSeq;
     private String contractNo;
     private Integer fileSeq;
     private String pinNo;
     private String userNm;
     private String cellNo;
+    private String cellNoMask;
     private String email;
     private String signDueSdate;
     private String signDueEdate;
-    private String inSignDate;
+//    private java.sql.Timestamp inSignDate;
     private String useYn;
-    private String regDate;
+//    private java.sql.Timestamp regDate;
     private String regId;
-    private String modDate;
+//    private java.sql.Timestamp modDate;
     private String modId;
-
-    private String formNm;
-    private String filePath;
 
 }

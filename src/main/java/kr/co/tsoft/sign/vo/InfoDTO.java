@@ -3,7 +3,7 @@ package kr.co.tsoft.sign.vo;
 import lombok.Data;
 
 @Data
-public class InfoVO {
+public class InfoDTO {
 
     private String contractNo;
     private String email;

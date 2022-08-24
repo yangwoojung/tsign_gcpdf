@@ -2,7 +2,7 @@ package kr.co.tsoft.sign.controller.admin;
 
 import kr.co.tsoft.sign.service.admin.ContrcService;
 import kr.co.tsoft.sign.service.admin.FormService;
-import kr.co.tsoft.sign.vo.admin.ContractGridDto;
+import kr.co.tsoft.sign.vo.admin.ContractGridDTO;
 import kr.co.tsoft.sign.vo.common.GridResponse;
 import kr.co.tsoft.sign.vo.common.TotalRowCount;
 import org.slf4j.Logger;
@@ -34,13 +34,13 @@ public class ContrcController {
 
     @RequestMapping(value = "/admin/contract/lists")
     @ResponseBody
-    public GridResponse adminFormLists(@RequestBody ContractGridDto searchVO) throws Exception {
+    public GridResponse adminFormLists(@RequestBody ContractGridDTO searchVO) throws Exception {
         Logger.debug(" === /admin/contract/lists");
 
         //전체 리스트 조회
         TotalRowCount count = contrcService.countSelectContrcList(searchVO);
         // 서식 리스트 조회
-        List<ContractGridDto> selectFromList = contrcService.selectContrcList(searchVO);
+        List<ContractGridDTO> selectFromList = contrcService.selectContrcList(searchVO);
 
         GridResponse response = new GridResponse();
         response.setData(selectFromList);
@@ -59,12 +59,12 @@ public class ContrcController {
         if (contractSeq != null) {
         	Logger.debug(" contrcSeq : "+ contractSeq);
             
-            ContractGridDto dto = new ContractGridDto();
+            ContractGridDTO dto = new ContractGridDTO();
             dto.setContractSeq(Integer.parseInt(contractSeq));
             //수정
             if (dto.getContractSeq() != null) {
             	//해당 계약번호 조회 하여 리턴 
-            	ContractGridDto resultContract = contrcService.selectContrcInfo2(dto);
+            	ContractGridDTO resultContract = contrcService.selectContrcInfo2(dto);
             	Logger.debug(resultContract.toString());
             	mav.addObject("resultContract",resultContract);
             }
@@ -76,7 +76,7 @@ public class ContrcController {
     @RequestMapping(value = "/admin/contract/reg_insert", method = RequestMethod.POST)
     @ResponseBody
     public HashMap<String, Object> adminContractRegInsert(
-    		@RequestBody ContractGridDto paramVO) throws Exception {
+    		@RequestBody ContractGridDTO paramVO) throws Exception {
         Logger.debug(" === /admin/contract/reg_insert");
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -90,7 +90,7 @@ public class ContrcController {
     @RequestMapping(value = "/admin/contract/reg_update", method = RequestMethod.POST)
     @ResponseBody
     public HashMap<String, Object> adminContractRegUpdate(
-    		@RequestBody ContractGridDto paramVO) throws Exception {
+    		@RequestBody ContractGridDTO paramVO) throws Exception {
         Logger.debug(" === /admin/contract/reg_update");
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
 

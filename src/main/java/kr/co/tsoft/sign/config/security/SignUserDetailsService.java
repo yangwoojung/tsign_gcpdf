@@ -2,7 +2,7 @@ package kr.co.tsoft.sign.config.security;
 
 import kr.co.tsoft.sign.mapper.UserLoginMapper;
 import kr.co.tsoft.sign.service.UserLoginService;
-import kr.co.tsoft.sign.vo.ContractVO;
+import kr.co.tsoft.sign.vo.ContractDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class SignUserDetailsService implements UserDetailsService {
 	@Override
 	public CommonUserDetails loadUserByUsername(String contractNo) throws UsernameNotFoundException {
 
-		ContractVO contractInfo = userService.selectContractInfoForVO(contractNo);
+		ContractDTO contractInfo = userService.selectContractInfoForVO(contractNo);
 		
 		if (contractInfo == null) {
 			Logger.debug("##### not found contract no : " + contractNo);

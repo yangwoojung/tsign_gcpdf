@@ -11,7 +11,7 @@
     </sql>
 
     <!-- 계약 리스트 조회(페이징 포함) -->
-    <select id="selectContrcList" resultType="kr.co.tsoft.sign.vo.admin.ContractGridDto">
+    <select id="selectContrcList" resultType="kr.co.tsoft.sign.vo.admin.ContractGridDTO">
         /** [SIGN].[ContrcMapper.selectContrcList] */
 
         SELECT
@@ -66,8 +66,8 @@
         WHERE CONTRACT_NO = #{CONTRACT_NO}
     </select>
     
-    <!-- 계약 단건 조회 ContractGridDto -->
-    <select id="selectContrcInfo2" parameterType="kr.co.tsoft.sign.vo.admin.ContractGridDto" resultType="kr.co.tsoft.sign.vo.admin.ContractGridDto">
+    <!-- 계약 단건 조회 ContractGridDTO -->
+    <select id="selectContrcInfo2" parameterType="kr.co.tsoft.sign.vo.admin.ContractGridDTO" resultType="kr.co.tsoft.sign.vo.admin.ContractGridDTO">
         /** [SIGN].[ContrcMapper.selectContrcInfo2] */
         SELECT A.CONTRACT_SEQ
              , A.CONTRACT_NO
@@ -93,7 +93,7 @@
     </select>
 
     <!-- 계약 저장 -->
-    <insert id="insertContrcReg" parameterType="kr.co.tsoft.sign.vo.admin.ContractGridDto">
+    <insert id="insertContrcReg" parameterType="kr.co.tsoft.sign.vo.admin.ContractGridDTO">
         /** [SIGN].[ContrcMapper.insertContrcReg] */
         insert into contract
         ( CONTRACT_NO
@@ -122,7 +122,7 @@
     </insert>
     
     <!-- 계약 삭제(use_yn = 'n') -->
-    <insert id="updateContrcReg" parameterType="kr.co.tsoft.sign.vo.admin.ContractGridDto">
+    <insert id="updateContrcReg" parameterType="kr.co.tsoft.sign.vo.admin.ContractGridDTO">
         /** [SIGN].[ContrcMapper.updateContrcReg] */
         update contract 
 		set  USE_YN = 'N'

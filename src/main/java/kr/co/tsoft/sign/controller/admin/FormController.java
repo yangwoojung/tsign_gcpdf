@@ -1,7 +1,7 @@
 package kr.co.tsoft.sign.controller.admin;
 
 import kr.co.tsoft.sign.service.admin.FormService;
-import kr.co.tsoft.sign.vo.admin.FormGridDto;
+import kr.co.tsoft.sign.vo.admin.FormGridDTO;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
 import kr.co.tsoft.sign.vo.common.GridResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,14 +31,14 @@ public class FormController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public GridResponse formList(FormGridDto form) {
+    public GridResponse formList(FormGridDTO form) {
         Logger.debug(" === /api/forms : {}", form);
         return formService.getFormList(form);
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseBody
-    public CommonResponse insertForm(FormGridDto form) throws Exception {
+    public CommonResponse insertForm(FormGridDTO form) throws Exception {
         Logger.info("INSERT : {}", form);
         formService.insertForm(form);
         return CommonResponse.success();

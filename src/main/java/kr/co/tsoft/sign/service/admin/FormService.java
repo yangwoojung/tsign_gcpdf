@@ -4,8 +4,8 @@ import kr.co.tsoft.sign.mapper.admin.FormMapper;
 import kr.co.tsoft.sign.service.ComService;
 import kr.co.tsoft.sign.util.MultipartFileHandler;
 import kr.co.tsoft.sign.util.SecurityUtil;
-import kr.co.tsoft.sign.vo.FileVO;
-import kr.co.tsoft.sign.vo.admin.FormGridDto;
+import kr.co.tsoft.sign.vo.FileDTO;
+import kr.co.tsoft.sign.vo.admin.FormGridDTO;
 import kr.co.tsoft.sign.vo.common.GridResponse;
 import kr.co.tsoft.sign.vo.common.TotalRowCount;
 import lombok.RequiredArgsConstructor;
@@ -22,24 +22,24 @@ public class FormService {
     private final ComService comService;
     private final FormMapper formMapper;
 
-    public List<FormGridDto> selectFormList(FormGridDto parameter) {
+    public List<FormGridDTO> selectFormList(FormGridDTO parameter) {
         return formMapper.selectFormList(parameter);
     }
 
-    public TotalRowCount countSelectFormList(FormGridDto parameter) {
+    public TotalRowCount countSelectFormList(FormGridDTO parameter) {
         return formMapper.countSelectFormList(parameter);
     }
 
-    public FileVO selectContrcFormInfo(FileVO fileVO) {
-        return formMapper.selectContrcFormInfo(fileVO);
+    public FileDTO selectContrcFormInfo(FileDTO fileDTO) {
+        return formMapper.selectContrcFormInfo(fileDTO);
     }
 
-    public GridResponse getFormList(FormGridDto searchVO) {
+    public GridResponse getFormList(FormGridDTO searchVO) {
 
         //전체 리스트 조회
         TotalRowCount count = countSelectFormList(searchVO);
         // 서식 리스트 조회
-        List<FormGridDto> selectFromList = selectFormList(searchVO);
+        List<FormGridDTO> selectFromList = selectFormList(searchVO);
         GridResponse response = new GridResponse();
         response.setData(selectFromList);
         response.setDraw(searchVO.getDraw());
@@ -54,7 +54,7 @@ public class FormService {
     }
 
     @Transactional
-    public FormGridDto insertForm(FormGridDto form) throws Exception {
+    public FormGridDTO insertForm(FormGridDTO form) throws Exception {
 
         //원본 계약서(100), 원본 추적표(101), 생성된 계약서(102), 생성된 추적표(103)
         form.setFileType("100");

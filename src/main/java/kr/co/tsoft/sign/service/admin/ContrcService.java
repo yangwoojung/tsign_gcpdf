@@ -4,7 +4,7 @@ import kr.co.tsoft.sign.mapper.admin.ContrcMapper;
 import kr.co.tsoft.sign.util.MailHandler;
 import kr.co.tsoft.sign.util.SecurityUtil;
 import kr.co.tsoft.sign.util.SendMessage;
-import kr.co.tsoft.sign.vo.admin.ContractGridDto;
+import kr.co.tsoft.sign.vo.admin.ContractGridDTO;
 import kr.co.tsoft.sign.vo.common.TotalRowCount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,16 +32,16 @@ public class ContrcService {
         return ContrcMapper.selectContrcInfo(paramMap);
     }
 
-    public List<ContractGridDto> selectContrcList(ContractGridDto searchVO) {
+    public List<ContractGridDTO> selectContrcList(ContractGridDTO searchVO) {
         return ContrcMapper.selectContrcList(searchVO);
     }
 
-    public TotalRowCount countSelectContrcList(ContractGridDto searchVO) {
+    public TotalRowCount countSelectContrcList(ContractGridDTO searchVO) {
         return ContrcMapper.countSelectContrcList(searchVO);
     }
 
    
-    public HashMap<String, Object> contrcReg(ContractGridDto paramVO) throws Exception {
+    public HashMap<String, Object> contrcReg(ContractGridDTO paramVO) throws Exception {
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
         
         // 계약 번호 생성
@@ -106,7 +106,7 @@ public class ContrcService {
         return resultMap;
     }
 
-	public HashMap<String, Object> contrcRegUpdate(ContractGridDto paramVO) {
+	public HashMap<String, Object> contrcRegUpdate(ContractGridDTO paramVO) {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		/*
 		 * 1. update : 기존 계약 USE_YN = 'N'
@@ -137,7 +137,7 @@ public class ContrcService {
 	 * @param paramVO
 	 * @return
 	 */
-	public ContractGridDto selectContrcInfo2(ContractGridDto paramVO) {
+	public ContractGridDTO selectContrcInfo2(ContractGridDTO paramVO) {
 		return ContrcMapper.selectContrcInfo2(paramVO);
 	}
 }

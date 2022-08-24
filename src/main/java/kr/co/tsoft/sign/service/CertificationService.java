@@ -3,9 +3,8 @@ package kr.co.tsoft.sign.service;
 import com.sci.v2.pcc.secu.SciSecuManager;
 import com.sci.v2.pcc.secu.hmac.SciHmac;
 import kr.co.tsoft.sign.config.security.CommonUserDetails;
-import kr.co.tsoft.sign.util.SecurityUtil;
 import kr.co.tsoft.sign.util.SessionUtil;
-import kr.co.tsoft.sign.vo.CertificationVO;
+import kr.co.tsoft.sign.vo.CertificationDTO;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 @Service
@@ -40,7 +38,7 @@ public class CertificationService {
     @Value("${service.url}")
     private String SERVICE_URL;
 
-    public CertificationVO initPhoneCert() {
+    public CertificationDTO initPhoneCert() {
 
         Calendar today = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -92,7 +90,7 @@ public class CertificationService {
         CommonUserDetails user = SessionUtil.getUser();
         user.setPhoneCert(reqNum);
         
-        CertificationVO cert = CertificationVO.builder()
+        CertificationDTO cert = CertificationDTO.builder()
 		        				.reqNum(reqNum)
 		        				.reqInfo(reqInfo)
 		        				.retUrl("32" + SERVICE_URL +  "/sign/cert/idseed")
@@ -101,7 +99,7 @@ public class CertificationService {
         return cert;
     }
 
-    public CertificationVO getResultPhoneCert(String retInfo) {
+    public CertificationDTO getResultPhoneCert(String retInfo) {
     	
     	CommonUserDetails user = SessionUtil.getUser();
 //        String phoneCert = (String) user.get("phoneCert");
@@ -171,10 +169,10 @@ public class CertificationService {
         logger.debug("certDate	: {}", certDate);
         logger.debug("addVar	: {}", addVar);
         
-        CertificationVO cert = new CertificationVO();
+        CertificationDTO cert = new CertificationDTO();
 
         if ("Y".equals(result)) {            
-            cert = CertificationVO.builder()
+            cert = CertificationDTO.builder()
             						.cellNo(cellNo)
             						.certDate(certDate)
             						.ci(ci1)

@@ -2,7 +2,7 @@ package kr.co.tsoft.sign.util;
 
 import com.clipsoft.org.apache.commons.io.FileUtils;
 import com.clipsoft.org.apache.commons.io.FilenameUtils;
-import kr.co.tsoft.sign.vo.admin.FormGridDto;
+import kr.co.tsoft.sign.vo.admin.FormGridDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,7 +54,7 @@ public class MultipartFileHandler {
         return result;
     }
 
-    public FormGridDto handleFiles(FormGridDto form) throws Exception {
+    public FormGridDTO handleFiles(FormGridDTO form) throws Exception {
         if (form == null) return null;
 
         MultipartFile multipartFile = form.getFile();

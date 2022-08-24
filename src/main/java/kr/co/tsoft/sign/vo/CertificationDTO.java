@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CertificationVO {
+public class CertificationDTO {
 	private String reqNum;
 	private String reqInfo;
 	private String retUrl;

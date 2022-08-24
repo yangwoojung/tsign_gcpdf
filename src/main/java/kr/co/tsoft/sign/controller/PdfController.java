@@ -5,8 +5,8 @@ import kr.co.tsoft.sign.service.ComService;
 import kr.co.tsoft.sign.service.PdfService;
 import kr.co.tsoft.sign.service.admin.FormService;
 import kr.co.tsoft.sign.util.SecurityUtil;
-import kr.co.tsoft.sign.vo.FileVO;
-import kr.co.tsoft.sign.vo.InfoVO;
+import kr.co.tsoft.sign.vo.FileDTO;
+import kr.co.tsoft.sign.vo.InfoDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -39,18 +39,18 @@ public class PdfController {
 	private String pdfTempDir;
 
 	@RequestMapping("/view")
-	public ModelAndView viewReport(InfoVO infoVO) throws Exception {
+	public ModelAndView viewReport(InfoDTO infoDTO) throws Exception {
 
 		ModelAndView mv = new ModelAndView();
 		logger.debug("===== /pdf/view 이동  ======");
 
 		//서식 원본 조회
-		FileVO fileVO = FileVO.builder()
-				.contractNo(infoVO.getContractNo())
+		FileDTO fileDTO = FileDTO.builder()
+				.contractNo(infoDTO.getContractNo())
 				.fileType("100")
 				.build();
 
-		FileVO formInfo = formService.selectContrcFormInfo(fileVO);
+		FileDTO formInfo = formService.selectContrcFormInfo(fileDTO);
 		if (null == formInfo) {
 			throw new Exception("서식파일이 존재하지 않습니다.");
 		}
@@ -91,7 +91,7 @@ public class PdfController {
 		}
 
 		//사인이미지 처리 inputSignCan
-		String encodeSignData = infoVO.getSignCanvasData();
+		String encodeSignData = infoDTO.getSignCanvasData();
 		String fileName = pdfTempDir + File.separatorChar + "testSignImg.png";
 		byte[] signImgBytes = Base64.decodeBase64(encodeSignData.getBytes());
 		try {
@@ -125,7 +125,7 @@ public class PdfController {
 //		resultMap.put("contrcNo", paramMap.get("contrcNo"));//계약번호
 
 //		logger.debug("## //	resultMap	: " + resultMap);
-		mv.addObject("info", infoVO);
+		mv.addObject("info", infoDTO);
 		mv.setViewName("sign/pdfViewer");
 		return mv;
 	}

@@ -1,12 +1,11 @@
-package kr.co.tsoft.sign.vo.admin;
+package kr.co.tsoft.sign.vo;
 
-import kr.co.tsoft.sign.vo.common.GridRequest;
+import lombok.Builder;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class FormGridDto extends GridRequest {
-
+@Builder
+public class FileDTO {
     private Integer fileSeq;
     private String fileType;
     private String contractNo;
@@ -15,11 +14,9 @@ public class FormGridDto extends GridRequest {
     private String savFileNm;
     private String filePath;
     private String useYn;
-    private String regDate;
+//    private java.sql.Timestamp regDate;
     private String regId;
-    private String modDate;
+//    private java.sql.Timestamp modDate;
     private String modId;
-    private MultipartFile file;
-
 
 }

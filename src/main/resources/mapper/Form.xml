@@ -14,7 +14,7 @@
         </if>
     </sql>
 
-    <select id="selectFormList" resultType="kr.co.tsoft.sign.vo.admin.FormGridDto">
+    <select id="selectFormList" resultType="kr.co.tsoft.sign.vo.admin.FormGridDTO">
         /** [SIGN].[FormMapper.selectFileList] */
         SELECT
         *
@@ -32,7 +32,7 @@
     </select>
 
     <!-- 원본서식 pdf -->
-    <select id="selectContrcFormInfo" resultType="kr.co.tsoft.sign.vo.FileVO">
+    <select id="selectContrcFormInfo" resultType="kr.co.tsoft.sign.vo.FileDTO">
         select *
         from file fm
         where fm.FILE_SEQ = (select FILE_SEQ from contract cm where CONTRACT_NO = #{contractNo} and USE_YN = 'Y')

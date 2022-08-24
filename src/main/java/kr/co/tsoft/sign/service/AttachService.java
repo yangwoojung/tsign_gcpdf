@@ -8,7 +8,7 @@ import kr.co.tsoft.sign.util.SessionUtil;
 import kr.co.tsoft.sign.vo.ApiRequest;
 import kr.co.tsoft.sign.vo.ApiResponse;
 import kr.co.tsoft.sign.vo.ApiResponseData;
-import kr.co.tsoft.sign.vo.AttachVO;
+import kr.co.tsoft.sign.vo.AttachDTO;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -62,17 +62,17 @@ public class AttachService {
 		return docList;
 	}
 
-	public CommonResponse<?> uploadAttachFile(AttachVO attachVO) throws Exception {
+	public CommonResponse<?> uploadAttachFile(AttachDTO attachDTO) throws Exception {
 
 		logger.info("##### [attach > uploadAttachFile Service] #####");
 
 		CommonUserDetails user = SessionUtil.getUser();
 
-		String attachCd = attachVO.getAttachCd();
+		String attachCd = attachDTO.getAttachCd();
 		String contNo = user.getContractNo();
 
 		String imgNm = contNo + "_" + attachCd;
-		String img = attachVO.getFile();
+		String img = attachDTO.getFile();
 
 		String savePath = CONTRACT_PATH + contNo + File.separator + "attach" + File.separator;
 

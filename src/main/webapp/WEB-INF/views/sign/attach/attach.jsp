@@ -76,11 +76,6 @@
     </div>
 </footer>
 
-<form id="reqAttachForm" name="reqAttachForm" method="post">
-    <input type="hidden" name="idCardType" id="idCardType" value="">
-    <input type="hidden" name="accCnfDocType" id="accCnfDocType" value="">
-</form>
-
 <script type="text/javascript">
 
     $(function () {

@@ -3,7 +3,7 @@
 
 <mapper namespace="kr.co.tsoft.sign.mapper.UserLoginMapper">
 
-    <select id="selectContractInfoForVO" resultType="kr.co.tsoft.sign.vo.ContractVO">
+    <select id="selectContractInfoForVO" resultType="kr.co.tsoft.sign.vo.ContractDTO">
         /** [SIGN].[selectContractInfoForVO] */
         SELECT
           *

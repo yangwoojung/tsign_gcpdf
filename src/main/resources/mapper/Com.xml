@@ -35,7 +35,7 @@
     </insert>
 
     <!-- 파일경로 저장 -->
-    <insert id="insertFileUpload2" parameterType="kr.co.tsoft.sign.vo.admin.FormGridDto">
+    <insert id="insertFileUpload2" parameterType="kr.co.tsoft.sign.vo.admin.FormGridDTO">
         insert into file
         ( FILE_TYPE
         <if test="contractNo != null and contractNo != ''">
