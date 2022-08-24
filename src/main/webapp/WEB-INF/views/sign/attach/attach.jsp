@@ -11,7 +11,9 @@
     <!-- cont_area -->
     <div class="cont_area">
         <div class="txt_msg_box cont">
-            주민등록증이나 운전면허증을 준비해주세요. <span class="point">반드시 원본을 촬영(첨부)</span>하여 제출해 주세요.
+            <span id="attachment_title"></span>
+            <%--            <span id="attachment_title">주민등록증이나 운전면허증을 준비해주세요.</span>--%>
+            <span class="point">반드시 원본을 촬영(첨부)</span>하여 제출해 주세요.
         </div>
         <div class="progress">
             <div class="box-progress-bar">
@@ -66,9 +68,10 @@
 </div>
 <!-- //container -->
 
-<div style="display: none">
-    <input type="file" name="file" id="file" accept="image/jpg, image/jpeg">
-</div>
+<form id="form" style="display: none">
+    <input type="file" id="file" accept="image/jpg, image/jpeg">
+    <input type="hidden" id="attachmentCd" />
+</form>
 
 <footer>
     <div class="btn_area">
@@ -80,19 +83,36 @@
 
     $(function () {
 
-        // 1. 계약자에 해당하는 구비서류(리스트) 데이터 가져오기 (AJAX)
-
-        // 2. 서류 리스트 순서대로 페이지 표출 및 진행
-
-
+        setupContractAttachments();
         addClickEvents();
 
     });
 
+    const setupContractAttachments = () => {
+
+        // 1. 업로드 해야할 계약자의 구비서류 데이터 우선순위에 따라 가져오기
+        const contractAttachments = fetchContractAttachments();
+        console.log(contractAttachments)
+
+        // 2. 업로드 해야할 구비서류가 더 이상 없다면 제출하기 시도 (유효성 검사는 서버에서 진행)
+        if (contractAttachments.length === 0) submitAttachment();
+
+        // 3. 우선순위에 따라 첫번째 구비서류에 대한 내용 표출
+        const selectedContractAttachment = contractAttachments[0];
+        const {attachmentCd, attachmentName, attachmentDescription} = selectedContractAttachment;
+
+        $('#attachment_title').html(attachmentDescription);
+        $('#nextBtn').html(attachmentName + " 촬영하기");
+
+        $('#form')[0].reset();
+        $('#attachmentCd').val(attachmentCd);
+
+    }
+
     const addClickEvents = () => {
 
         // 촬영하기 클릭 이벤트
-        $('#nextBtn').on('click', function(){
+        $('#nextBtn').on('click', function () {
             $('#file').trigger('click');
         });
 
@@ -113,7 +133,7 @@
         const file = this.files[0];
 
         // 유효성 검사
-        if(!validateImage(file)) return;
+        if (!validateImage(file)) return;
 
         // 파일 리사이징
         resizingImage(file);
@@ -212,7 +232,7 @@
     const fnUploadFile = (base64) => {
 
         const formData = new FormData();
-        formData.append('attachCd', '001');
+        formData.append('attachmentCd', $('#attachmentCd').val());
         formData.append('file', base64);
 
         $.ajax({
@@ -223,9 +243,11 @@
             type: 'POST',
             encType: 'multipart/form-data',
             cache: false,
-            success: function (data) {
+            success: function (response) {
                 // $('#attachLoading').hide();
-
+                if (response.result === 'SUCCESS') {
+                    setupContractAttachments();
+                }
             }, error: function (xhr, data) {
                 // $('#attachLoading').hide();
                 alert('[e] 파일 첨부 실패 - 다시 촬영(첨부)해 주세요\n장시간 미사용 상태거나, 인터넷이 끊기신 경우 처음부터 진행해 주세요.');
@@ -266,6 +288,56 @@
         return new Blob(byteArrays, {type: fileType});
     }
 
+    const fetchContractAttachments = () => {
+        let data;
 
+        $.ajax({
+            url: cpath + '/sign/attach/list',
+            type: 'GET',
+            async: false,
+            success: function (response) {
+                console.log(response)
+                if (response.result === 'SUCCESS') data = response?.data
+            },
+            error: function (jqXHR) {
+                console.error(jqXHR);
+            }
+        });
+
+        return data;
+    }
+
+    // 구비서류 제출
+    var submitAttachment = function (e) {
+
+        // TODO: 서버에서 계약자 구비서류 파일 존재하는지 확인하며 전부 완료됬는지 유효성 체크
+        alert('계약서류를 구비서류와 함께 해당 기관에 제출하고 있습니다.\n!!주의!!\n전송 완료 후 본 화면은 자동으로 닫힙니다. 절대 화면을 강제로 닫으시면 안됩니다. (5초 ~ 최장 60초)');
+
+        $.ajax({
+            url: '/sign/attach/submission',
+            type: 'POST',
+            cache: false,
+            success: function (data) {
+                if ('0000' == data.resCd) {
+                    alert('제출을 완료했습니다');
+                    window.parent.fnIdentificationClose('success');
+                } else {
+                    alert('[' + data.resCd + '] 제출에 실패하였습니다. 다시 진행해 주세요.');
+                    fnPopClose();
+                }
+
+            }, error: function (xhr, data) {
+                alert('[' + data.resCd + '] 제출에 실패하였습니다. 다시 진행해 주세요.');
+                if (xhr.status == 403) {
+                    location.href = '/sign/error/401';
+                }
+                fnPopClose();
+
+            }, beforeSend: function () {
+                $('#btnSubmit').attr('disabled', 'disabled');
+            },
+        });
+
+    };
 
 </script>

@@ -4,6 +4,7 @@ import kr.co.tsoft.sign.service.AttachService;
 import kr.co.tsoft.sign.vo.ApiResponse;
 import kr.co.tsoft.sign.vo.ApiResponseData;
 import kr.co.tsoft.sign.vo.AttachDTO;
+import kr.co.tsoft.sign.vo.ContractAttachmentDTO;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
 import kr.co.tsoft.sign.vo.common.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -52,18 +53,24 @@ public class AttachController {
 
     @PostMapping("/upload")
     @ResponseBody
-    public CommonResponse<?> upload(AttachDTO attachDTO) {
+    public CommonResponse<?> upload(ContractAttachmentDTO contractAttachmentDTO) {
         logger.info("========upload========");
         CommonResponse<?> result = null;
 
         try {
-            result = attachService.uploadAttachFile(attachDTO);
+            result = attachService.uploadAttachFile(contractAttachmentDTO);
         } catch (Exception e) {
             e.printStackTrace();
             return CommonResponse.fail(ErrorCode.COMMON_SYSTEM_ERROR);
         }
 
         return result;
+    }
+
+    @GetMapping("/list")
+    @ResponseBody
+    public CommonResponse<?> contractAttachments() {
+        return attachService.getContractAttachmentsToBeUploaded();
     }
 
     @PostMapping("/scrap")

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.tsoft.sign.mapper.ContractAttachmentMapper">
+
+    <!--<sql id="where_condition_gridList">
+        WHERE 1=1
+        <if test="searchWord != null and searchWord != ''">
+            AND FORM_NM LIKE CONCAT('%',#{searchWord},'%')
+            OR SAV_FILE_NM LIKE CONCAT('%',#{searchWord},'%')
+        </if>
+        <if test="fileType != null and fileType != ''">
+            AND FILE_TYPE = #{fileType}
+        </if>
+    </sql>
+
+    <select id="gridList" resultType="kr.co.tsoft.sign.vo.ContractAttachmentDTO">
+        SELECT
+        *
+        FROM contract_attachment
+        <include refid="where_condition_gridList"/>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+        <![CDATA[ 	LIMIT #{length} OFFSET #{start} 		]]>
+    </select>
+
+    <select id="gridListCount" resultType="kr.co.tsoft.sign.vo.common.TotalRowCount">
+        SELECT COUNT(1) AS ROW_COUNT FROM contract_attachment
+        <include refid="where_condition_gridList"/>
+    </select>-->
+
+    <select id="selectContractAttachmentToBeUploaded" resultType="kr.co.tsoft.sign.vo.ContractAttachmentDTO">
+        SELECT *
+        FROM contract_attachment contractAttachmnet
+                 INNER JOIN attachment attachment on contractAttachmnet.ATTACHMENT_SEQ = attachment.ATTACHMENT_SEQ
+        WHERE CONTRACT_NO = #{contractNo}
+          AND UPLOADED_YN = 'N'
+        ORDER BY attachment.PRIORITY, attachment.ATTACHMENT_CD
+    </select>
+
+    <update id="updateUploadedContractAttachment" parameterType="kr.co.tsoft.sign.vo.ContractAttachmentDTO">
+        UPDATE contract_attachment
+        SET UPLOADED_YN   = #{uploadedYn}
+          , UPLOADED_DATE = CURRENT_TIMESTAMP()
+          , UPLOADED_FILE = #{uploadedFile}
+        WHERE CONTRACT_NO = #{contractNo}
+          AND ATTACHMENT_SEQ =
+              (SELECT ATTACHMENT_SEQ
+               FROM attachment
+               WHERE ATTACHMENT_CD = #{attachmentCd}
+                 and USE_YN = 'Y')
+    </update>
+
+</mapper>

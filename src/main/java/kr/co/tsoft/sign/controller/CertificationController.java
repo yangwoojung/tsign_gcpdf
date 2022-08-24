@@ -37,7 +37,7 @@ public class CertificationController {
 
     @RequestMapping("/checkCellNumber")
     @ResponseBody
-    public CommonResponse checkCellNumber(@RequestBody HashMap<String, Object> paramMap) {
+    public CommonResponse<?> checkCellNumber(@RequestBody HashMap<String, Object> paramMap) {
         return certService.checkCellNumber(paramMap);
     }
     

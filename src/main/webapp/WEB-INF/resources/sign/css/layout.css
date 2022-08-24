@@ -43,7 +43,10 @@ body.bg #wrap {
     padding-bottom: 80px;
 }
 
-.point {color: #e11f27;}
+.point {
+    color: #e11f27;
+    white-space: pre;
+}
 /*** Header ***/
 header {
     width: 100%;
