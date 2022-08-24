@@ -18,7 +18,7 @@
         /** [SIGN].[FormMapper.selectFileList] */
         SELECT
         *
-        FROM file_mgmt
+        FROM file
         <include refid="where_condition_list"/>
         <if test="orderBy != null and orderBy != ''">
             ORDER BY ${orderBy}
@@ -27,22 +27,22 @@
     </select>
 
     <select id="countSelectFormList" resultType="kr.co.tsoft.sign.vo.common.TotalRowCount">
-        SELECT COUNT(1) AS ROW_COUNT FROM file_mgmt
+        SELECT COUNT(1) AS ROW_COUNT FROM file
         <include refid="where_condition_list"/>
     </select>
 
     <!-- 원본서식 pdf -->
-    <select id="selectContrcFormInfo" resultType="kr.co.tsoft.sign.vo.FileMgmtVO">
+    <select id="selectContrcFormInfo" resultType="kr.co.tsoft.sign.vo.FileVO">
         select *
-        from file_mgmt fm
-        where fm.FILE_SEQ = (select FILE_SEQ from contrc_mgmt cm where CONTRACT_NO = #{contractNo} and USE_YN = 'Y')
+        from file fm
+        where fm.FILE_SEQ = (select FILE_SEQ from contract cm where CONTRACT_NO = #{contractNo} and USE_YN = 'Y')
           and FILE_TYPE = #{fileType}
     </select>
 
     <!-- 계약결과 pdf -->
     <select id="selectContrcResultList" resultType="HashMap">
         select *
-        from file_mgmt
+        from file
         where CONTRACT_NO = #{contractNo}
           and FILE_TYPE = #{fileType}
     </select>

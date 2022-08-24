@@ -4,7 +4,7 @@ import kr.co.tsoft.sign.mapper.admin.FormMapper;
 import kr.co.tsoft.sign.service.ComService;
 import kr.co.tsoft.sign.util.MultipartFileHandler;
 import kr.co.tsoft.sign.util.SecurityUtil;
-import kr.co.tsoft.sign.vo.FileMgmtVO;
+import kr.co.tsoft.sign.vo.FileVO;
 import kr.co.tsoft.sign.vo.admin.FormGridDto;
 import kr.co.tsoft.sign.vo.common.GridResponse;
 import kr.co.tsoft.sign.vo.common.TotalRowCount;
@@ -30,8 +30,8 @@ public class FormService {
         return formMapper.countSelectFormList(parameter);
     }
 
-    public FileMgmtVO selectContrcFormInfo(FileMgmtVO fileMgmtVO) {
-        return formMapper.selectContrcFormInfo(fileMgmtVO);
+    public FileVO selectContrcFormInfo(FileVO fileVO) {
+        return formMapper.selectContrcFormInfo(fileVO);
     }
 
     public GridResponse getFormList(FormGridDto searchVO) {

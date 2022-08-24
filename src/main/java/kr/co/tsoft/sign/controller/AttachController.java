@@ -1,26 +1,22 @@
 package kr.co.tsoft.sign.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import kr.co.tsoft.sign.service.AttachService;
+import kr.co.tsoft.sign.vo.ApiResponse;
+import kr.co.tsoft.sign.vo.ApiResponseData;
+import kr.co.tsoft.sign.vo.AttachVO;
+import kr.co.tsoft.sign.vo.common.CommonResponse;
+import kr.co.tsoft.sign.vo.common.ErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import kr.co.tsoft.sign.service.AttachService;
-import kr.co.tsoft.sign.vo.ApiResponse;
-import kr.co.tsoft.sign.vo.ApiResponseData;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/sign/attach")
@@ -56,20 +52,18 @@ public class AttachController {
 	
 	@PostMapping("/upload")
 	@ResponseBody
-	public Map<String, Object> upload(@RequestParam Map<String, Object> param) {
+	public CommonResponse<?> upload(AttachVO attachVO) {
 		logger.info("========upload========");
-		Map<String, Object> resultMap = new HashMap<>();
-		
+		CommonResponse<?> result = null;
+
 		try {
-			resultMap = attachService.uploadAttachFile(param);
-			resultMap.put("result", true);
-			logger.debug("#### [ attach/upload ] resultMap : {}", resultMap);
+			result = attachService.uploadAttachFile(attachVO);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			resultMap.put("result", false);
+			return CommonResponse.fail(ErrorCode.COMMON_SYSTEM_ERROR);
 		}
-		return resultMap;
+
+		return result;
 	}
 	
 	@PostMapping("/scrap")

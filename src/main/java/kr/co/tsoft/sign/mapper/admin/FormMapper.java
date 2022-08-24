@@ -1,6 +1,6 @@
 package kr.co.tsoft.sign.mapper.admin;
 
-import kr.co.tsoft.sign.vo.FileMgmtVO;
+import kr.co.tsoft.sign.vo.FileVO;
 import kr.co.tsoft.sign.vo.admin.FormGridDto;
 import kr.co.tsoft.sign.vo.common.TotalRowCount;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,6 +13,6 @@ public interface FormMapper {
     List<FormGridDto> selectFormList(FormGridDto parameter);
     TotalRowCount countSelectFormList(FormGridDto parameter);
 
-    FileMgmtVO selectContrcFormInfo(FileMgmtVO fileMgmtVO);
+    FileVO selectContrcFormInfo(FileVO fileVO);
 
 }

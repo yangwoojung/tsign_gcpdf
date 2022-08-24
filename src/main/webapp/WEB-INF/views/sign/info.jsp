@@ -22,7 +22,7 @@
         <div class="cont">
             <!-- form_box -->
             <form id="reportForm" method="post" action="/sign/pdf/view" onsubmit="return fnMoveNext()">
-                <input type="hidden" name="contrcNo" id="contrcNo" value="${user.contractNo}"/>
+                <input type="hidden" name="contractNo" value="${user.contractNo}"/>
                 <input type="submit" id="submitReportForm" class="hidden"/>
 
                 <div class="form_box typeSide">
@@ -39,11 +39,11 @@
                     <dl class="list">
                         <dt>주민등록번호</dt>
                         <dd class="half">
-                            <input id="inResidentNo1" name="inResidentNo1" type="tel" class="input_ty focusNone" placeholder="6자리숫자"
+                            <input id="inResidentNo1" name="residentNo1" type="tel" class="input_ty focusNone" placeholder="6자리숫자"
                                    maxlength="6"
                                    onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" autocomplete="off"
                                    required/>
-                            <input id="inResidentNo2" name="inResidentNo2" type="tel" class="input_ty focusNone" placeholder="7자리숫자"
+                            <input id="inResidentNo2" name="residentNo2" type="tel" class="input_ty focusNone" placeholder="7자리숫자"
                                    maxlength="7"
                                    onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" autocomplete="off"
                                    required/>
@@ -52,7 +52,7 @@
                     <dl class="list">
                         <dt>주소</dt>
                         <dd>
-                            <textarea id="addr1" name="addr1" type="text" class="input_ty focusNone" placeholder="도로명 주소/동,호수까지 입력"
+                            <textarea id="addr1" name="addr" type="text" class="input_ty focusNone" placeholder="도로명 주소/동,호수까지 입력"
                                       autocomplete="off" required></textarea>
                         </dd>
                     </dl>
@@ -60,7 +60,7 @@
                         <dt>은행 선택</dt>
                         <dd class="half03">
                             <p>
-                                <select id="stlmAccBank" name="stlmAccBank" required>
+                                <select id="stlmAccBank" name="bankAccountNo" required>
                                     <option value="" selected>은행선택</option>
                                     <option value="003">기업은행</option>
                                     <option value="004">국민은행</option>

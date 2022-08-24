@@ -5,10 +5,10 @@
 
     <!-- 파일경로 저장 -->
     <insert id="insertFileUpload" parameterType="HashMap">
-        insert into FILE_MGMT
-        ( FILE_TP
-        <if test="CONTRC_NO != null and CONTRC_NO != ''">
-            ,CONTRC_NO
+        insert into file
+        ( FILE_TYPE
+        <if test="CONTRACT_NO != null and CONTRACT_NO != ''">
+            ,CONTRACT_NO
         </if>
         <if test="FORM_NM != null and FORM_NM != ''">
             ,FORM_NM
@@ -19,9 +19,9 @@
         ,REG_ID
         ,MOD_ID
         ) values (
-        #{FILE_TP}
-        <if test="CONTRC_NO != null and CONTRC_NO != ''">
-            ,#{CONTRC_NO}
+        #{FILE_TYPE}
+        <if test="CONTRACT_NO != null and CONTRACT_NO != ''">
+            ,#{CONTRACT_NO}
         </if>
         <if test="FORM_NM != null and FORM_NM != ''">
             ,#{FORM_NM}
@@ -36,10 +36,10 @@
 
     <!-- 파일경로 저장 -->
     <insert id="insertFileUpload2" parameterType="kr.co.tsoft.sign.vo.admin.FormGridDto">
-        insert into FILE_MGMT
-        ( FILE_TP
-        <if test="contrcNo != null and contrcNo != ''">
-            ,CONTRC_NO
+        insert into file
+        ( FILE_TYPE
+        <if test="contractNo != null and contractNo != ''">
+            ,CONTRACT_NO
         </if>
         <if test="formNm != null and formNm != ''">
             ,FORM_NM
@@ -51,8 +51,8 @@
         ,MOD_ID
         ) values (
         #{fileTp}
-        <if test="contrcNo != null and contrcNo != ''">
-            ,#{contrcNo}
+        <if test="contractNo != null and contractNo != ''">
+            ,#{contractNo}
         </if>
         <if test="formNm != null and formNm != ''">
             ,#{formNm}

@@ -3,7 +3,7 @@ package kr.co.tsoft.sign.vo;
 import lombok.Data;
 
 @Data
-public class AdmMgmtVO {
+public class AdminVO {
     private Integer admSeq;
     private String admId;
     private String admNm;

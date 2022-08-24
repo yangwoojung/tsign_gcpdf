@@ -28,8 +28,8 @@
         ,A.REG_DATE
         ,B.FORM_NM
         ,B.FILE_PATH
-        FROM contrc_mgmt A
-        LEFT join file_mgmt B
+        FROM contract A
+        LEFT join file B
         on A.FILE_SEQ = B.FILE_SEQ
         and B.USE_YN = 'Y'
         <include refid="where_condition_list"/>
@@ -42,8 +42,8 @@
     <!-- 계약 전체 리스트 수 조회 -->
     <select id="countSelectContrcList" resultType="kr.co.tsoft.sign.vo.common.TotalRowCount">
         SELECT COUNT(1) AS ROW_COUNT
-        FROM contrc_mgmt A
-        LEFT join file_mgmt B
+        FROM contract A
+        LEFT join file B
         ON A.FILE_SEQ = B.FILE_SEQ
         AND B.USE_YN = 'Y'
         <include refid="where_condition_list"/>
@@ -62,7 +62,7 @@
              , SIGN_DUE_EDATE
              , IN_SIGN_DATE
              , USE_YN
-        FROM contrc_mgmt
+        FROM contract
         WHERE CONTRACT_NO = #{CONTRACT_NO}
     </select>
     
@@ -72,14 +72,14 @@
         SELECT A.CONTRACT_SEQ
              , A.CONTRACT_NO
              , A.FILE_SEQ
-             , (select ORG_FILE_NM from file_mgmt B where 1=1 AND A.FILE_SEQ = B.FILE_SEQ) FORM_NM
+             , (select ORG_FILE_NM from file B where 1=1 AND A.FILE_SEQ = B.FILE_SEQ) FORM_NM
              , A.USER_NM
              , A.CELL_NO
              , A.EMAIL
              , DATE_FORMAT(A.SIGN_DUE_SDATE,'%Y-%m-%d') SIGN_DUE_SDATE
              , DATE_FORMAT(A.SIGN_DUE_EDATE,'%Y-%m-%d') SIGN_DUE_EDATE
              , A.USE_YN
-        FROM contrc_mgmt A
+        FROM contract A
         WHERE A.CONTRACT_SEQ = #{contractSeq}
     </select>
 
@@ -87,7 +87,7 @@
     <select id="selectCompleteContr" parameterType="HashMap" resultType="HashMap">
         /** [SIGN].[ContrcMapper.selectCompleteContr] */
         select *
-        from file_mgmt
+        from file
         WHERE CONTRACT_NO = #{CONTRACT_NO}
           and USE_YN = 'Y'
     </select>
@@ -95,7 +95,7 @@
     <!-- 계약 저장 -->
     <insert id="insertContrcReg" parameterType="kr.co.tsoft.sign.vo.admin.ContractGridDto">
         /** [SIGN].[ContrcMapper.insertContrcReg] */
-        insert into contrc_mgmt
+        insert into contract
         ( CONTRACT_NO
         , FILE_SEQ
         , USER_NM
@@ -124,7 +124,7 @@
     <!-- 계약 삭제(use_yn = 'n') -->
     <insert id="updateContrcReg" parameterType="kr.co.tsoft.sign.vo.admin.ContractGridDto">
         /** [SIGN].[ContrcMapper.updateContrcReg] */
-        update contrc_mgmt 
+        update contract 
 		set  USE_YN = 'N'
 		    , MOD_ID =  #{modId}
 		    , MOD_DATE = current_timestamp() 

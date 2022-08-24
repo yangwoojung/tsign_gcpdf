@@ -1,20 +1,5 @@
 package kr.co.tsoft.sign.service;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.codec.binary.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import kr.co.tsoft.sign.config.security.CommonUserDetails;
 import kr.co.tsoft.sign.service.admin.ContrcService;
 import kr.co.tsoft.sign.util.FileUtil;
@@ -23,8 +8,24 @@ import kr.co.tsoft.sign.util.SessionUtil;
 import kr.co.tsoft.sign.vo.ApiRequest;
 import kr.co.tsoft.sign.vo.ApiResponse;
 import kr.co.tsoft.sign.vo.ApiResponseData;
+import kr.co.tsoft.sign.vo.AttachVO;
+import kr.co.tsoft.sign.vo.common.CommonResponse;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class AttachService {
@@ -61,19 +62,17 @@ public class AttachService {
 		return docList;
 	}
 
-	public Map<String, Object> uploadAttachFile(Map<String, Object> param) throws Exception {
+	public CommonResponse<?> uploadAttachFile(AttachVO attachVO) throws Exception {
 
 		logger.info("##### [attach > uploadAttachFile Service] #####");
 
 		CommonUserDetails user = SessionUtil.getUser();
-		Map<String, Object> resultMap = new HashMap<>();
 
-		String attachCd = (String) param.get("attach_cd");
-		String attachChildId = (String) param.get("attach_child_id");
+		String attachCd = attachVO.getAttachCd();
 		String contNo = user.getContractNo();
 
-		String imgNm = contNo + "_" + attachCd + "_" + attachChildId;
-		String img = (String) param.get("fileData");
+		String imgNm = contNo + "_" + attachCd;
+		String img = attachVO.getFile();
 
 		String savePath = CONTRACT_PATH + contNo + File.separator + "attach" + File.separator;
 
@@ -88,6 +87,8 @@ public class AttachService {
 
 		File uploadAttach = transferDecryptDataToDestFile(savePath, imgNm, img);
 
+		ApiResponse<ApiResponseData.Ocr> response = null;
+				
 		// OCR 연결
 		if ("001".equals(attachCd)) {
 			MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", uploadAttach.getName(),
@@ -96,20 +97,21 @@ public class AttachService {
 			ApiRequest.Ocr request = ApiRequest.Ocr.builder().token("WuL299MCpJEwTs5ArcpoYJB4GaQ0PQ") // 운영토큰
 					.file(filePart).build();
 
-			logger.info("#### OCR API Request : {} ", request);
-			ApiResponse<ApiResponseData.Ocr> response = apiService.processOcr(request);
-			resultMap.put("code", response.getData().get(0).getCode());
-			resultMap.put("ocrResult", response.getData().get(0).getData());
-			resultMap.put("resultMessage", response.getData().get(0).getStatus());
+			logger.info("### OCR API Request : {} ", request);
+			response = apiService.processOcr(request);
+			logger.info("### OCR API Response : {} ", response);
+
+//			resultMap.put("code", response.getData().get(0).getCode());
+//			resultMap.put("ocrResult", response.getData().get(0).getData());
+//			resultMap.put("resultMessage", response.getData().get(0).getStatus());
 		} else {
 			File Directory = new File(savePath);
 			if (Directory.exists()) {
-				resultMap.put("code", "0000");
-				resultMap.put("resultMessage", "S");
+				return CommonResponse.fail("S", "0000");
 			}
 		}
 
-		return resultMap;
+		return CommonResponse.success(response);
 	}
 
 	public File transferDecryptDataToDestFile(String filePath, String fileName, String fileData) throws IOException {

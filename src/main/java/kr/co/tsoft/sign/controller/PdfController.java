@@ -5,7 +5,7 @@ import kr.co.tsoft.sign.service.ComService;
 import kr.co.tsoft.sign.service.PdfService;
 import kr.co.tsoft.sign.service.admin.FormService;
 import kr.co.tsoft.sign.util.SecurityUtil;
-import kr.co.tsoft.sign.vo.FileMgmtVO;
+import kr.co.tsoft.sign.vo.FileVO;
 import kr.co.tsoft.sign.vo.InfoVO;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
@@ -45,12 +45,12 @@ public class PdfController {
 		logger.debug("===== /pdf/view 이동  ======");
 
 		//서식 원본 조회
-		FileMgmtVO fileMgmtVO = FileMgmtVO.builder()
+		FileVO fileVO = FileVO.builder()
 				.contractNo(infoVO.getContractNo())
 				.fileType("100")
 				.build();
 
-		FileMgmtVO formInfo = formService.selectContrcFormInfo(fileMgmtVO);
+		FileVO formInfo = formService.selectContrcFormInfo(fileVO);
 		if (null == formInfo) {
 			throw new Exception("서식파일이 존재하지 않습니다.");
 		}

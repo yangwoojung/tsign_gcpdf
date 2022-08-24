@@ -10,9 +10,8 @@
              , ADM_NM
              , ADM_PWD
              , ADM_CELL_NO
-        FROM tsign.ADM_MGMT
-        WHERE 1 = 1
-          AND USE_YN = 'Y'
+        FROM admin
+        WHERE USE_YN = 'Y'
           AND ADM_ID = #{adm_id}
     </select>
 </mapper>

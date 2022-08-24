@@ -12,7 +12,7 @@ public class InfoVO {
     private String signCanvasData;
     private String address;
     private String bankName;
-    private String accountNo;
+    private String bankAccountNo;
 
 
 }

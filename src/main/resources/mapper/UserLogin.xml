@@ -3,11 +3,11 @@
 
 <mapper namespace="kr.co.tsoft.sign.mapper.UserLoginMapper">
 
-    <select id="selectContractInfoForVO" resultType="kr.co.tsoft.sign.vo.ContrcMgmtVO">
+    <select id="selectContractInfoForVO" resultType="kr.co.tsoft.sign.vo.ContractVO">
         /** [SIGN].[selectContractInfoForVO] */
         SELECT
           *
-        FROM contrc_mgmt
+        FROM contract
         WHERE USE_YN = 'Y'
           AND CONTRACT_NO = #{contractNo}
     </select>

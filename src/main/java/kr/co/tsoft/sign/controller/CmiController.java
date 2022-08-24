@@ -5,7 +5,7 @@ import kr.co.tsoft.sign.service.UserLoginService;
 import kr.co.tsoft.sign.service.admin.ContrcService;
 import kr.co.tsoft.sign.util.SessionUtil;
 import kr.co.tsoft.sign.util.StringMaskUtil;
-import kr.co.tsoft.sign.vo.ContrcMgmtVO;
+import kr.co.tsoft.sign.vo.ContractVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class CmiController {
     public String entry(@PathVariable(name = "contractNo", required = true) String contractNo, Model model) throws Exception {
     	logger.info("contractNo : {}", contractNo);
         //vo 테스트
-        ContrcMgmtVO contrcVO = userService.selectContractInfoForVO(contractNo);
+        ContractVO contrcVO = userService.selectContractInfoForVO(contractNo);
 
         String cell_no_mask = StringMaskUtil.maskPhone(contrcVO.getCellNo());
         contrcVO.setCellNoMask(cell_no_mask);

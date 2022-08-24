@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class FileMgmtVO {
+public class FileVO {
     private Integer fileSeq;
     private String fileType;
     private String contractNo;
