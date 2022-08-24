@@ -1,5 +1,7 @@
 package kr.co.tsoft.sign.util;
 
+import com.clipsoft.org.apache.commons.io.FileUtils;
+import com.clipsoft.org.apache.commons.io.FilenameUtils;
 import kr.co.tsoft.sign.vo.admin.FormGridDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -12,7 +14,7 @@ import java.util.*;
 public class MultipartFileHandler {
 
     @Value("${config.upload.dir}")
-    private String uploadDir;
+    private String UPLOAD_PATH;
 
     public List<HashMap<String, String>> handleFiles(List<MultipartFile> orgFiles, HashMap<String, String> fileInfo) throws Exception {
         if (orgFiles == null || orgFiles.size() == 0) {
@@ -34,7 +36,7 @@ public class MultipartFileHandler {
 
             UUID uuid = UUID.randomUUID();
             String savedName = uuid.toString();
-            String finalPath = uploadDir + File.separatorChar + fileInfo.get("lastPath") + File.separatorChar;
+            String finalPath = UPLOAD_PATH + File.separatorChar + fileInfo.get("lastPath") + File.separatorChar;
 
             fileInfo.put("SAV_FILE_NM", savedName);
             fileInfo.put("FILE_PATH", finalPath);
@@ -59,16 +61,17 @@ public class MultipartFileHandler {
         if (multipartFile.isEmpty()) return null;
 
         String orgFileName = multipartFile.getOriginalFilename();
-        String savedName = UUID.randomUUID().toString();
+        String extension = FilenameUtils.getExtension(orgFileName);
+        String savedName = UUID.randomUUID() + "." + extension;
         String pathByFileType = findPathByFileType(form.getFileType());
-        String finalPath = uploadDir + File.separatorChar + pathByFileType + File.separatorChar;
+        String finalPath = UPLOAD_PATH + File.separatorChar + pathByFileType + File.separatorChar;
 
         form.setOrgFileNm(orgFileName);
         form.setSavFileNm(savedName);
         form.setFilePath(finalPath);
 
-        //실제 저장되는 위치 c:/project/upload/#{lastPath}/생성한 svaedName
-        multipartFile.transferTo(new File(finalPath + savedName));
+        //실제 저장되는 위치 c:/project/upload/#{lastPath}/생성한 savedName
+        FileUtils.writeByteArrayToFile(new File(finalPath + savedName), multipartFile.getBytes());
 
         return form;
     }
