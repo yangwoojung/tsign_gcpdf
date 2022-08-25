@@ -11,7 +11,7 @@
     <!-- cont_area -->
     <div class="cont_area">
         <div class="txt_msg_box cont">
-            <span id="attachment_title"></span>
+            <p id="attachment_title"></p>
             <%--            <span id="attachment_title">주민등록증이나 운전면허증을 준비해주세요.</span>--%>
             <span class="point">반드시 원본을 촬영(첨부)</span>하여 제출해 주세요.
         </div>
@@ -75,7 +75,7 @@
 
 <footer>
     <div class="btn_area">
-        <a href="javascript:" id="nextBtn" class="btn_m btn_ty02">신분증 촬영하기</a>
+        <a href="javascript:" id="nextBtn" class="btn_m btn_ty02">촬영하기</a>
     </div>
 </footer>
 

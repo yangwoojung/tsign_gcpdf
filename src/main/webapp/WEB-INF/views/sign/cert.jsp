@@ -48,8 +48,6 @@
 	
     const MAKSED_CELL_NO = '${user.cellNoMask}';
     const ACTIVE_PROFILE = '${profilesActive}';
-    
-    console.log('${user}');
 
     $(function() {
         $('#cellNo').val(phoneFormat(MAKSED_CELL_NO));

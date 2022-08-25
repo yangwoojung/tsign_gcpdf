@@ -33,13 +33,10 @@ public class CmiController {
     @RequestMapping(value = "/cmi/{contractNo}", method = RequestMethod.GET)
     public String entry(@PathVariable(name = "contractNo", required = true) String contractNo, Model model) throws Exception {
     	logger.info("contractNo : {}", contractNo);
-        //vo 테스트
         ContractDTO contrcVO = userService.selectContractInfoForVO(contractNo);
 
         String cell_no_mask = StringMaskUtil.maskPhone(contrcVO.getCellNo());
         contrcVO.setCellNoMask(cell_no_mask);
-        
-        logger.info("contrcVO : {}", contrcVO);
         
         CommonUserDetails user = CommonUserDetails.builder()
         											.contractNo(contrcVO.getContractNo())
