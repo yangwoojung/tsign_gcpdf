@@ -88,7 +88,7 @@
         };
 
         ComUtil.request(requestMap, function(data) {
-        	if("SUCCESS" == data?.result){
+        	if(data?.result === 'SUCCESS'){
                 ComUtil.certPhone();
             } else {
                 alert(data.resultMsg);
