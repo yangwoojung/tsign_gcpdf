@@ -102,7 +102,6 @@ public class CertificationService {
     public CertificationDTO getResultPhoneCert(String retInfo) {
     	
     	CommonUserDetails user = SessionUtil.getUser();
-//        String phoneCert = (String) user.get("phoneCert");
         String phoneCert = user.getPhoneCert();
 
         if (user == null || StringUtils.isBlank(phoneCert)) {
@@ -180,15 +179,12 @@ public class CertificationService {
             						.status("0000")
             						.type("idseed")
             						.build();
-
-            if ("0000".equals(cert.getStatus())) {
-            }
-
         }
         return cert;
     }
 
-    public CommonResponse checkCellNumber(HashMap<String, Object> paramMap) {
+    @SuppressWarnings("unused")
+	public CommonResponse checkCellNumber(HashMap<String, Object> paramMap) {
     	
     	logger.info(" ##### certificationService > checkCellNumber #####");
 

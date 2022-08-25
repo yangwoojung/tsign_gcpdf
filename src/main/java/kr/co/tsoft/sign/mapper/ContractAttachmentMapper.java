@@ -9,4 +9,6 @@ public interface ContractAttachmentMapper {
     ContractAttachmentDTO selectOneAttachmentToBeUploaded(ContractAttachmentDTO dto);
 
     void updateUploadedAttachment(ContractAttachmentDTO dto);
+
+	ContractAttachmentDTO selectAttachInfoByAttachCd(String attachmentCd);
 }

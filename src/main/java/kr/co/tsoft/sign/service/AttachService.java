@@ -45,75 +45,81 @@ public class AttachService {
     public CommonResponse<?> uploadAttachFile(ContractAttachmentDTO contractAttachmentDTO) throws Exception {
 
         logger.info("##### [attach > uploadAttachFile Service] #####");
-
+        
         CommonUserDetails user = SessionUtil.getUser();
-        String contractNo = user.getContractNo();
+        String contractNo = user.getContractNo(); //계약번호
 
-        String attachmentCd = contractAttachmentDTO.getAttachmentCd();
+        String attachmentCd = contractAttachmentDTO.getAttachmentCd(); //서류코드
+        
+        ContractAttachmentDTO attachInfoInDB = contractAttachmentMapper.selectAttachInfoByAttachCd(attachmentCd); //attachmentInfo
+        
         String imgNm = contractNo + "_" + attachmentCd;
         String img = contractAttachmentDTO.getFile();
 
-        String savePath = CONTRACT_PATH + contractNo + File.separator + "attach" + File.separator;
-
-        switch (attachmentCd) {
-            case "001":
-                savePath = savePath + "신분증";
-                break;
-            case "002":
-                savePath = savePath + "통장사본";
-                break;
-        }
+        String savePath = CONTRACT_PATH + contractNo + File.separator + "attach";
 
         File uploadedFile = transferDecryptDataToDestFile(savePath, imgNm, img);
-
-
-        // OCR 연결
-        if ("001".equals(attachmentCd)) {
-            MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", uploadedFile.getName(),
+        
+        String ocrYn = attachInfoInDB.getOcrYn();
+        String scrapYn = attachInfoInDB.getScrapYn();
+        
+        if("Y".equalsIgnoreCase(ocrYn) && "Y".equalsIgnoreCase(scrapYn)) {
+        	//ocr+scraping
+        	MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", uploadedFile.getName(),
                     okhttp3.RequestBody.create(MediaType.parse("image/*"), uploadedFile));
-
-            ApiRequest.Ocr ocrRequest = ApiRequest.Ocr.builder()
-                    .token("WuL299MCpJEwTs5ArcpoYJB4GaQ0PQ") // 운영토큰
-                    .file(filePart).build();
-
-            logger.info("### OCR API Request : {} ", ocrRequest);
-            ApiResponse<ApiResponseData.Ocr> ocrResponse = apiService.processOcr(ocrRequest);
-            logger.info("### OCR API Response : {} ", ocrResponse);
-
-            // OCR API 통신 성공시 "0000"
-            if ("0000".equals(ocrResponse.getCode())) {
-                ApiResponseData<ApiResponseData.Ocr> ocr = ocrResponse.getData().get(0);
-                // OCR 성공시 "0000"
-                if ("0000".equals(ocr.getCode())) {
-                    ApiResponseData.Ocr data = ocr.getData();
-
-                    // OCR 성공시 스크랩 진행하여 진위여부 확인
-                    // 주민등록번호의 경우 IdType : 1
-                    if ("1".equals(data.getIdType())) {
-                        ApiRequest.Scrap scrapRequest = ApiRequest.Scrap.builder()
-                                .token("fc2yilEkhclyP1xGnWRNVFFIptXTLd")
-                                .type(attachmentCd)
-                                .col1(data.getName())
-                                .col2(data.getSocialNo())
-                                .col3(data.getIssueDt())
-                                .build();
-
-                        logger.info("#### Scrap API Request : {} ", scrapRequest);
-                        ApiResponse<ApiResponseData.Scrap> scrapResponse = apiService.processScrap(scrapRequest);
-                        logger.info("#### Scrap API Response : {} ", scrapResponse);
-                    }
-
-                }
-
-            }
+        	
+        	ApiRequest.Verify verifyRequest = ApiRequest.Verify.builder()
+        												.token("yBnwrSX4mGfOMd11IUf4KyuwnsVZ5I")
+        												.file(filePart).build();
+        	
+        	ApiResponse<ApiResponseData.Verify> verifyResponse = apiService.processVerify(verifyRequest);
+        	logger.info("### Verify API Response : {} ", verifyResponse);
 
         } else {
-            //TODO: 디렉토리가 존재하면 FAIL 처리 ?
-            File Directory = new File(savePath);
-            if (Directory.exists()) {
-                return CommonResponse.fail("S", "0000");
-            }
+        	
         }
+
+        // OCR 연결
+//        if ("001".equals(attachmentCd)) {
+//            MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", uploadedFile.getName(),
+//                    okhttp3.RequestBody.create(MediaType.parse("image/*"), uploadedFile));
+//
+//            ApiRequest.Ocr ocrRequest = ApiRequest.Ocr.builder()
+//                    .token("WuL299MCpJEwTs5ArcpoYJB4GaQ0PQ") // 운영토큰
+//                    .file(filePart).build();
+//
+//            logger.info("### OCR API Request : {} ", ocrRequest);
+//            ApiResponse<ApiResponseData.Ocr> ocrResponse = apiService.processOcr(ocrRequest);
+//            logger.info("### OCR API Response : {} ", ocrResponse);
+//
+//            // OCR API 통신 성공시 "0000"
+//            if ("0000".equals(ocrResponse.getCode())) {
+//                ApiResponseData<ApiResponseData.Ocr> ocr = ocrResponse.getData().get(0);
+//                // OCR 성공시 "0000"
+//                if ("0000".equals(ocr.getCode())) {
+//                    ApiResponseData.Ocr data = ocr.getData();
+//
+//                    // OCR 성공시 스크랩 진행하여 진위여부 확인
+//                    // 주민등록번호의 경우 IdType : 1
+//                    if ("1".equals(data.getIdType())) {
+//                        ApiRequest.Scrap scrapRequest = ApiRequest.Scrap.builder()
+//                                .token("fc2yilEkhclyP1xGnWRNVFFIptXTLd")
+//                                .type(attachmentCd)
+//                                .col1(data.getName())
+//                                .col2(data.getSocialNo())
+//                                .col3(data.getIssueDt())
+//                                .build();
+//
+//                        logger.info("#### Scrap API Request : {} ", scrapRequest);
+//                        ApiResponse<ApiResponseData.Scrap> scrapResponse = apiService.processScrap(scrapRequest);
+//                        logger.info("#### Scrap API Response : {} ", scrapResponse);
+//                    }
+//
+//                }
+//
+//            }
+//
+//        }
 
         // 계약자의 구비서류 업로드 완료처리
         // TODO: OCR 또는 스크랩 체크가 필요한 경우 전부 완료되었을때 업로드 완료 처리 할수있도록 함
