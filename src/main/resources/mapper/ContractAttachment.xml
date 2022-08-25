@@ -55,5 +55,18 @@
                WHERE ATTACHMENT_CD = #{attachmentCd}
                  and USE_YN = 'Y')
     </update>
+    
+    <select id="selectAttachInfoByAttachCd" resultType="kr.co.tsoft.sign.vo.ContractAttachmentDTO">
+    	select 
+			*
+		from
+			attachment attachment
+<!-- 			inner join contract_attachment contractattachment  -->
+<!-- 			on attachment.ATTACHMENT_SEQ = contractattachment.ATTACHMENT_SEQ -->
+		where 
+			attachment.ATTACHMENT_CD = #{attachmentCd}
+			and
+			attachment.USE_YN = 'Y'
+    </select>
 
 </mapper>
