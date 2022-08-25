@@ -900,6 +900,13 @@ ul.description {
     padding-top: 10px;
     font-size: 11px;
 }
+ul.description.type02 {
+    font-size: 12px;
+}
+ul.description.type02 li {
+    line-height: 16px;
+    padding-bottom: 8px;
+}
 ul.description li {
     display: flex;
     align-items: flex-start;
@@ -975,13 +982,13 @@ ul.description li:before {
     position: relative;
 }
 
-.form_box .list dd:after {
+/*.form_box .list dd:after {
     display: block;
     clear: both;
     height: 0;
     content: "";
     overflow: hidden;
-}
+}*/
 
 .form_box .list dd.half .input_ty {
     width: calc(50% - 15px);

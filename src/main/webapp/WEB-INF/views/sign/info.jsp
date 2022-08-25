@@ -191,9 +191,11 @@
         initSignCanvas();
 
         $('textarea').on('keyup keydown change', function (e) {
-            $(this).css('height', 'auto');
-            $(this).height(this.scrollHeight);
-        }).keyup();
+            if(this.scrollHeight > 30) {
+                $(this).css('height', 'auto');
+                $(this).height(this.scrollHeight);
+            }
+        });
 
     });
 

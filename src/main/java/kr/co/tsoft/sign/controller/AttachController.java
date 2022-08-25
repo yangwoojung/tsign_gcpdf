@@ -41,6 +41,12 @@ public class AttachController {
         return "sign/attach";
     }
 
+    @GetMapping("/check")
+    public String attachPageForCheck() {
+        logger.debug("===== attach check page =====");
+        return "sign/attachCheck";
+    }
+
     @GetMapping("/attachPop")
     public String attachPop() {
         logger.debug("===== attachPop page =====");

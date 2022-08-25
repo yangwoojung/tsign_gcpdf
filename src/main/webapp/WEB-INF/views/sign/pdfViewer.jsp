@@ -12,7 +12,7 @@
     <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
     <!-- This snippet is used in production (included from viewer.html) -->
-    <link rel="resource" type="application/l10n" href="/resources/sign/pdfjs/locale/locale.properties">
+<%--    <link rel="resource" type="application/l10n" href="/resources/sign/pdfjs/locale/locale.properties">--%>
     <script type='text/javascript' src="/resources/sign/pdfjs/build/pdf.js"></script>
 <%--    <script type='text/javascript' src="/resources/sign/pdfjs/build/pdf.worker.js"></script>--%>
     <%--    <script type='text/javascript' src="/resources/sign/pdfjs/pdfviewer.js"></script>--%>
@@ -137,9 +137,12 @@
         __CANVAS = $('#pdf-canvas').get(0),
         __CANVAS_CTX = __CANVAS.getContext('2d');
 
-    const PDF_FILE_PATH = '${user.pdfPath}' + '${user.pdfFileNm}';
+    <%--const PDF_FILE_PATH = '${user.pdfPath}' + '${user.pdfFileNm}';--%>
+    // const PDF_FILE_PATH = 'C:\\tsoft\\tsign\\files\\temp\\4ff32341-c68d-47e1-ab4f-c3bafc6fe4db.pdf';
+    const PDF_FILE_PATH = 'https://file.io/GnAvY5B7q6n4';
     console.log("PDF_FILE_PATH == " + PDF_FILE_PATH);
-    const contrcNo = '${user.contrcNo}';
+    <%--const contrcNo = '${user.contrcNo}';--%>
+    const contrcNo = '20220825213343_5891';
 
     function showPDF(password) {
         $("#pdf-loader").show();

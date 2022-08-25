@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+ <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -34,7 +34,7 @@
                 <div class="imgConts">
                     <div class="left">
                         <div class="imgTitle"></div>
-                        <div class="name">
+                        <div class="name shape">
                             <span></span>
                             <span></span>
                             <span></span>
@@ -57,7 +57,7 @@
         </div>
 
         <div class="imgDesc">
-            <ul class="description">
+            <ul class="description type02">
                 <li>여백을 최소화 해주세요.</li>
                 <li>원본이 잘리거나 흐릿하게 촬영된 경우에는 반드시 다시 촬영해주세요.</li>
                 <li>첨부는 JPEG 형식만 가능합니다.</li>
@@ -69,7 +69,7 @@
 <!-- //container -->
 
 <form id="form" style="display: none">
-    <input type="file" id="file" accept="image/jpg, image/jpeg">
+
     <input type="hidden" id="attachmentCd"/>
 </form>
 
@@ -265,13 +265,22 @@
             success: function (response) {
               		console.log(response);
                 // $('#attachLoading').hide();
+
+                // TODO: 아래 경우의 수 정리하여 스크립트 수정
+                // 신분증(ID)
+                // -> [성공] 계좌인증 페이지 이동
+                // -> [실패] 신분증 정보확인 페이지 이동 및 신분증 타입에 따른 화면 표출
+                // 기본 구비서류
+                // -> [성공] 다음 구비서류 진행 (=> setupContractAttachment() 함수 호출)
+                // -> [실패] 에러 메세지 표출 및 재시도
+                // 재시도 -> 함수 호출 하여 다시 할지 아니면 로케이션 리로드 할지 ... 미정!
                 if (response.result === 'SUCCESS') {
                     if (TYPE) {
-                        location.href = '/sign/info'
+                        // location.href = '/sign/info'
+                        location.href = '/sign/attach/check'
                     } else {
                         setupContractAttachment();
                     }
-
                 }
             }, error: function (xhr, data) {
                 // $('#attachLoading').hide();
