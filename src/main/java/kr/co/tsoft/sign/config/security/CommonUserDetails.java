@@ -1,13 +1,9 @@
 package kr.co.tsoft.sign.config.security;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-
+import lombok.Builder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import lombok.Builder;
+import java.util.ArrayList;
 
 @Builder
 public class CommonUserDetails implements UserDetails {
@@ -19,6 +15,7 @@ public class CommonUserDetails implements UserDetails {
     // admin user info
     private String adminNm;
     private String adminCellNo;
+
     // sign user info
     private String contractNo;
     private long fileSeq;
@@ -27,20 +24,12 @@ public class CommonUserDetails implements UserDetails {
     private String email;
     private String signDueSdate;
     private String signDueEdate;
+
     // 사용자 입력
-    private Date inSignDate;        //서명일자
-    private String inResidentNo;    //주민번호
-    private String inAddress;        //주소
-    private String inAccountNo;    //계좌
-    private String inBankNm;        //은행명
-    //진행중 업데이트
-    private String pdfPageCnt;        //계약서 pdf페이지 수
-    private String contrcState;        //계약상태
-    private LinkedList<HashMap<String, String>> historyList = new LinkedList<>();
-    //본인인증
-    private Date ctrtCfmDt;
-    private Date ownSignDt;
-    private String phoneCert;        // 휴대폰 본인인증 복호화
+    private String residentNo;      //주민번호
+    private String bankName;        //은행명
+    private String bankAccountNo;   //계좌번호
+    private String phoneCert;       //휴대폰 인증
 
     @Override
     public int hashCode() {
@@ -160,88 +149,28 @@ public class CommonUserDetails implements UserDetails {
         this.signDueEdate = signDueEdate;
     }
 
-    public Date getInSignDate() {
-        return inSignDate;
+    public String getResidentNo() {
+        return residentNo;
     }
 
-    public void setInSignDate(Date inSignDate) {
-        this.inSignDate = inSignDate;
+    public void setResidentNo(String residentNo) {
+        this.residentNo = residentNo;
     }
 
-    public String getInResidentNo() {
-        return inResidentNo;
+    public String getBankName() {
+        return bankName;
     }
 
-    public void setInResidentNo(String inResidentNo) {
-        this.inResidentNo = inResidentNo;
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 
-    public String getInAddress() {
-        return inAddress;
+    public String getBankAccountNo() {
+        return bankAccountNo;
     }
 
-    public void setInAddress(String inAddress) {
-        this.inAddress = inAddress;
-    }
-
-    public String getInAccountNo() {
-        return inAccountNo;
-    }
-
-    public void setInAccountNo(String inAccountNo) {
-        this.inAccountNo = inAccountNo;
-    }
-
-    public String getInBankNm() {
-        return inBankNm;
-    }
-
-    public void setInBankNm(String inBankNm) {
-        this.inBankNm = inBankNm;
-    }
-
-    public String getPdfPageCnt() {
-        return pdfPageCnt;
-    }
-
-    public void setPdfPageCnt(String inPdfPageCnt) {
-        this.pdfPageCnt = inPdfPageCnt;
-    }
-
-    public String getContrcState() {
-        return contrcState;
-    }
-
-    public void setContrcState(String contrcState) {
-        this.contrcState = contrcState;
-    }
-
-    public LinkedList<HashMap<String, String>> getHistoryList() {
-        return historyList;
-    }
-
-    public void setHistoryList(HashMap<String, String> map) {
-        this.historyList.add(map);
-    }
-
-    public void setHistoryList(LinkedList<HashMap<String, String>> historyList) {
-        this.historyList = historyList;
-    }
-
-    public Date getCtrtCfmDt() {
-        return ctrtCfmDt;
-    }
-
-    public void setCtrtCfmDt(Date ctrtCfmDt) {
-        this.ctrtCfmDt = ctrtCfmDt;
-    }
-
-    public Date getOwnSignDt() {
-        return ownSignDt;
-    }
-
-    public void setOwnSignDt(Date ownSignDt) {
-        this.ownSignDt = ownSignDt;
+    public void setBankAccountNo(String bankAccountNo) {
+        this.bankAccountNo = bankAccountNo;
     }
 
     public String getPhoneCert() {
@@ -271,5 +200,4 @@ public class CommonUserDetails implements UserDetails {
     public boolean isEnabled() {
         return false;
     }
-
 }

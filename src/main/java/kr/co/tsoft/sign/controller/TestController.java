@@ -1,11 +1,9 @@
 package kr.co.tsoft.sign.controller;
 
 import com.clipsoft.org.apache.commons.io.FileUtils;
-import kr.co.tsoft.sign.config.security.CommonUserDetails;
 import kr.co.tsoft.sign.service.ApiService;
 import kr.co.tsoft.sign.util.MailHandler;
 import kr.co.tsoft.sign.util.MultipartFileHandler;
-import kr.co.tsoft.sign.util.SecurityUtil;
 import kr.co.tsoft.sign.vo.ApiRequest;
 import kr.co.tsoft.sign.vo.ApiResponse;
 import kr.co.tsoft.sign.vo.ApiResponseData;
@@ -21,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,7 +29,6 @@ public class TestController {
 	private final Logger Logger = LoggerFactory.getLogger(TestController.class);
 
 	private final MultipartFileHandler multipartFileHandler;
-	private final SecurityUtil securityUtil;
 	private final ApiService apiService;
 
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
@@ -86,22 +82,6 @@ public class TestController {
 	public String adminTest() throws Exception {
 		return "admin/test";
 	}
-
-	@RequestMapping(value = "/admin/security-test")
-	@ResponseBody
-	public HashMap<String, Object> securityTest() throws Exception {
-		HashMap<String, Object> result = new HashMap<String, Object>();
-
-		CommonUserDetails adminUserDetails = securityUtil.getAdminUserDetails();
-		Logger.debug("##### adminUserDetails.inSignDate-old : {} #####", adminUserDetails.getInSignDate());
-		adminUserDetails = securityUtil.setAdminInSignDate(new Date());
-		Logger.debug("##### adminUserDetails.inSignDate-new : {} #####", adminUserDetails.getInSignDate());
-
-		result.put("userDetails", adminUserDetails);
-
-		return result;
-	}
-
 
 	@RequestMapping(value = "/test/email")
 	@ResponseBody
