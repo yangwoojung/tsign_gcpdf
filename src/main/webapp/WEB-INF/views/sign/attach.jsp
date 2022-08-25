@@ -263,6 +263,7 @@
             encType: 'multipart/form-data',
             cache: false,
             success: function (response) {
+              		console.log(response);
                 // $('#attachLoading').hide();
                 if (response.result === 'SUCCESS') {
                     if (TYPE) {

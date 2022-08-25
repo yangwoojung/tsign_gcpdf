@@ -10,7 +10,9 @@ import kr.co.tsoft.sign.vo.ApiRequest;
 import kr.co.tsoft.sign.vo.ApiResponse;
 import kr.co.tsoft.sign.vo.ApiResponseData;
 import kr.co.tsoft.sign.vo.ContractAttachmentDTO;
+import kr.co.tsoft.sign.vo.RequiredApiResponseDTO;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
+import kr.co.tsoft.sign.vo.common.Constant;
 import lombok.RequiredArgsConstructor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -52,19 +54,18 @@ public class AttachService {
         String attachmentCd = contractAttachmentDTO.getAttachmentCd(); //서류코드
         
         ContractAttachmentDTO attachInfoInDB = contractAttachmentMapper.selectAttachInfoByAttachCd(attachmentCd); //attachmentInfo
-        
-        String imgNm = contractNo + "_" + attachmentCd;
-        String img = contractAttachmentDTO.getFile();
 
         String savePath = CONTRACT_PATH + contractNo + File.separator + "attach";
 
-        File uploadedFile = transferDecryptDataToDestFile(savePath, imgNm, img);
+        File uploadedFile = transferDecryptDataToDestFile(savePath, contractNo + "_" + attachmentCd, contractAttachmentDTO.getFile());
         
         String ocrYn = attachInfoInDB.getOcrYn();
         String scrapYn = attachInfoInDB.getScrapYn();
         
-        if("Y".equalsIgnoreCase(ocrYn) && "Y".equalsIgnoreCase(scrapYn)) {
-        	//ocr+scraping
+        RequiredApiResponseDTO response = new RequiredApiResponseDTO();
+
+        //ocrYn과 scrapYn이 둘 다 필수값인 경우 진위확인으로 진행
+        if(Constant.REQUIRED_VALUE.equals(ocrYn) && Constant.REQUIRED_VALUE.equals(scrapYn)) {
         	MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", uploadedFile.getName(),
                     okhttp3.RequestBody.create(MediaType.parse("image/*"), uploadedFile));
         	
@@ -74,11 +75,11 @@ public class AttachService {
         	
         	ApiResponse<ApiResponseData.Verify> verifyResponse = apiService.processVerify(verifyRequest);
         	logger.info("### Verify API Response : {} ", verifyResponse);
-
+        	
+        	//code가 0이면, 아니면
+        	return CommonResponse.success(verifyResponse);
         } else {
         	
-        }
-
         // OCR 연결
 //        if ("001".equals(attachmentCd)) {
 //            MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", uploadedFile.getName(),
@@ -135,6 +136,7 @@ public class AttachService {
         // TODO: RESPONSE DATA 공통처리 필요
         // 예) OCR 성공후 스크랩 실패의 경우 별도로 화면에서 추가 작성할 수 있도록 함
         return CommonResponse.success();
+        }
     }
 
     public File transferDecryptDataToDestFile(String filePath, String fileName, String fileData) throws IOException {
