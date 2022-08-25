@@ -1,10 +1,11 @@
 package kr.co.tsoft.sign.controller;
 
 import com.clipsoft.lowagie.text.DocumentException;
+import kr.co.tsoft.sign.config.security.CommonUserDetails;
 import kr.co.tsoft.sign.service.ComService;
 import kr.co.tsoft.sign.service.PdfService;
 import kr.co.tsoft.sign.service.admin.FormService;
-import kr.co.tsoft.sign.util.SecurityUtil;
+import kr.co.tsoft.sign.util.SessionUtil;
 import kr.co.tsoft.sign.vo.FileDTO;
 import kr.co.tsoft.sign.vo.InfoDTO;
 import lombok.RequiredArgsConstructor;
@@ -40,9 +41,14 @@ public class PdfController {
 
 	@RequestMapping("/view")
 	public ModelAndView viewReport(InfoDTO infoDTO) throws Exception {
-
-		ModelAndView mv = new ModelAndView();
 		logger.debug("===== /pdf/view 이동  ======");
+		ModelAndView mv = new ModelAndView();
+
+		CommonUserDetails user = SessionUtil.getUser();
+
+		//TODO: 추후 세션에 저장되어 들어옴
+		user.setBankAccountNo("593502-01-238928");
+		user.setResidentNo("910710-1063131");
 
 		//서식 원본 조회
 		FileDTO fileDTO = FileDTO.builder()
@@ -50,18 +56,18 @@ public class PdfController {
 				.fileType("100")
 				.build();
 
-		FileDTO formInfo = formService.selectContrcFormInfo(fileDTO);
-		if (null == formInfo) {
+		FileDTO formInfoInDB = formService.selectContrcFormInfo(fileDTO);
+		if (null == formInfoInDB) {
 			throw new Exception("서식파일이 존재하지 않습니다.");
 		}
 
 		String lastPath = "form";
 
-		String fileFullName = formInfo.getFilePath() + formInfo.getSavFileNm();
+		String fileFullName = formInfoInDB.getFilePath() + formInfoInDB.getSavFileNm();
 		File oriFile = new File(fileFullName);
 
 		//상대경로에 pdf가 존재해야 하는 이유로 temp파일로 복사해서 사용
-		String newFileFullName = pdfTempDir + File.separatorChar + formInfo.getSavFileNm();
+		String newFileFullName = pdfTempDir + File.separatorChar + formInfoInDB.getSavFileNm();
 		File copyFile = new File(newFileFullName);
 
 		logger.debug("어드민에서 저장한 서식 경로 : " + oriFile);
@@ -79,7 +85,6 @@ public class PdfController {
 				//자원사용종료
 				fis.close();
 				fos.close();
-
 				fos.flush();
 			} catch (FileNotFoundException e) {
 				logger.debug("===FileNotFoundException===");
@@ -91,24 +96,24 @@ public class PdfController {
 		}
 
 		//사인이미지 처리 inputSignCan
-		String encodeSignData = infoDTO.getSignCanvasData();
-		String fileName = pdfTempDir + File.separatorChar + "testSignImg.png";
-		byte[] signImgBytes = Base64.decodeBase64(encodeSignData.getBytes());
-		try {
-			FileOutputStream fos = new FileOutputStream(new File(fileName));
-			fos.write(signImgBytes);
-			fos.close();
-			fos.flush();
-		} catch (IOException e) {
-			logger.debug("===IOException===");
-			e.printStackTrace();
-		}
+//		String encodeSignData = infoDTO.getSignCanvasDataUrl();
+//		String fileName = pdfTempDir + File.separatorChar + "testSignImg.png";
+//		byte[] signImgBytes = Base64.decodeBase64(encodeSignData.getBytes());
+//		try {
+//			FileOutputStream fos = new FileOutputStream(new File(fileName));
+//			fos.write(signImgBytes);
+//			fos.close();
+//			fos.flush();
+//		} catch (IOException e) {
+//			logger.debug("===IOException===");
+//			e.printStackTrace();
+//		}
 
 		String pdfPath = "/upload/temp/";
 //		//서식 상대경로
 //		resultMap.put("pdfPath", pdfPath);
 //		//서식 파일명
-//		resultMap.put("pdfFileNm", (String) formInfo.get("SAV_FILE_NM"));
+//		resultMap.put("pdfFileNm", (String) formInfoInDB.get("SAV_FILE_NM"));
 //		//생성한 계약서 저장할 파일명
 //		resultMap.put("savedNewPdfFileNm", "(계약서)" + su.getSignUserDetails().getUserNm() + "_" + su.getSignUserDetails().getContractNo() + ".pdf");
 //
@@ -125,6 +130,7 @@ public class PdfController {
 //		resultMap.put("contrcNo", paramMap.get("contrcNo"));//계약번호
 
 //		logger.debug("## //	resultMap	: " + resultMap);
+
 		mv.addObject("info", infoDTO);
 		mv.setViewName("sign/pdfViewer");
 		return mv;
@@ -153,15 +159,13 @@ public class PdfController {
 			FileOutputStream fos = new FileOutputStream(base64ToImgFile);
 
 			fos.write(decodedBytes);
-			SecurityUtil su = new SecurityUtil();
-			System.out.println("history => " + su.getSignUserDetails().getHistoryList());
 			HashMap<String, String> fileInfo = new HashMap<String, String>();
-			fileInfo.put("FILE_TP", "102");
-			fileInfo.put("CONTRC_NO", su.getSignUserDetails().getContractNo());
-			fileInfo.put("ORG_FILE_NM", savedNewPdfFileNm);
-			fileInfo.put("SAV_FILE_NM", savedNewPdfFileNm);
-			fileInfo.put("FILE_PATH", filePath);
-			fileInfo.put("user", su.getSignUserDetails().getUsername());
+//			fileInfo.put("FILE_TP", "102");
+//			fileInfo.put("CONTRC_NO", su.getSignUserDetails().getContractNo());
+//			fileInfo.put("ORG_FILE_NM", savedNewPdfFileNm);
+//			fileInfo.put("SAV_FILE_NM", savedNewPdfFileNm);
+//			fileInfo.put("FILE_PATH", filePath);
+//			fileInfo.put("user", su.getSignUserDetails().getUsername());
 			if (comService.insertFileUpload(fileInfo) > 0) {
 				resultMap.put("message", "계약서 생성을 완료했습니다.");
 			}

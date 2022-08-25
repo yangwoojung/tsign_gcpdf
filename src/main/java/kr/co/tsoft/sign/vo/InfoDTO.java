@@ -9,7 +9,7 @@ public class InfoDTO {
     private String email;
     private String residentNo1;
     private String residentNo2;
-    private String signCanvasData;
+    private String signCanvasDataUrl;
     private String address;
     private String bankName;
     private String bankAccountNo;
