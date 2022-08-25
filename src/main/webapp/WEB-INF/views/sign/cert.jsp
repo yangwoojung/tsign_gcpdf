@@ -50,6 +50,13 @@
     const ACTIVE_PROFILE = '${profilesActive}';
 
     $(function() {
+
+        // 추후 구비서류시 사용
+        if (!document.createElement('canvas').getContext) {
+            alert('사용하시는 브라우저는 일부 기능을 제공하지 않습니다. 다른 브라우저를 사용해 주시기바랍니다.');
+            return false;
+        }
+
         $('#cellNo').val(phoneFormat(MAKSED_CELL_NO));
 
         $('#cellNoLast').on('change keyup', function(){

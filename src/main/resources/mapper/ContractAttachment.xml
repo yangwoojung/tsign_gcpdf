@@ -30,16 +30,20 @@
         <include refid="where_condition_gridList"/>
     </select>-->
 
-    <select id="selectContractAttachmentToBeUploaded" resultType="kr.co.tsoft.sign.vo.ContractAttachmentDTO">
+    <select id="selectOneAttachmentToBeUploaded" resultType="kr.co.tsoft.sign.vo.ContractAttachmentDTO">
         SELECT *
         FROM contract_attachment contractAttachmnet
                  INNER JOIN attachment attachment on contractAttachmnet.ATTACHMENT_SEQ = attachment.ATTACHMENT_SEQ
         WHERE CONTRACT_NO = #{contractNo}
           AND UPLOADED_YN = 'N'
+        <if test="attachmentCd != null and attachmentCd != ''">
+            AND attachment.ATTACHMENT_CD = #{attachmentCd}
+        </if>
         ORDER BY attachment.PRIORITY, attachment.ATTACHMENT_CD
+        LIMIT 1
     </select>
 
-    <update id="updateUploadedContractAttachment" parameterType="kr.co.tsoft.sign.vo.ContractAttachmentDTO">
+    <update id="updateUploadedAttachment" parameterType="kr.co.tsoft.sign.vo.ContractAttachmentDTO">
         UPDATE contract_attachment
         SET UPLOADED_YN   = #{uploadedYn}
           , UPLOADED_DATE = CURRENT_TIMESTAMP()

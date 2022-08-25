@@ -12,10 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -27,37 +24,36 @@ public class AttachController {
 
     private final AttachService attachService;
 
-    @RequestMapping(method = {RequestMethod.POST, RequestMethod.GET})
-    public String attachPage(Model model) {
+    @GetMapping
+    public String attachPage() {
         logger.info("===== attach page =====");
-        //TODO : db에서 구비서류 리스트 가져온 다음 화면에 뿌려주기 (param : 계약번호)
-        List<Map<String, Object>> docList = attachService.docList();
-        model.addAttribute("docList", docList);
-        return "sign/attach/attach";
+        return "sign/attach";
     }
 
-    @RequestMapping(value = "/attachPop", method = {RequestMethod.POST, RequestMethod.GET})
-    public ModelAndView attachPop(HttpServletRequest request) {
-        logger.debug("===== attachPop Start =====");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("sign/attach/attachPop");
+    /**
+     *  휴대폰 인증 이후 신분증 제출 페이지
+     */
+    @GetMapping("/id")
+    public String attachPageForId(Model model) {
+        logger.info("===== attach id page =====");
+        model.addAttribute("type", "001");
+        return "sign/attach";
+    }
 
-        //TODO : db에서 구비서류 리스트 가져온 다음 화면에 뿌려주기 (param : 계약번호)
-        List<Map<String, Object>> docList = attachService.docList();
-        mv.addObject("docList", docList);
-
-        logger.debug("===== attachPop End =====");
-        return mv;
+    @GetMapping("/attachPop")
+    public String attachPop() {
+        logger.debug("===== attachPop page =====");
+        return "sign/attach/attachPop";
     }
 
     @PostMapping("/upload")
     @ResponseBody
-    public CommonResponse<?> upload(ContractAttachmentDTO contractAttachmentDTO) {
+    public CommonResponse<?> upload(ContractAttachmentDTO input) {
         logger.info("========upload========");
         CommonResponse<?> result = null;
 
         try {
-            result = attachService.uploadAttachFile(contractAttachmentDTO);
+            result = attachService.uploadAttachFile(input);
         } catch (Exception e) {
             e.printStackTrace();
             return CommonResponse.fail(ErrorCode.COMMON_SYSTEM_ERROR);
@@ -66,10 +62,10 @@ public class AttachController {
         return result;
     }
 
-    @GetMapping("/list")
+    @GetMapping("/find")
     @ResponseBody
-    public CommonResponse<?> contractAttachments() {
-        return attachService.getContractAttachmentsToBeUploaded();
+    public CommonResponse<?> contractAttachments(ContractAttachmentDTO input) {
+        return attachService.getContractAttachmentsToBeUploaded(input);
     }
 
     @PostMapping("/scrap")

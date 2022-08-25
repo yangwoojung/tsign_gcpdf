@@ -25,9 +25,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,28 +40,6 @@ public class AttachService {
 
     @Value("${config.upload.dir}")
     private String CONTRACT_PATH;
-
-
-    public List<Map<String, Object>> docList() {
-        List<Map<String, Object>> docList = new ArrayList<Map<String, Object>>();
-        Map<String, Object> map = new HashMap<>();
-        Map<String, Object> map2 = new HashMap<>();
-
-        map.put("docNm", "신분증");
-        map.put("maxCnt", "5");
-        map.put("docCd", "001");
-        map.put("subReq", "1");
-
-        map2.put("docNm", "통장사본");
-        map2.put("maxCnt", "5");
-        map2.put("docCd", "002");
-        map2.put("subReq", "1");
-
-        docList.add(map);
-        docList.add(map2);
-
-        return docList;
-    }
 
     @Transactional
     public CommonResponse<?> uploadAttachFile(ContractAttachmentDTO contractAttachmentDTO) throws Exception {
@@ -88,7 +65,6 @@ public class AttachService {
         }
 
         File uploadedFile = transferDecryptDataToDestFile(savePath, imgNm, img);
-
 
 
         // OCR 연결
@@ -250,17 +226,22 @@ public class AttachService {
     /**
      * 계약자의 업로드 해야할 구비서류 리스트
      */
-    public CommonResponse<?> getContractAttachmentsToBeUploaded() {
+    public CommonResponse<?> getContractAttachmentsToBeUploaded(ContractAttachmentDTO input) {
         CommonUserDetails user = SessionUtil.getUser();
-        List<ContractAttachmentDTO> list = contractAttachmentMapper.selectContractAttachmentToBeUploaded(user.getContractNo());
 
-        return CommonResponse.success(list);
+        ContractAttachmentDTO.ContractAttachmentDTOBuilder builder = ContractAttachmentDTO.builder().contractNo(user.getContractNo());
+        Optional.ofNullable(input.getAttachmentCd()).ifPresent(builder::attachmentCd);
+
+        ContractAttachmentDTO dto = builder.build();
+        ContractAttachmentDTO contractAttachmentInDB = contractAttachmentMapper.selectOneAttachmentToBeUploaded(dto);
+
+        return CommonResponse.success(contractAttachmentInDB);
     }
 
     /**
      * 계약자의 구비서류 업로드 상태 업데이트
      */
     public void updateContractAttachment(ContractAttachmentDTO dto) {
-        contractAttachmentMapper.updateUploadedContractAttachment(dto);
+        contractAttachmentMapper.updateUploadedAttachment(dto);
     }
 }

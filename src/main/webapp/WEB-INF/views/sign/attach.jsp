@@ -70,7 +70,7 @@
 
 <form id="form" style="display: none">
     <input type="file" id="file" accept="image/jpg, image/jpeg">
-    <input type="hidden" id="attachmentCd" />
+    <input type="hidden" id="attachmentCd"/>
 </form>
 
 <footer>
@@ -79,33 +79,58 @@
     </div>
 </footer>
 
-<script type="text/javascript">
+<script>
+
+    const TYPE = '${type}';
 
     $(function () {
 
-        setupContractAttachments();
+        if (TYPE) {
+            setupContractAttachmentByType();
+        } else {
+            setupContractAttachment();
+        }
+
         addClickEvents();
 
     });
 
-    const setupContractAttachments = () => {
+    const setupContractAttachment = () => {
 
         // 1. 업로드 해야할 계약자의 구비서류 데이터 우선순위에 따라 가져오기
-        const contractAttachments = fetchContractAttachments();
-        console.log(contractAttachments)
+        const contractAttachment = fetchContractAttachment();
+        console.log(contractAttachment)
 
         // 2. 업로드 해야할 구비서류가 더 이상 없다면 제출하기 시도 (유효성 검사는 서버에서 진행)
-        if (contractAttachments.length === 0) submitAttachment();
+        if (!contractAttachment) submitAttachment();
 
         // 3. 우선순위에 따라 첫번째 구비서류에 대한 내용 표출
-        const selectedContractAttachment = contractAttachments[0];
-        const {attachmentCd, attachmentName, attachmentDescription} = selectedContractAttachment;
+        const {attachmentCd, attachmentName, attachmentDescription} = contractAttachment;
 
         $('#attachment_title').html(attachmentDescription);
         $('#nextBtn').html(attachmentName + " 촬영하기");
 
         $('#form')[0].reset();
         $('#attachmentCd').val(attachmentCd);
+
+    }
+
+    const setupContractAttachmentByType = () => {
+
+        // 1. 업로드 해야할 계약자의 구비서류 데이터 우선순위에 따라 가져오기
+        const contractAttachment = fetchContractAttachmentByType();
+
+        // 2. 업로드 해야할 구비서류가 더 이상 없다면 info 진행
+        if (!contractAttachment) location.href = '/sign/info';
+
+        // 3. 우선순위에 따라 첫번째 구비서류에 대한 내용 표출
+        const {attachmentName, attachmentDescription} = contractAttachment;
+
+        $('#attachment_title').html(attachmentDescription);
+        $('#nextBtn').html(attachmentName + " 촬영하기");
+
+        $('#form')[0].reset();
+        $('#attachmentCd').val(TYPE);
 
     }
 
@@ -141,12 +166,6 @@
     };
 
     const validateImage = (file) => {
-
-        // TODO: 웹사이트 진입시점에 알려주는것이 좋지 않을까 ?
-        if (!document.createElement('canvas').getContext) {
-            alert('사용하시는 브라우저는 일부 기능을 제공하지 않습니다. 다른 브라우저를 사용해 주시기바랍니다.');
-            return false;
-        }
 
         console.log(file)
         console.log(file.type)
@@ -246,7 +265,12 @@
             success: function (response) {
                 // $('#attachLoading').hide();
                 if (response.result === 'SUCCESS') {
-                    setupContractAttachments();
+                    if (TYPE) {
+                        location.href = '/sign/info'
+                    } else {
+                        setupContractAttachment();
+                    }
+
                 }
             }, error: function (xhr, data) {
                 // $('#attachLoading').hide();
@@ -288,23 +312,47 @@
         return new Blob(byteArrays, {type: fileType});
     }
 
-    const fetchContractAttachments = () => {
-        let data;
+    const fetchContractAttachment = () => {
+        let result;
 
         $.ajax({
-            url: cpath + '/sign/attach/list',
+            url: cpath + '/sign/attach/find',
             type: 'GET',
             async: false,
             success: function (response) {
                 console.log(response)
-                if (response.result === 'SUCCESS') data = response?.data
+                if (response.result === 'SUCCESS') result = response?.data
             },
             error: function (jqXHR) {
                 console.error(jqXHR);
             }
         });
 
-        return data;
+        return result;
+    }
+
+    const fetchContractAttachmentByType = () => {
+        let result;
+
+        const data = {
+            attachmentCd: TYPE
+        }
+
+        $.ajax({
+            url: cpath + '/sign/attach/find',
+            data: data,
+            type: 'GET',
+            async: false,
+            success: function (response) {
+                console.log(response)
+                if (response.result === 'SUCCESS') result = response?.data
+            },
+            error: function (jqXHR) {
+                console.error(jqXHR);
+            }
+        });
+
+        return result;
     }
 
     // 구비서류 제출
