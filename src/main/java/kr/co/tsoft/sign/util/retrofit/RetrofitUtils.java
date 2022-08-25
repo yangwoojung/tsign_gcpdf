@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RetrofitUtils {
     private static final HttpLoggingInterceptor loggingInterceptor
-            = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
+            = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC);
 
     private static final OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
