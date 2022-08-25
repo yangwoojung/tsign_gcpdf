@@ -5,6 +5,7 @@ import kr.co.tsoft.sign.vo.ApiResponse;
 import kr.co.tsoft.sign.vo.ApiResponseData;
 import kr.co.tsoft.sign.vo.ContractAttachmentDTO;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
+import kr.co.tsoft.sign.vo.common.Constant;
 import kr.co.tsoft.sign.vo.common.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -36,7 +37,7 @@ public class AttachController {
     @GetMapping("/id")
     public String attachPageForId(Model model) {
         logger.info("===== attach id page =====");
-        model.addAttribute("type", "001");
+        model.addAttribute("type", Constant.ATTACHMENT_CD_ID);
         return "sign/attach";
     }
 
