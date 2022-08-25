@@ -3,7 +3,6 @@ package kr.co.tsoft.sign.controller;
 import kr.co.tsoft.sign.service.AttachService;
 import kr.co.tsoft.sign.vo.ApiResponse;
 import kr.co.tsoft.sign.vo.ApiResponseData;
-import kr.co.tsoft.sign.vo.AttachDTO;
 import kr.co.tsoft.sign.vo.ContractAttachmentDTO;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
 import kr.co.tsoft.sign.vo.common.ErrorCode;
@@ -82,7 +81,7 @@ public class AttachController {
 
     @PostMapping("/submission")
     @ResponseBody
-    public Map<String, Object> submission() {
+    public CommonResponse<?> submission() {
         logger.info(" ##### [ attach/submission] start submission #####");
         return attachService.submission();
     }

@@ -308,9 +308,10 @@
     }
 
     // 구비서류 제출
-    var submitAttachment = function (e) {
+    const submitAttachment = () => {
 
         // TODO: 서버에서 계약자 구비서류 파일 존재하는지 확인하며 전부 완료됬는지 유효성 체크
+
         alert('계약서류를 구비서류와 함께 해당 기관에 제출하고 있습니다.\n!!주의!!\n전송 완료 후 본 화면은 자동으로 닫힙니다. 절대 화면을 강제로 닫으시면 안됩니다. (5초 ~ 최장 60초)');
 
         $.ajax({
@@ -323,7 +324,6 @@
                     window.parent.fnIdentificationClose('success');
                 } else {
                     alert('[' + data.resCd + '] 제출에 실패하였습니다. 다시 진행해 주세요.');
-                    fnPopClose();
                 }
 
             }, error: function (xhr, data) {
@@ -331,10 +331,8 @@
                 if (xhr.status == 403) {
                     location.href = '/sign/error/401';
                 }
-                fnPopClose();
-
             }, beforeSend: function () {
-                $('#btnSubmit').attr('disabled', 'disabled');
+                $('#nextBtn').attr('disabled', true);
             },
         });
 

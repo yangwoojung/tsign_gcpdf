@@ -6,7 +6,10 @@ import kr.co.tsoft.sign.service.admin.ContrcService;
 import kr.co.tsoft.sign.util.FileUtil;
 import kr.co.tsoft.sign.util.MailHandler;
 import kr.co.tsoft.sign.util.SessionUtil;
-import kr.co.tsoft.sign.vo.*;
+import kr.co.tsoft.sign.vo.ApiRequest;
+import kr.co.tsoft.sign.vo.ApiResponse;
+import kr.co.tsoft.sign.vo.ApiResponseData;
+import kr.co.tsoft.sign.vo.ContractAttachmentDTO;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import okhttp3.MediaType;
@@ -209,11 +212,13 @@ public class AttachService {
         return response;
     }
 
-    public Map<String, Object> submission() {
+    public CommonResponse<?> submission() {
         CommonUserDetails user = SessionUtil.getUser();
         String contNo = user.getContractNo();
 
-        Map<String, Object> resultMap = new HashMap<>();
+        // TODO: 계약자 구비서류 검증
+        // 전부 업로드 되었는지 해당 파일이 존재하는지 확인
+
         String filePath = CONTRACT_PATH + contNo;
         String zipFileName = filePath + ".zip";
 
@@ -237,14 +242,9 @@ public class AttachService {
         ArrayList<String> attachFileName = new ArrayList<String>();
         attachFileName.add(filePath + File.separator + "contract" + File.separator + contNo + ".pdf");
 
-        try {
-            mail.send(toMail, title, content, attachFileName);
-            resultMap.put("resCd", "0000");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        mail.send(toMail, title, content, attachFileName);
 
-        return resultMap;
+        return CommonResponse.success();
     }
 
     /**
