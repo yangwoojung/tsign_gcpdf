@@ -5,6 +5,7 @@ import kr.co.tsoft.sign.vo.ApiRequest;
 import kr.co.tsoft.sign.vo.ApiResponse;
 import kr.co.tsoft.sign.vo.ApiResponseData;
 import kr.co.tsoft.sign.vo.ApiResponseData.Scrap;
+import kr.co.tsoft.sign.vo.ApiResponseData.Verify;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,11 @@ public class ApiService {
 			  																request.getCol4(), request.getCol5(), request.getCol6());
 	  return retrofitUtils.responseSync(call).orElseThrow(RuntimeException::new);
   }
+
+public ApiResponse<ApiResponseData.Verify> processVerify(ApiRequest.Verify request) {
+	Call<ApiResponse<ApiResponseData.Verify>> call = retrofitApi.processVerify(request.getToken(), request.getFile());
+	return retrofitUtils.responseSync(call).orElseThrow(RuntimeException::new);
+}
   
 
 }

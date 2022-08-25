@@ -37,5 +37,13 @@ public class ApiRequest {
         private final String col5;
         private final String col6;
     }
+    
+    @Getter
+    @Builder
+    @ToString
+    public static class Verify {
+    	private final String token;
+    	private final MultipartBody.Part file;
+    }
 
 }
