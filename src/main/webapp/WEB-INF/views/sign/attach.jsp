@@ -69,7 +69,7 @@
 <!-- //container -->
 
 <form id="form" style="display: none">
-
+    <input type="file" id="file" accept="image/jpg, image/jpeg">
     <input type="hidden" id="attachmentCd"/>
 </form>
 
