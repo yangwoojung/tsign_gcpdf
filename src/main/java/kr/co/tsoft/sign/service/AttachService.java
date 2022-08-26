@@ -56,16 +56,12 @@ public class AttachService {
         ContractAttachmentDTO attachInfoInDB = contractAttachmentMapper.selectAttachInfoByAttachCd(attachmentCd); //attachmentInfo
 
         String savePath = CONTRACT_PATH + contractNo + File.separator + "attach";
-
         File uploadedFile = transferDecryptDataToDestFile(savePath, contractNo + "_" + attachmentCd, contractAttachmentDTO.getFile());
-        
-        String ocrYn = attachInfoInDB.getOcrYn();
-        String scrapYn = attachInfoInDB.getScrapYn();
         
         RequiredApiResponseDTO response = new RequiredApiResponseDTO();
 
         //ocrYn과 scrapYn이 둘 다 필수값인 경우 진위확인으로 진행
-        if(Constant.REQUIRED_VALUE.equals(ocrYn) && Constant.REQUIRED_VALUE.equals(scrapYn)) {
+        if(Constant.REQUIRED_VALUE.equals(attachInfoInDB.getOcrYn()) && Constant.REQUIRED_VALUE.equals(attachInfoInDB.getScrapYn())) {
         	MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", uploadedFile.getName(),
                     okhttp3.RequestBody.create(MediaType.parse("image/*"), uploadedFile));
         	
@@ -76,68 +72,43 @@ public class AttachService {
         	ApiResponse<ApiResponseData.Verify> verifyResponse = apiService.processVerify(verifyRequest);
         	logger.info("### Verify API Response : {} ", verifyResponse);
         	
-        	//code가 0이면, 아니면
-        	return CommonResponse.success(verifyResponse);
-        } else {
-        	
-        // OCR 연결
-//        if ("001".equals(attachmentCd)) {
-//            MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", uploadedFile.getName(),
-//                    okhttp3.RequestBody.create(MediaType.parse("image/*"), uploadedFile));
-//
-//            ApiRequest.Ocr ocrRequest = ApiRequest.Ocr.builder()
-//                    .token("WuL299MCpJEwTs5ArcpoYJB4GaQ0PQ") // 운영토큰
-//                    .file(filePart).build();
-//
-//            logger.info("### OCR API Request : {} ", ocrRequest);
-//            ApiResponse<ApiResponseData.Ocr> ocrResponse = apiService.processOcr(ocrRequest);
-//            logger.info("### OCR API Response : {} ", ocrResponse);
-//
-//            // OCR API 통신 성공시 "0000"
-//            if ("0000".equals(ocrResponse.getCode())) {
-//                ApiResponseData<ApiResponseData.Ocr> ocr = ocrResponse.getData().get(0);
-//                // OCR 성공시 "0000"
-//                if ("0000".equals(ocr.getCode())) {
-//                    ApiResponseData.Ocr data = ocr.getData();
-//
-//                    // OCR 성공시 스크랩 진행하여 진위여부 확인
-//                    // 주민등록번호의 경우 IdType : 1
-//                    if ("1".equals(data.getIdType())) {
-//                        ApiRequest.Scrap scrapRequest = ApiRequest.Scrap.builder()
-//                                .token("fc2yilEkhclyP1xGnWRNVFFIptXTLd")
-//                                .type(attachmentCd)
-//                                .col1(data.getName())
-//                                .col2(data.getSocialNo())
-//                                .col3(data.getIssueDt())
-//                                .build();
-//
-//                        logger.info("#### Scrap API Request : {} ", scrapRequest);
-//                        ApiResponse<ApiResponseData.Scrap> scrapResponse = apiService.processScrap(scrapRequest);
-//                        logger.info("#### Scrap API Response : {} ", scrapResponse);
-//                    }
-//
-//                }
-//
-//            }
-//
-//        }
+        	//OCR 실패
+        	if(!"0000".equals(verifyResponse.getData().get(0).getCode())) {
+        		//에러코드 정해야 함
+        		return CommonResponse.fail("OCR 실패", "0001");
+        	} else {
+        		response.builder()
+    			.name(verifyResponse.getData().get(0).getData().getName())
+    			.idType(verifyResponse.getData().get(0).getData().getIdType())
+    			.socialNo(verifyResponse.getData().get(0).getData().getSocialNo())
+    			.issueDt(verifyResponse.getData().get(0).getData().getIssueDt())
+    			.licenseNo(verifyResponse.getData().get(0).getData().getLicenseNo())
+    			.build();
+        		//스크래핑 실패
+        		if(!"0000".equals(verifyResponse.getData().get(1).getCode())) {
+        			// TODO: RESPONSE DATA 공통처리 필요
+        	        // 예) OCR 성공후 스크랩 실패의 경우 별도로 화면에서 추가 작성할 수 있도록 함
+        			//fail시에도  객체 보낼 수 있어야 할듯
+        			return CommonResponse.success(response, "scrap 실패");
+        		} else if("0000".equals(verifyResponse.getCode())) {
+        			// 계약자의 구비서류 업로드 완료처리
+        	        // TODO: OCR 또는 스크랩 체크가 필요한 경우 전부 완료되었을때 업로드 완료 처리 할수있도록 함
+        	        ContractAttachmentDTO updateContractAttachment = ContractAttachmentDTO.builder()
+        	                .contractNo(contractNo)
+        	                .attachmentCd(attachmentCd)
+        	                .uploadedFile(uploadedFile.getAbsolutePath())
+        	                .uploadedYn("Y")
+        	                .build();
 
-        // 계약자의 구비서류 업로드 완료처리
-        // TODO: OCR 또는 스크랩 체크가 필요한 경우 전부 완료되었을때 업로드 완료 처리 할수있도록 함
-        ContractAttachmentDTO updateContractAttachment = ContractAttachmentDTO.builder()
-                .contractNo(contractNo)
-                .attachmentCd(attachmentCd)
-                .uploadedFile(uploadedFile.getAbsolutePath())
-                .uploadedYn("Y")
-                .build();
-
-        updateContractAttachment(updateContractAttachment);
-
-        // TODO: RESPONSE DATA 공통처리 필요
-        // 예) OCR 성공후 스크랩 실패의 경우 별도로 화면에서 추가 작성할 수 있도록 함
-        return CommonResponse.success();
+        	        updateContractAttachment(updateContractAttachment);
+        			return CommonResponse.success(response);
+        		} else {
+        			return CommonResponse.fail("일시적 오류", "0001");
+        		}
+        	}
         }
-    }
+        return CommonResponse.fail("일시적 오류", "0001");
+     }
 
     public File transferDecryptDataToDestFile(String filePath, String fileName, String fileData) throws IOException {
         byte[] data = fileData.getBytes();
