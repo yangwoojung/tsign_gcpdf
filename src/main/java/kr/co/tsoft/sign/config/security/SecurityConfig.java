@@ -57,7 +57,7 @@ public class SecurityConfig {
                     .failureUrl("/sign/error/401")
                     .and()
                     .logout()
-                    .logoutUrl("/sign/error/401")
+                    .logoutUrl("/sign/logout")
                     .deleteCookies("JSESSIONID")
                     .invalidateHttpSession(true)
                     .logoutSuccessUrl("/sign/error/401");
