@@ -271,7 +271,7 @@
                 // -> [성공] 계좌인증 페이지 이동
                 // -> [실패] 신분증 정보확인 페이지 이동 및 신분증 타입에 따른 화면 표출
                 // 기본 구비서류
-                // -> [성공] 다음 구비서류 진행 (=> setupContractAttachment() 함수 호출)
+                // -> [성공] 다음 구비서류 진행
                 // -> [실패] 에러 메세지 표출 및 재시도
                 // 재시도 -> 함수 호출 하여 다시 할지 아니면 로케이션 리로드 할지 ... 미정!
                 if (response.result === 'SUCCESS') {
@@ -281,12 +281,23 @@
                     } else {
                         setupContractAttachment();
                     }
+                } else if(response.result === 'FAIL') {
+
+                    alert(response.message);
+                    if(TYPE) {
+                        setupContractAttachmentByType();
+                    } else {
+                        setupContractAttachment();
+                    }
+
                 }
             }, error: function (xhr, data) {
                 // $('#attachLoading').hide();
                 alert('[e] 파일 첨부 실패 - 다시 촬영(첨부)해 주세요\n장시간 미사용 상태거나, 인터넷이 끊기신 경우 처음부터 진행해 주세요.');
                 if (xhr.status === 403) {
                     location.href = '/sign/error/401';
+                } else {
+                    location.reload();
                 }
 
             }, beforeSend: function () {
