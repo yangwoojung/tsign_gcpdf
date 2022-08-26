@@ -10,19 +10,20 @@
     <!-- cont_area -->
     <div class="cont_area">
         <div class="txt_msg_box cont">개인 신용정보 <span class="point">수집·이용·제공·취급·위탁</span>에<br>대해 동의해 주세요.</div>
-        <div class="progress">
-            <div class="box-progress-bar">
-                <span class="box-progress" style="width: 66.6666%;"></span>
-            </div>
-            <div class="number">
-                <span class="active">2</span>/3
-            </div>
-        </div>
+<%--        <div class="progress">--%>
+<%--            <div class="box-progress-bar">--%>
+<%--                <span class="box-progress" style="width: 66.6666%;"></span>--%>
+<%--            </div>--%>
+<%--            <div class="number">--%>
+<%--                <span class="active">2</span>/3--%>
+<%--            </div>--%>
+<%--        </div>--%>
 
         <div class="cont">
             <!-- form_box -->
             <form id="reportForm" method="post" action="/sign/pdf/view" onsubmit="return fnMoveNext()">
                 <input type="hidden" name="contractNo" value="${user.contractNo}"/>
+                <input type="hidden" name="signCanvasDataUrl" id="signCanvasDataUrl" value=""/>
                 <input type="submit" id="submitReportForm" class="hidden"/>
 
                 <div class="form_box typeSide">
@@ -53,7 +54,7 @@
                     <dl class="list">
                         <dt>주소</dt>
                         <dd>
-                            <textarea id="addr1" name="addr" type="text" class="input_ty focusNone"
+                            <textarea id="addr1" name="address" type="text" class="input_ty focusNone"
                                       placeholder="도로명 주소/동,호수까지 입력"
                                       autocomplete="off" required></textarea>
                         </dd>
@@ -210,47 +211,12 @@
             return false;
         }
 
+        $('#signCanvasDataUrl').val(canvas.toDataURL());
+
         const data = $('#reportForm').serializeObject();
-        data.signCanvasDataUrl = canvas.toDataURL();
+        console.log(data);
 
-        console.log(data)
-        return false;
-
-        var paramMap = {
-            agree: $('input:checkbox[id="chk01"]').is(':checked') ? 'Y' : 'N',
-            inResidentNo1: $('#inResidentNo1').val(),
-            inResidentNo2: $('#inResidentNo2').val(),
-            inBankCd: $('#stlmAccBank option:selected').val(),
-            inBankNm: $('#stlmAccBank option:selected').text(),
-            inAcnutNo: $('#stlmAccNo').val(),
-            inAddr: $("#inAddr").val(),
-            userNm: $('#userNm').val(),
-            email: $("#etaxEmail").val(),
-        };
-
-        var requestMap = {
-            dataParam: paramMap_dev,
-            url: '/agree/updateAgreeInfo'
-        };
-
-        ComUtil.request(requestMap, function (data) {
-
-            if (data.result == "success") {
-// 				ComUtil.submit('/sign', null, 'post');
-
-                const canvas = document.getElementById('signCanvas');
-                let dataUrl = canvas.toDataURL();
-
-                dataUrl = dataUrl.substring(dataUrl.indexOf('base64,') + 7, dataUrl.length);
-                paramMap['signImgHash'] = dataUrl;
-
-                ComUtil.submit('/cert', paramMap);//휴대폰 본인인증
-            } else {
-                alert(data.resMsg);
-            }
-        }, function () {
-            alert("입력된 정보를 확인하신 후 다시 시도해주세요.");
-        });
+        return true;
     }
 
     const initSignCanvas = () => {
