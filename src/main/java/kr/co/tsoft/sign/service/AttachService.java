@@ -1,5 +1,19 @@
 package kr.co.tsoft.sign.service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Optional;
+
+import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import kr.co.tsoft.sign.config.security.CommonUserDetails;
 import kr.co.tsoft.sign.mapper.ContractAttachmentMapper;
 import kr.co.tsoft.sign.service.admin.ContrcService;
@@ -9,26 +23,16 @@ import kr.co.tsoft.sign.util.SessionUtil;
 import kr.co.tsoft.sign.vo.ApiRequest;
 import kr.co.tsoft.sign.vo.ApiResponse;
 import kr.co.tsoft.sign.vo.ApiResponseData;
+import kr.co.tsoft.sign.vo.ApiResponseData.Verify;
 import kr.co.tsoft.sign.vo.ContractAttachmentDTO;
+import kr.co.tsoft.sign.vo.RequiredApiRequestDTO;
+import kr.co.tsoft.sign.vo.RequiredApiRequestDTO.RequiredApiRequestDTOBuilder;
 import kr.co.tsoft.sign.vo.RequiredApiResponseDTO;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
 import kr.co.tsoft.sign.vo.common.Constant;
 import lombok.RequiredArgsConstructor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
-import org.apache.commons.codec.binary.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +46,13 @@ public class AttachService {
 
     @Value("${config.upload.dir}")
     private String CONTRACT_PATH;
+    
+    
+//    @Transactional
+//    public CommonResponse<?> uploadAndVertify(ContractAttachmentDTO contractAttachmentDTO) throws Exception {
+//    	uploadAttachFile(contractAttachmentDTO); // 업로드
+//    	verifyingIdentificationCard(); // 진위여부 
+//    }
 
     @Transactional
     public CommonResponse<?> uploadAttachFile(ContractAttachmentDTO contractAttachmentDTO) throws Exception {
@@ -53,37 +64,47 @@ public class AttachService {
 
         String attachmentCd = contractAttachmentDTO.getAttachmentCd(); //서류코드
         
-        ContractAttachmentDTO attachInfoInDB = contractAttachmentMapper.selectAttachInfoByAttachCd(attachmentCd); //attachmentInfo
+        ContractAttachmentDTO attachInfoInDB = contractAttachmentMapper.selectAttachInfoByAttachCd(attachmentCd); //attachmentInfo  
 
         String savePath = CONTRACT_PATH + contractNo + File.separator + "attach";
+        //파일  업로드
         File uploadedFile = transferDecryptDataToDestFile(savePath, contractNo + "_" + attachmentCd, contractAttachmentDTO.getFile());
         
-        RequiredApiResponseDTO response = new RequiredApiResponseDTO();
+       	RequiredApiRequestDTOBuilder requiredApiRequestDTOBuilder = RequiredApiRequestDTO.builder();
+
+       	RequiredApiRequestDTO build = requiredApiRequestDTOBuilder.build();
+
 
         //ocrYn과 scrapYn이 둘 다 필수값인 경우 진위확인으로 진행
         if(Constant.REQUIRED_VALUE.equals(attachInfoInDB.getOcrYn()) && Constant.REQUIRED_VALUE.equals(attachInfoInDB.getScrapYn())) {
+ 
         	MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", uploadedFile.getName(),
                     okhttp3.RequestBody.create(MediaType.parse("image/*"), uploadedFile));
         	
         	ApiRequest.Verify verifyRequest = ApiRequest.Verify.builder()
-        												.token("yBnwrSX4mGfOMd11IUf4KyuwnsVZ5I")
-        												.file(filePart).build();
+    	        												.token("yBnwrSX4mGfOMd11IUf4KyuwnsVZ5I")
+    	        												.file(filePart).build();
         	
         	ApiResponse<ApiResponseData.Verify> verifyResponse = apiService.processVerify(verifyRequest);
         	logger.info("### Verify API Response : {} ", verifyResponse);
         	
+        	Verify apiResponseData = verifyResponse.getData().get(0).getData();
+        	
         	//OCR 실패
-        	if(!"0000".equals(verifyResponse.getData().get(0).getCode())) {
+        	if(!"0000".equals(verifyResponse.getCode())) {
         		//에러코드 정해야 함
         		return CommonResponse.fail("OCR 실패", "0001");
         	} else {
-        		response.builder()
-    			.name(verifyResponse.getData().get(0).getData().getName())
-    			.idType(verifyResponse.getData().get(0).getData().getIdType())
-    			.socialNo(verifyResponse.getData().get(0).getData().getSocialNo())
-    			.issueDt(verifyResponse.getData().get(0).getData().getIssueDt())
-    			.licenseNo(verifyResponse.getData().get(0).getData().getLicenseNo())
-    			.build();
+        		user.setResidentNo(verifyResponse.getData().get(0).getData().getSocialNo());
+        		
+        		RequiredApiResponseDTO response = RequiredApiResponseDTO.builder()
+														    			.name(verifyResponse.getData().get(0).getData().getName())
+														    			.idType(verifyResponse.getData().get(0).getData().getIdType())
+														    			.socialNo(verifyResponse.getData().get(0).getData().getSocialNo())
+														    			.issueDt(verifyResponse.getData().get(0).getData().getIssueDt())
+														    			.licenseNo(verifyResponse.getData().get(0).getData().getLicenseNo())
+														    			.build();
+
         		//스크래핑 실패
         		if(!"0000".equals(verifyResponse.getData().get(1).getCode())) {
         			// TODO: RESPONSE DATA 공통처리 필요
@@ -94,22 +115,49 @@ public class AttachService {
         			// 계약자의 구비서류 업로드 완료처리
         	        // TODO: OCR 또는 스크랩 체크가 필요한 경우 전부 완료되었을때 업로드 완료 처리 할수있도록 함
         	        ContractAttachmentDTO updateContractAttachment = ContractAttachmentDTO.builder()
-        	                .contractNo(contractNo)
-        	                .attachmentCd(attachmentCd)
-        	                .uploadedFile(uploadedFile.getAbsolutePath())
-        	                .uploadedYn("Y")
-        	                .build();
-
-        	        updateContractAttachment(updateContractAttachment);
+																        	                .contractNo(contractNo)
+																        	                .attachmentCd(attachmentCd)
+																        	                .uploadedFile(uploadedFile.getAbsolutePath())
+																//        	                .uploadedYn("Y")
+																        	                .build();
+        	        
+//        	        updateContractAttachment(updateContractAttachment);
         			return CommonResponse.success(response);
         		} else {
         			return CommonResponse.fail("일시적 오류", "0001");
         		}
         	}
         }
-        return CommonResponse.fail("일시적 오류", "0001");
+        ContractAttachmentDTO updateContractAttachment = ContractAttachmentDTO.builder()
+																                .contractNo(contractNo)
+																                .attachmentCd(attachmentCd)
+																                .uploadedFile(uploadedFile.getAbsolutePath())
+																//        	                .uploadedYn("Y")
+																                .build();
+        //updateContractAttachment(updateContractAttachment);
+        return CommonResponse.success();
      }
 
+    public CommonResponse<?> verifyingIdentificationCard(RequiredApiRequestDTO requiredApiRequestDTO, File uploadedFile) {
+    	
+    	MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", uploadedFile.getName(),
+                okhttp3.RequestBody.create(MediaType.parse("image/*"), uploadedFile));
+    	
+    	ApiRequest.Verify verifyRequest = ApiRequest.Verify.builder()
+	        												.token("yBnwrSX4mGfOMd11IUf4KyuwnsVZ5I")
+	        												.file(filePart).build();
+    	
+    	ApiResponse<ApiResponseData.Verify> verifyResponse = apiService.processVerify(verifyRequest);
+    	logger.info("### Verify API Response : {} ", verifyResponse);
+    	
+    	Verify apiResponseData = verifyResponse.getData().get(0).getData();
+    	
+//       	RequiredApiRequestDTOBuilder requiredApiRequestDTOBuilder = RequiredApiRequestDTO.builder()
+//       																					.token(requiredApiRequestDTO.getToken());
+       	
+    	return null;
+    }
+    
     public File transferDecryptDataToDestFile(String filePath, String fileName, String fileData) throws IOException {
         byte[] data = fileData.getBytes();
         String DecodeString = new String(data, "UTF-8");
