@@ -957,6 +957,9 @@ ul.description li:before {
     height: 20px;
     padding: 0 10px;
 }
+.form_box.typeSide input.customPadding {
+    padding: 0 8px;
+}
 .form_box.typeSide textarea {
     border: none;
     height: 20px;
@@ -993,7 +996,7 @@ ul.description li:before {
 .form_box .list dd.half .input_ty {
     width: calc(50% - 15px);
 }
-.form_box .list dd input.focusNone:focus, .form_box .list dd textarea.focusNone:focus {
+.form_box.typeSide .list dd input:focus, .form_box .list dd textarea:focus {
     box-shadow: none;
     border: none;
 }

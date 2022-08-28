@@ -1,6 +1,8 @@
 package kr.co.tsoft.sign.controller;
 
+import com.google.gson.Gson;
 import kr.co.tsoft.sign.service.AttachService;
+import kr.co.tsoft.sign.util.SessionUtil;
 import kr.co.tsoft.sign.vo.ApiResponse;
 import kr.co.tsoft.sign.vo.ApiResponseData;
 import kr.co.tsoft.sign.vo.ContractAttachmentDTO;
@@ -42,8 +44,10 @@ public class AttachController {
     }
 
     @GetMapping("/check")
-    public String attachPageForCheck() {
+    public String attachPageForCheck(Model model) {
         logger.debug("===== attach check page =====");
+        Gson gs = new Gson();
+        model.addAttribute("user", gs.toJson(SessionUtil.getUser()));
         return "sign/attachCheck";
     }
 

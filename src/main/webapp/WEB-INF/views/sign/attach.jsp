@@ -1,4 +1,4 @@
- <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -15,14 +15,14 @@
             <%--            <span id="attachment_title">주민등록증이나 운전면허증을 준비해주세요.</span>--%>
             <span class="point">반드시 원본을 촬영(첨부)</span>하여 제출해 주세요.
         </div>
-        <div class="progress">
+        <%--<div class="progress">
             <div class="box-progress-bar">
                 <span class="box-progress" style="width: 100%;"></span>
             </div>
             <div class="number">
                 <span class="active">3</span>/3
             </div>
-        </div>
+        </div>--%>
         <div class="exImg-wrap">
             <div class="frame">
                 <div></div>
@@ -224,7 +224,6 @@
                     var ctx = canvas.getContext('2d');
                     ctx.drawImage(image, 0, 0, width, height);
                     base64 = canvas.toDataURL('image/jpeg');
-                    // $(targetContainer).find('.uploadbinary:eq(0)').val(base64);
 
                     // 파일 업로드
                     fnUploadFile(base64);
@@ -263,7 +262,7 @@
             encType: 'multipart/form-data',
             cache: false,
             success: function (response) {
-              		console.log(response);
+                console.log(response);
                 // $('#attachLoading').hide();
 
                 // TODO: 아래 경우의 수 정리하여 스크립트 수정
@@ -274,23 +273,31 @@
                 // -> [성공] 다음 구비서류 진행
                 // -> [실패] 에러 메세지 표출 및 재시도
                 // 재시도 -> 함수 호출 하여 다시 할지 아니면 로케이션 리로드 할지 ... 미정!
-                if (response.result === 'SUCCESS') {
-                    if (TYPE) {
-                        // location.href = '/sign/info'
-                        location.href = '/sign/attach/check'
-                    } else {
-                        setupContractAttachment();
-                    }
-                } else if(response.result === 'FAIL') {
 
-                    alert(response.message);
-                    if(TYPE) {
-                        setupContractAttachmentByType();
+                if (TYPE) {
+
+                    if (response.result === 'SUCCESS') {
+                        location.href = '/sign/info'
                     } else {
-                        setupContractAttachment();
+                        alert(response.message);
+
+                        if(response.type){
+                            updateInfo(response.data);
+                        } else {
+                            setupContractAttachmentByType();
+                        }
+
+                    }
+                } else {
+                    if (response.result === 'SUCCESS') {
+
+                    } else {
+                        alert(response.message);
                     }
 
+                    setupContractAttachment();
                 }
+
             }, error: function (xhr, data) {
                 // $('#attachLoading').hide();
                 alert('[e] 파일 첨부 실패 - 다시 촬영(첨부)해 주세요\n장시간 미사용 상태거나, 인터넷이 끊기신 경우 처음부터 진행해 주세요.');
@@ -333,6 +340,9 @@
         return new Blob(byteArrays, {type: fileType});
     }
 
+    /**
+     *  구비서류 가져오기
+     */
     const fetchContractAttachment = () => {
         let result;
 
@@ -352,6 +362,9 @@
         return result;
     }
 
+    /**
+     *  구비서류 가져오기 (서류타입 지정)
+     */
     const fetchContractAttachmentByType = () => {
         let result;
 
@@ -376,6 +389,28 @@
         return result;
     }
 
+    // OCR 정보 세션에 업데이트
+    const updateInfo = (data) => {
+
+        $.ajax({
+            url: cpath + '/sign/info/update',
+            data: data,
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                if (response.result === 'SUCCESS') {
+                    location.href = '/sign/attach/check';
+                } else {
+                    location.reload();
+                }
+            },
+            error: function (jqXHR) {
+                console.error(jqXHR);
+            }
+        });
+
+    }
+
     // 구비서류 제출
     const submitAttachment = () => {
 
@@ -383,6 +418,7 @@
 
         alert('계약서류를 구비서류와 함께 해당 기관에 제출하고 있습니다.\n!!주의!!\n전송 완료 후 본 화면은 자동으로 닫힙니다. 절대 화면을 강제로 닫으시면 안됩니다. (5초 ~ 최장 60초)');
 
+        // TODO:  아래코드 수정필요
         $.ajax({
             url: '/sign/attach/submission',
             type: 'POST',
@@ -390,7 +426,6 @@
             success: function (data) {
                 if ('0000' == data.resCd) {
                     alert('제출을 완료했습니다');
-                    window.parent.fnIdentificationClose('success');
                 } else {
                     alert('[' + data.resCd + '] 제출에 실패하였습니다. 다시 진행해 주세요.');
                 }

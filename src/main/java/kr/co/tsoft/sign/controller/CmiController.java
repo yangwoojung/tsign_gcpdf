@@ -31,26 +31,30 @@ public class CmiController {
     private String active;
 
     @RequestMapping(value = "/cmi/{contractNo}", method = RequestMethod.GET)
-    public String entry(@PathVariable(name = "contractNo", required = true) String contractNo, Model model) throws Exception {
+    public String entry(@PathVariable(name = "contractNo") String contractNo, Model model) throws Exception {
     	logger.info("contractNo : {}", contractNo);
-        ContractDTO contrcVO = userService.selectContractInfoForVO(contractNo);
+        ContractDTO contractInfoInDB = userService.selectContractInfoForVO(contractNo);
 
-        String cell_no_mask = StringMaskUtil.maskPhone(contrcVO.getCellNo());
-        contrcVO.setCellNoMask(cell_no_mask);
+        if(null == contractInfoInDB) {
+            return "sign/error/401";
+        }
+
+        String cell_no_mask = StringMaskUtil.maskPhone(contractInfoInDB.getCellNo());
+        contractInfoInDB.setCellNoMask(cell_no_mask);
         
         CommonUserDetails user = CommonUserDetails.builder()
-        											.contractNo(contrcVO.getContractNo())
-        											.fileSeq(contrcVO.getFileSeq())
-        											.userNm(contrcVO.getUserNm())
-        											.cellNo(contrcVO.getCellNo())
-        											.email(contrcVO.getEmail())
-        											.signDueSdate(contrcVO.getSignDueSdate())
-        											.signDueEdate(contrcVO.getSignDueEdate())
+        											.contractNo(contractInfoInDB.getContractNo())
+        											.fileSeq(contractInfoInDB.getFileSeq())
+        											.userNm(contractInfoInDB.getUserNm())
+        											.cellNo(contractInfoInDB.getCellNo())
+        											.email(contractInfoInDB.getEmail())
+        											.signDueSdate(contractInfoInDB.getSignDueSdate())
+        											.signDueEdate(contractInfoInDB.getSignDueEdate())
         											.build();
         SessionUtil.setUser(user);
         
         logger.info("#### INIT SESSION ID : {}", SessionUtil.getSessionId());
-        model.addAttribute("user", contrcVO);
+        model.addAttribute("user", contractInfoInDB);
         model.addAttribute("profilesActive", active);
 
         return "sign/cert";

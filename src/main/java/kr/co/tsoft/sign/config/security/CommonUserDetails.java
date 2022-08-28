@@ -1,10 +1,12 @@
 package kr.co.tsoft.sign.config.security;
 
 import lombok.Builder;
+import lombok.Data;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 
+@Data
 @Builder
 public class CommonUserDetails implements UserDetails {
 
@@ -26,10 +28,14 @@ public class CommonUserDetails implements UserDetails {
     private String signDueEdate;
 
     // 사용자 입력
-    private String residentNo;      //주민번호
+    private String socialNo1;      //주민번호 앞자리
+    private String socialNo2;      //주민번호 뒷자리
+    private String issueDt;        // 주민발급일자
     private String bankName;        //은행명
     private String bankAccountNo;   //계좌번호
     private String phoneCert;       //휴대폰 인증
+    private String signCanvasDataUrl; //서명 base64 데이터
+    private String address;         // 주소
 
     @Override
     public int hashCode() {
@@ -51,134 +57,6 @@ public class CommonUserDetails implements UserDetails {
             return false;
         }
         return true;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public ArrayList<CommonRoleGroup> getAuthorities() {
-        return this.authorities;
-    }
-
-    public void setAuthorities(ArrayList<CommonRoleGroup> authorities) {
-        this.authorities = authorities;
-    }
-
-    public String getAdminNm() {
-        return adminNm;
-    }
-
-    public void setAdminNm(String adminNm) {
-        this.adminNm = adminNm;
-    }
-
-    public String getAdminCellNo() {
-        return adminCellNo;
-    }
-
-    public void setAdminCellNo(String adminCellNo) {
-        this.adminCellNo = adminCellNo;
-    }
-
-    public String getContractNo() {
-        return contractNo;
-    }
-
-    public void setContractNo(String contractNo) {
-        this.contractNo = contractNo;
-    }
-
-    public long getFileSeq() {
-        return fileSeq;
-    }
-
-    public void setFileSeq(long fileSeq) {
-        this.fileSeq = fileSeq;
-    }
-
-    public String getUserNm() {
-        return userNm;
-    }
-
-    public void setUserNm(String userNm) {
-        this.userNm = userNm;
-    }
-
-    public String getCellNo() {
-        return cellNo;
-    }
-
-    public void setCellNo(String cellNo) {
-        this.cellNo = cellNo;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSignDueSdate() {
-        return signDueSdate;
-    }
-
-    public void setSignDueSdate(String signDueSdate) {
-        this.signDueSdate = signDueSdate;
-    }
-
-    public String getSignDueEdate() {
-        return signDueEdate;
-    }
-
-    public void setSignDueEdate(String signDueEdate) {
-        this.signDueEdate = signDueEdate;
-    }
-
-    public String getResidentNo() {
-        return residentNo;
-    }
-
-    public void setResidentNo(String residentNo) {
-        this.residentNo = residentNo;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
-
-    public String getBankAccountNo() {
-        return bankAccountNo;
-    }
-
-    public void setBankAccountNo(String bankAccountNo) {
-        this.bankAccountNo = bankAccountNo;
-    }
-
-    public String getPhoneCert() {
-        return phoneCert;
-    }
-
-    public void setPhoneCert(String phoneCert) {
-        this.phoneCert = phoneCert;
     }
 
     @Override

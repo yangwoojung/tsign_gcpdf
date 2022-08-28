@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
+import kr.co.tsoft.sign.vo.*;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,14 +21,8 @@ import kr.co.tsoft.sign.service.admin.ContrcService;
 import kr.co.tsoft.sign.util.FileUtil;
 import kr.co.tsoft.sign.util.MailHandler;
 import kr.co.tsoft.sign.util.SessionUtil;
-import kr.co.tsoft.sign.vo.ApiRequest;
-import kr.co.tsoft.sign.vo.ApiResponse;
-import kr.co.tsoft.sign.vo.ApiResponseData;
 import kr.co.tsoft.sign.vo.ApiResponseData.Verify;
-import kr.co.tsoft.sign.vo.ContractAttachmentDTO;
-import kr.co.tsoft.sign.vo.RequiredApiRequestDTO;
-import kr.co.tsoft.sign.vo.RequiredApiRequestDTO.RequiredApiRequestDTOBuilder;
-import kr.co.tsoft.sign.vo.RequiredApiResponseDTO;
+import kr.co.tsoft.sign.vo.RequiredApiRequestDTO.*;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
 import kr.co.tsoft.sign.vo.common.Constant;
 import lombok.RequiredArgsConstructor;
@@ -88,21 +83,25 @@ public class AttachService {
         	ApiResponse<ApiResponseData.Verify> verifyResponse = apiService.processVerify(verifyRequest);
         	logger.info("### Verify API Response : {} ", verifyResponse);
         	
-        	Verify apiResponseData = verifyResponse.getData().get(0).getData();
-        	
         	//OCR 실패
         	if(!"0000".equals(verifyResponse.getCode())) {
         		//에러코드 정해야 함
         		return CommonResponse.fail("OCR 실패", "0001");
         	} else {
-        		user.setResidentNo(verifyResponse.getData().get(0).getData().getSocialNo());
-        		
+
+                Verify data = verifyResponse.getData().get(0).getData();
+
+                String[] socialNumbers = getSocialNumbers(data.getSocialNo());
+                user.setSocialNo1(socialNumbers[0]);
+                user.setSocialNo2(socialNumbers[1]);
+                user.setIssueDt(data.getIssueDt());
+
         		RequiredApiResponseDTO response = RequiredApiResponseDTO.builder()
-														    			.name(verifyResponse.getData().get(0).getData().getName())
-														    			.idType(verifyResponse.getData().get(0).getData().getIdType())
-														    			.socialNo(verifyResponse.getData().get(0).getData().getSocialNo())
-														    			.issueDt(verifyResponse.getData().get(0).getData().getIssueDt())
-														    			.licenseNo(verifyResponse.getData().get(0).getData().getLicenseNo())
+														    			.name(data.getName())
+														    			.idType(data.getIdType())
+														    			.socialNo(data.getSocialNo())
+														    			.issueDt(data.getIssueDt())
+														    			.licenseNo(data.getLicenseNo())
 														    			.build();
 
         		//스크래핑 실패
@@ -270,5 +269,20 @@ public class AttachService {
      */
     public void updateContractAttachment(ContractAttachmentDTO dto) {
         contractAttachmentMapper.updateUploadedAttachment(dto);
+    }
+
+    private String[] getSocialNumbers(String socialNumber) {
+        String[] socialNumbers = new String[2];
+
+
+        if(socialNumber.length() >= 6) {
+            socialNumbers[0] = socialNumber.substring(0,6);
+            socialNumbers[1] = socialNumber.substring(6,socialNumber.length() -1);
+        } else {
+            socialNumbers[0] = socialNumber;
+            socialNumbers[1] = "";
+        }
+
+        return socialNumbers;
     }
 }

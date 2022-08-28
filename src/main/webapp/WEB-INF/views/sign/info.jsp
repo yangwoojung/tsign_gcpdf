@@ -31,7 +31,7 @@
                         <dt>성명</dt>
                         <dd>
                             <p>
-                                <input id="userNm" name="userNm" type="text" class="input_ty focusNone"
+                                <input id="userNm" name="userNm" type="text" class="input_ty"
                                        value="${user.userNm}"
                                        autocomplete="off"
                                        readonly required>
@@ -41,11 +41,11 @@
                     <%--                    <dl class="list">--%>
                     <%--                        <dt>주민등록번호</dt>--%>
                     <%--                        <dd class="half">--%>
-                    <%--                            <input id="inResidentNo1" name="residentNo1" type="tel" class="input_ty focusNone" placeholder="6자리숫자"--%>
+                    <%--                            <input id="inResidentNo1" name="residentNo1" type="tel" class="input_ty" placeholder="6자리숫자"--%>
                     <%--                                   maxlength="6"--%>
                     <%--                                   onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" autocomplete="off"--%>
                     <%--                                   required/>--%>
-                    <%--                            <input id="inResidentNo2" name="residentNo2" type="tel" class="input_ty focusNone" placeholder="7자리숫자"--%>
+                    <%--                            <input id="inResidentNo2" name="residentNo2" type="tel" class="input_ty" placeholder="7자리숫자"--%>
                     <%--                                   maxlength="7"--%>
                     <%--                                   onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" autocomplete="off"--%>
                     <%--                                   required/>--%>
@@ -54,7 +54,7 @@
                     <dl class="list">
                         <dt>주소</dt>
                         <dd>
-                            <textarea id="addr1" name="address" type="text" class="input_ty focusNone"
+                            <textarea id="addr1" name="address" type="text" class="input_ty"
                                       placeholder="도로명 주소/동,호수까지 입력"
                                       autocomplete="off" required></textarea>
                         </dd>
@@ -134,7 +134,7 @@
                     <%--                    <dl class="list">--%>
                     <%--                        <dt>계좌 번호</dt>--%>
                     <%--                        <dd class="half03">--%>
-                    <%--                            <input type="tel" name="tel" class="input_ty focusNone" placeholder="-없이 숫자만 입력" maxlength="30"--%>
+                    <%--                            <input type="tel" name="tel" class="input_ty" placeholder="-없이 숫자만 입력" maxlength="30"--%>
                     <%--                                   onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" id="stlmAccNo"--%>
                     <%--                                   autocomplete="off" required/>--%>
                     <%--                        </dd>--%>
@@ -143,10 +143,10 @@
                         <dt>이메일</dt>
                         <dd>
                             <p>
-                                <input type="email" name="email" value="${user.email}" class="input_ty focusNone"
+                                <input type="email" name="email" value="${user.email}" class="input_ty"
                                        disabled required/>
                                 <%--
-                                                                <input type="email" name="email" value="${user.email}" class="input_ty focusNone"
+                                                                <input type="email" name="email" value="${user.email}" class="input_ty"
                                                                        placeholder="이메일 입력(예 : ts@tsoft.co.kr)" maxlength="100"
                                                                        onkeyup="removeSpaces(event)" id="etaxEmail" autocomplete="off" required/>
                                 --%>
@@ -211,7 +211,7 @@
             return false;
         }
 
-        $('#signCanvasDataUrl').val(canvas.toDataURL());
+        // $('#signCanvasDataUrl').val(canvas.toDataURL());
 
         const data = $('#reportForm').serializeObject();
         console.log(data);

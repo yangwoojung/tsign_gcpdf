@@ -10,14 +10,14 @@
         <!-- cont_area -->
         <div class="cont_area">
             <div class="txt_msg_box cont">계약자의 휴대폰 번호 <span class="point">뒤 4자리를 입력</span>하신 후<br>휴대폰 <span class="point">본인인증</span>을 해주세요.</div>
-            <div class="progress">
+            <%--<div class="progress">
                 <div class="box-progress-bar">
                     <span class="box-progress" style="width: 25%;"></span>
                 </div>
                 <div class="number">
                     <span class="active">1</span>/3
                 </div>
-            </div>
+            </div>--%>
             <div class="form_box sub">
                 <dl class="list">
                     <dt>휴대폰번호</dt>

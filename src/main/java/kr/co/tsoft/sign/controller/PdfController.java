@@ -34,7 +34,6 @@ public class PdfController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final ComService comService;
-    private final PdfService pdfService;
     private final FormService formService;
 
     @Value("${config.upload.dir}")
@@ -43,16 +42,11 @@ public class PdfController {
     private String pdfTempDir;
 
     @RequestMapping("/view")
-    public ModelAndView viewReport(InfoDTO infoDTO) throws Exception {
+    public ModelAndView viewReport() throws Exception {
         logger.debug("===== /pdf/view 이동  ======");
         ModelAndView mv = new ModelAndView();
 
         CommonUserDetails user = SessionUtil.getUser();
-
-        //TODO: 추후 세션에 저장되어 들어옴
-        user.setBankName("국민은행");
-        user.setBankAccountNo("593502-01-238928");
-        user.setResidentNo("910710-1063131");
 
         //서식 원본 조회
         FileDTO fileDTO = FileDTO.builder()
@@ -148,7 +142,6 @@ public class PdfController {
 //		logger.debug("## //	resultMap	: " + resultMap);
 
         mv.addObject("file", formInfoInDB);
-        mv.addObject("info", infoDTO);
         mv.addObject("user", user);
 
         mv.setViewName("sign/pdfViewer");
