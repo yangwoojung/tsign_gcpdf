@@ -97,6 +97,7 @@ See https://github.com/adobe-type-tools/cmap-resources
             const loadingTask = pdfjsLib.getDocument(PDF_FILE_PATH);
             loadingTask.promise.then(function (pdf) {
                 PDFViewerApplication.open(PDF_FILE_PATH).then(function () {
+
                     console.log("pdf==" + pdf);
                     pdfPageCount = pdf.numPages;
                     console.log("pdfPageCount==" + pdfPageCount);
@@ -113,11 +114,11 @@ See https://github.com/adobe-type-tools/cmap-resources
                     var box_h = $(".page").css("height");
                     console.log("box_w==" + box_w);
                     console.log("box_h==" + box_h);
-                    var encodingSigImg = '${info.signCanvasDataUrl}';
+                    <%--var encodingSigImg = '${info.signCanvasDataUrl}';--%>
                     // var encodingSigImg64 = 'data:image/jpeg;base64,' + encodingSigImg
                     $(".page").eq(0).append("<div class='insertDataBox0' style='width:" + box_w + ";height:" + box_h + "'><div class='insertBox_inner'></div></div>")
                     //주민등록번호
-                    $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 560px;top: 829px;'>${info.residentNo1}-${info.residentNo2}</em>")
+                    $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 560px;top: 829px;'>${info.socialNo1}-${info.socialNo2}</em>")
                     //주소
                     $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 854px;'>${info.address}</em>")
                     //계좌
@@ -125,7 +126,7 @@ See https://github.com/adobe-type-tools/cmap-resources
                     //성명
                     $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 941px;'>${user.userNm}</em>")
                     //사인 이미지
-                    $(".insertDataBox0 .insertBox_inner").append("<img class='insertData' src='" + encodingSigImg + "' style='position:absolute;right: 56px;top: 926px;'/>")
+                    // $(".insertDataBox0 .insertBox_inner").append("<img class='insertData' src='" + encodingSigImg + "' style='position:absolute;right: 56px;top: 926px;'/>")
                 });
             });
 
@@ -139,7 +140,7 @@ See https://github.com/adobe-type-tools/cmap-resources
 
                 $(".page").eq(0).append("<div class='insertDataBox0' style='width:" + box_w + ";height:" + box_h + "'><div class='insertBox_inner'></div></div>")
                 //주민등록번호
-                $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 700px;top: 1032px;'>${user.residentNo}</em>")
+                $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 700px;top: 1032px;'>${user.socialNo1}</em>")
                 //주소
                 $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 620px;top: 1070px;'>${info.address}</em>")
                 //계좌
