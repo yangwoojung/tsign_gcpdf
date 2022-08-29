@@ -70,7 +70,7 @@
                 </dl>
             </div>
         </div>
-        <div id="type2">
+        <div id="type2" style="display: none;">
             <div class="exImg-wrap check">
                 <div class="exImg">
                     <div class="imgConts">
@@ -84,10 +84,10 @@
                             </div>
                             <div class="left">
                                 <div class="name">
-                                    <span id="userNmOnCard">박유진</span>
+                                    <span id="type2_userNmOnCard">박유진</span>
                                 </div>
                                 <div class="description">
-                                    <span id="socialNo1OnCard">910710</span>-<span id="socialNo2OnCard">1063131</span>
+                                    <span id="type2_socialNo1OnCard">910710</span>-<span id="type2_socialNo2OnCard">1063131</span>
                                 </div>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                     <dt>성명</dt>
                     <dd>
                         <!--0830 대표자명, 대리인명 고정으로 넣는 부분  -->
-                        <input type="text" class="input_ty" placeholder="성명" name="ownerNm"
+                        <input type="text" class="input_ty" placeholder="성명" name="type2_ownerNm"
                         <%-- 									<c:if test="${doc.docCd eq '008' && not empty repNm}">
                                                                    value="<c:out value="${repNm}" />"
                                                             </c:if>
@@ -198,6 +198,14 @@
     $(document).on('ready', function(){
 
         const USER = ${user};
+
+        console.log(USER)
+
+        if(!USER.idType) {
+            location.href = '/sign/error/401';
+        }
+
+        $('#type' + USER.idType).show();
 
         const userNmEl = $('#userNm');
         userNmEl.on('input', function(){

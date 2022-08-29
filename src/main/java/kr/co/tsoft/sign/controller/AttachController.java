@@ -1,6 +1,7 @@
 package kr.co.tsoft.sign.controller;
 
 import com.google.gson.Gson;
+import kr.co.tsoft.sign.config.security.CommonUserDetails;
 import kr.co.tsoft.sign.service.AttachService;
 import kr.co.tsoft.sign.util.SessionUtil;
 import kr.co.tsoft.sign.vo.ApiResponse;
@@ -47,7 +48,16 @@ public class AttachController {
     public String attachPageForCheck(Model model) {
         logger.debug("===== attach check page =====");
         Gson gs = new Gson();
-        model.addAttribute("user", gs.toJson(SessionUtil.getUser()));
+
+        CommonUserDetails user = SessionUtil.getUser();
+        //TODO: 추후 API 수정완료시 제거
+        user.setSocialNo1("910710");
+        user.setSocialNo2("1063131");
+        user.setBankName("국민은행");
+        user.setBankAccountNo("59350201238928");
+        user.setIdType("1");
+
+        model.addAttribute("user", gs.toJson(user));
         return "sign/attachCheck";
     }
 

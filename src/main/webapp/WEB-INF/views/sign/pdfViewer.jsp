@@ -118,9 +118,9 @@ See https://github.com/adobe-type-tools/cmap-resources
                     // var encodingSigImg64 = 'data:image/jpeg;base64,' + encodingSigImg
                     $(".page").eq(0).append("<div class='insertDataBox0' style='width:" + box_w + ";height:" + box_h + "'><div class='insertBox_inner'></div></div>")
                     //주민등록번호
-                    $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 560px;top: 829px;'>${info.socialNo1}-${info.socialNo2}</em>")
+                    $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 560px;top: 829px;'>${user.socialNo1}-${user.socialNo2}</em>")
                     //주소
-                    $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 854px;'>${info.address}</em>")
+                    $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 854px;'>${user.address}</em>")
                     //계좌
                     $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 915px;'>${user.bankName}/${user.bankAccountNo}</em>")
                     //성명
@@ -142,9 +142,9 @@ See https://github.com/adobe-type-tools/cmap-resources
                 //주민등록번호
                 $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 700px;top: 1032px;'>${user.socialNo1}</em>")
                 //주소
-                $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 620px;top: 1070px;'>${info.address}</em>")
+                $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 620px;top: 1070px;'>${user.address}</em>")
                 //계좌
-                $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 620px;top: 1144px;'>${info.bankName}/${info.bankAccountNo}</em>")
+                $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 620px;top: 1144px;'>${user.bankName}/${user.bankAccountNo}</em>")
                 //성명
                 $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 620px;top: 1180px;'>${user.userNm}</em>")
 

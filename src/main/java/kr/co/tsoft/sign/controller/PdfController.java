@@ -4,11 +4,9 @@ import com.clipsoft.lowagie.text.DocumentException;
 import com.clipsoft.org.apache.commons.io.FileUtils;
 import kr.co.tsoft.sign.config.security.CommonUserDetails;
 import kr.co.tsoft.sign.service.ComService;
-import kr.co.tsoft.sign.service.PdfService;
 import kr.co.tsoft.sign.service.admin.FormService;
 import kr.co.tsoft.sign.util.SessionUtil;
 import kr.co.tsoft.sign.vo.FileDTO;
-import kr.co.tsoft.sign.vo.InfoDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,86 +62,19 @@ public class PdfController {
         File oriFile = new File(fileFullName);
 
         //상대경로에 pdf가 존재해야 하는 이유로 temp파일로 복사해서 사용
-        String newFileFullName = pdfTempDir;
+        String newFileFullName = pdfTempDir + File.separator;
         File copyFile = new File(newFileFullName);
 
         logger.debug("어드민에서 저장한 서식 경로 : " + oriFile);
         logger.debug("유저쪽에서 사용할 복사된 서식 경로 : " + copyFile);
 
-
-        try {
-            FileUtils.copyFileToDirectory(oriFile, copyFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error(e.getMessage());
-        }
-
-
-//        if (!copyFile.exists()) {
-
-//            try {
-//                 FileInputStream fis = new FileInputStream(oriFile); //읽을파일
-//                FileOutputStream fos = new FileOutputStream(copyFile); //복사할파일
-//
-//                int fileByte = 0;
-//                // fis.read()가 -1 이면 파일을 다 읽은것
-//                while ((fileByte = fis.read()) != -1) {
-//                    fos.write(fileByte);
-//                }
-//                //자원사용종료
-//                fis.close();
-//                fos.close();
-//                fos.flush();
-//
-//            } catch (FileNotFoundException e) {
-//                logger.debug("===FileNotFoundException===");
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                logger.debug("===IOException===");
-//                e.printStackTrace();
-//            }
-//        }
-
-        //사인이미지 처리 inputSignCan
-//		String encodeSignData = infoDTO.getSignCanvasDataUrl();
-//		String fileName = pdfTempDir + File.separatorChar + "testSignImg.png";
-//		byte[] signImgBytes = Base64.decodeBase64(encodeSignData.getBytes());
-//		try {
-//			FileOutputStream fos = new FileOutputStream(new File(fileName));
-//			fos.write(signImgBytes);
-//			fos.close();
-//			fos.flush();
-//		} catch (IOException e) {
-//			logger.debug("===IOException===");
-//			e.printStackTrace();
-//		}
-
-        String pdfPath = "/upload/temp/";
-//		//서식 상대경로
-//		resultMap.put("pdfPath", pdfPath);
-//		//서식 파일명
-//		resultMap.put("pdfFileNm", (String) formInfoInDB.get("SAV_FILE_NM"));
-//		//생성한 계약서 저장할 파일명
-//		resultMap.put("savedNewPdfFileNm", "(계약서)" + su.getSignUserDetails().getUserNm() + "_" + su.getSignUserDetails().getContractNo() + ".pdf");
-//
-//		resultMap.put("inputResidentNo1", residentNo1);
-//		resultMap.put("inputResidentNo2", residentNo2);
-//		resultMap.put("inputBankCd", paramMap.get("inputBankCd"));
-//		resultMap.put("inputBankNm", bankNm);
-//		resultMap.put("inputAcnutNo", accountNo);
-//		resultMap.put("inputAddr", address);
-////		resultMap.put("inputUserNm", 		paramMap.get("inputUserNm"));
-////		resultMap.put("inputEmail", 		paramMap.get("inputEmail"));
-//		resultMap.put("encodedSignCan", encodeSignData);//인코드 된 사인
-//		resultMap.put("decodedSignCan", signImgBytes);//디코드 된 사인
-//		resultMap.put("contrcNo", paramMap.get("contrcNo"));//계약번호
-
-//		logger.debug("## //	resultMap	: " + resultMap);
+        FileUtils.copyFileToDirectory(oriFile, copyFile);
 
         mv.addObject("file", formInfoInDB);
         mv.addObject("user", user);
 
         mv.setViewName("sign/pdfViewer");
+
         return mv;
     }
 
@@ -167,23 +97,25 @@ public class PdfController {
         String savedNewPdfFileNm = parameter.get("savedNewPdfFileNm");
         String filePath = uploadDir + File.separatorChar + contrcNo;
         File base64ToImgFile = new File(filePath + File.separatorChar + savedNewPdfFileNm);
-        try {
-            FileOutputStream fos = new FileOutputStream(base64ToImgFile);
 
-            fos.write(decodedBytes);
-            HashMap<String, String> fileInfo = new HashMap<String, String>();
-//			fileInfo.put("FILE_TP", "102");
-//			fileInfo.put("CONTRC_NO", su.getSignUserDetails().getContractNo());
-//			fileInfo.put("ORG_FILE_NM", savedNewPdfFileNm);
-//			fileInfo.put("SAV_FILE_NM", savedNewPdfFileNm);
-//			fileInfo.put("FILE_PATH", filePath);
-//			fileInfo.put("user", su.getSignUserDetails().getUsername());
-            if (comService.insertFileUpload(fileInfo) > 0) {
-                resultMap.put("message", "계약서 생성을 완료했습니다.");
-            }
-        } catch (Exception e) {
-            resultMap.put("message", "계약서 생성에 실패했습니다.");
-        }
+        FileUtils.writeByteArrayToFile(base64ToImgFile, decodedBytes);
+//        try {
+//            FileOutputStream fos = new FileOutputStream(base64ToImgFile);
+//
+//            fos.write(decodedBytes);
+//            HashMap<String, String> fileInfo = new HashMap<String, String>();
+////			fileInfo.put("FILE_TP", "102");
+////			fileInfo.put("CONTRC_NO", su.getSignUserDetails().getContractNo());
+////			fileInfo.put("ORG_FILE_NM", savedNewPdfFileNm);
+////			fileInfo.put("SAV_FILE_NM", savedNewPdfFileNm);
+////			fileInfo.put("FILE_PATH", filePath);
+////			fileInfo.put("user", su.getSignUserDetails().getUsername());
+//            if (comService.insertFileUpload(fileInfo) > 0) {
+//                resultMap.put("message", "계약서 생성을 완료했습니다.");
+//            }
+//        } catch (Exception e) {
+//            resultMap.put("message", "계약서 생성에 실패했습니다.");
+//        }
 
         return resultMap;
     }

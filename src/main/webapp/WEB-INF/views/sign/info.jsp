@@ -186,12 +186,11 @@
 
         $('#nextBtn').on('click', function () {
             $('#submitReportForm').trigger('click');
-            // location.href = '/sign/attach'
         });
 
         initSignCanvas();
 
-        $('textarea').on('keyup keydown change', function (e) {
+        $('textarea').on('keyup keydown change', function () {
             if(this.scrollHeight > 30) {
                 $(this).css('height', 'auto');
                 $(this).height(this.scrollHeight);
@@ -199,25 +198,6 @@
         });
 
     });
-
-
-    // 다음 단계로 이동
-    function fnMoveNext() {
-
-        const canvas = document.getElementById('signCanvas');
-
-        if (isCanvasBlank(canvas)) {
-            alert("입력된 자필서명이 없습니다.");
-            return false;
-        }
-
-        // $('#signCanvasDataUrl').val(canvas.toDataURL());
-
-        const data = $('#reportForm').serializeObject();
-        console.log(data);
-
-        return true;
-    }
 
     const initSignCanvas = () => {
 
@@ -240,18 +220,49 @@
     }
 
     // returns true if all color channels in each pixel are 0 (or "blank")
-    function isCanvasBlank(canvas) {
+    const isCanvasBlank = (canvas)  => {
         return !canvas.getContext('2d')
             .getImageData(0, 0, canvas.width, canvas.height).data
             .some(channel => channel !== 0);
     }
 
-    // var closeReport = function (status) {
-    //     if (status === '0000') {
-    //         ComUtil.submit('/sign/attach');
-    //     } else {
-    //         alert('다시 진행해주시기 바랍니다.');
-    //     }
-    // };
+    // 다음 단계로 이동
+    const fnMoveNext = () => {
+
+        const canvas = document.getElementById('signCanvas');
+
+        if (isCanvasBlank(canvas)) {
+            alert("입력된 자필서명이 없습니다.");
+            return false;
+        }
+
+        $('#signCanvasDataUrl').val(canvas.toDataURL());
+
+        if(updateInfo() !== true) location.reload();
+
+        return true;
+    }
+
+    // 계약자 정보 세션에 업데이트
+    const updateInfo = () => {
+        let result;
+
+        $.ajax({
+            url: cpath + '/sign/info/update',
+            data: $('#reportForm').serializeObject(),
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                result = response.result === 'SUCCESS';
+            },
+            error: function (jqXHR) {
+                console.error(jqXHR);
+                return false;
+            }
+        });
+
+        return result;
+
+    }
 
 </script>

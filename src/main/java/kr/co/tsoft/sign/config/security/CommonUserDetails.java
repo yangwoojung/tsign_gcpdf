@@ -36,6 +36,7 @@ public class CommonUserDetails implements UserDetails {
     private String phoneCert;       //휴대폰 인증
     private String signCanvasDataUrl; //서명 base64 데이터
     private String address;         // 주소
+    private String idType;       // ID TYPE (예: 1 - 주민등록증)
 
     @Override
     public int hashCode() {

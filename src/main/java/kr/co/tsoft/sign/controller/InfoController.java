@@ -37,10 +37,11 @@ public class InfoController {
     @PostMapping("/update")
     @ResponseBody
     public CommonResponse<?> updateInfo(InfoDTO infoDTO) {
-        logger.info("=== sign/ updateinfo");
-        CommonUserDetails user = SessionUtil.getUser();
-        infoDtoMapper.updateUserDetails(user, infoDTO);
+        logger.info("=== sign/ update info");
 
+        infoDtoMapper.updateUserDetails(SessionUtil.getUser(), infoDTO);
+
+        CommonUserDetails user = SessionUtil.getUser();
         //TODO: 추후 API 수정완료시 제거
         user.setSocialNo1("910710");
         user.setSocialNo2("1063131");
