@@ -3,6 +3,7 @@ package kr.co.tsoft.sign.service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -31,100 +32,105 @@ import okhttp3.MultipartBody;
 @Service
 @RequiredArgsConstructor
 public class UploadService {
-	
-	private final Logger logger = LoggerFactory.getLogger(AttachService.class);
 
-	private final ContractAttachmentMapper contractAttachmentMapper;
-	private final ApiService apiService;
-	private final RequiredApiResponseDTOMapper requiredApiResponseDtoMapper;
-	private final SessionDTOMapper sessionDTOMapper;
-	
+    private final Logger logger = LoggerFactory.getLogger(AttachService.class);
+
+    private final ContractAttachmentMapper contractAttachmentMapper;
+    private final ApiService apiService;
+    private final RequiredApiResponseDTOMapper requiredApiResponseDtoMapper;
+    private final SessionDTOMapper sessionDTOMapper;
+
     @Value("${config.upload.dir}")
     private String CONTRACT_PATH;
 
-	@Transactional
+    @Transactional
     public CommonResponse<?> uploadAttachFile(ContractAttachmentDTO contractAttachmentDTO) throws Exception {
 
         logger.info("##### [uploadService > uploadAttachFile ] #####");
-        
+
         CommonUserDetails user = SessionUtil.getUser();
         String contractNo = user.getContractNo(); //계약번호
-
         String attachmentCd = contractAttachmentDTO.getAttachmentCd(); //서류코드
-        
-        ContractAttachmentDTO attachInfoInDB = contractAttachmentMapper.selectAttachInfoByAttachCd(attachmentCd); //attachmentInfo 
-        
+
+        //DB에서 attachementCd에 따른 Info 조회
+        ContractAttachmentDTO attachInfoInDB = contractAttachmentMapper.selectAttachInfoByAttachCd(attachmentCd); //attachmentInfo
+
+        //경로 지정 및 파일  업로드
         String savePath = CONTRACT_PATH + contractNo + File.separator + "attach";
-        //파일  업로드
         File uploadedFile = transferDecryptDataToDestFile(savePath, contractNo + "_" + attachmentCd, contractAttachmentDTO.getFile());
-        
-        CommonResponse<?> response = new CommonResponse<>();
-        
-        //ocr : Y, scrap : Y
+
+        CommonResponse<?> response = null;
+
+        //Info - ocr : Y, scrap : Y
         if(Constant.REQUIRED_VALUE.equals(attachInfoInDB.getOcrYn()) && Constant.REQUIRED_VALUE.equals(attachInfoInDB.getScrapYn())) {
-        	response = verifyingIdentificationCard(uploadedFile, user);
-        	logger.debug("uploadAttachFile > response : {}", response);
-        	if("FAIL".equals(response.getResult())) {
-        		return response;
-        	}
+            response = verifyTheFile(uploadedFile, user);
+            logger.debug("uploadAttachFile > response : {}", response);
         }
         //TODO:구비서류 업로드 완료 처리
-		return response;
-	}
-	
-    public CommonResponse<?> verifyingIdentificationCard(File uploadedFile, CommonUserDetails user) {
-    	
-    	MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", uploadedFile.getName(),
-                okhttp3.RequestBody.create(MediaType.parse("image/*"), uploadedFile));
-    	
-    	ApiRequest.Verify verifyRequest = ApiRequest.Verify.builder()
-	        												.token("yBnwrSX4mGfOMd11IUf4KyuwnsVZ5I")
-	        												.file(filePart).build();
-    	
-    	ApiResponse<ApiResponseData.Verify> verifyResponse = apiService.processVerify(verifyRequest);
-    	logger.info("### Verify API Response : {} ", verifyResponse);
-    	
-    	//ocr 실패
-    	if(!"0000".equals(verifyResponse.getCode())) {
-    		return CommonResponse.fail("OCR 실패", "0001");
-    	} else { 
-    		//ocr 성공
-    		//TODO: 늘 OCR 결과가 0으로 들어온다는 보장이 없으니 get(0) 말고 다른 구분법으로 변경. 
-    		Verify apiResponseData = verifyResponse.getData().get(0).getData();
-    		
-            RequiredApiResponseDTO response = requiredApiResponseDtoMapper.of(apiResponseData);
-            
+        return response;
+    }
+
+    public CommonResponse<?> verifyTheFile(File uploadedFile, CommonUserDetails user) {
+
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", uploadedFile.getName(),
+            okhttp3.RequestBody.create(MediaType.parse("image/*"), uploadedFile));
+
+        ApiRequest.Verify verifyRequest = ApiRequest.Verify.builder()
+            .token("yBnwrSX4mGfOMd11IUf4KyuwnsVZ5I")
+            .file(filePart).build();
+
+        ApiResponse<ApiResponseData.Verify> verifyResponse = apiService.processVerify(verifyRequest);
+        logger.info("### Verify API Response : {} ", verifyResponse);
+
+        //API 통신 실패
+        if(!"0000".equals(verifyResponse.getCode())) {
+            return CommonResponse.fail("API 통신 실패", "0001");
+        } else {
+            //ocr / scrap 데이터 구분
+            Verify ocrData = null;
+            Verify scrapData = null;
+
+            for(ApiResponseData <Verify> list : verifyResponse.getData()) {
+                if("O".equals(list.getModule())) {
+                    ocrData = list.getData();
+                } else if("S".equals(list.getModule())) {
+                    scrapData = list.getData();
+                } else {
+                    return CommonResponse.fail("module 미지정","0002");
+                }
+            }
+            RequiredApiResponseDTO response = requiredApiResponseDtoMapper.of(ocrData);
             logger.debug(" ### response : {} ###",response);
 
-            //requiredApiResponseDTO 채우고 얘로 세션 업데이트
-            if("1".equals(response.getIdType())) {
-            	String[] socialNumbers = getSocialNumbers(apiResponseData.getSocialNo());
-            	
-            	response.setSocialNo1(socialNumbers[0]);
-            	response.setSocialNo2(socialNumbers[1]);
-            	
-            } else if("3".equals(response.getIdType())) {
-            	String[] licenseNumbers = getLicenseNumbers(apiResponseData.getLicenseNo());
-            	
-            	response.setLicenseNo1(licenseNumbers[0]);
-            	response.setLicenseNo2(licenseNumbers[1]);
-            	response.setLicenseNo3(licenseNumbers[2]);
-            	response.setLicenseNo4(licenseNumbers[3]);
+            if(ocrData != null) {
+                if("1".equals(response.getIdType())) {
+                    String[] socialNumbers = getSocialNumbers(ocrData.getSocialNo());
+
+                    response.setSocialNo1(socialNumbers[0]);
+                    response.setSocialNo2(socialNumbers[1]);
+
+                } else if("3".equals(response.getIdType())) {
+                    String[] licenseNumbers = getLicenseNumbers(ocrData.getLicenseNo());
+
+                    response.setLicenseNo1(licenseNumbers[0]);
+                    response.setLicenseNo2(licenseNumbers[1]);
+                    response.setLicenseNo3(licenseNumbers[2]);
+                    response.setLicenseNo4(licenseNumbers[3]);
+                }
+                sessionDTOMapper.updateUserDetails(user, response);
+            } else {
+                return CommonResponse.fail("OCR 데이터 미존재", "0002");
             }
 
-            sessionDTOMapper.updateUserDetails(user, response);
-
-            //스크래핑 실패
-            if(!"0000".equals(verifyResponse.getData().get(1).getCode())) {
-            	return CommonResponse.fail(response, "0001");
-            } else if("0000".equals(verifyResponse.getCode())) {
-            	//구비서류 업로드 완료처리
-            	return CommonResponse.success(response);
+            //스크래핑 성공
+            if(scrapData != null) {
+                return CommonResponse.success();
+            } else {
+                return CommonResponse.fail("scrap 데이터 미존재","0003");
             }
-    	}
-    	return CommonResponse.fail("에러","0002");
+        }
     }
-	
+
     public File transferDecryptDataToDestFile(String filePath, String fileName, String fileData) throws IOException {
         byte[] data = fileData.getBytes();
         String DecodeString = new String(data, "UTF-8");
@@ -166,7 +172,7 @@ public class UploadService {
         return destFile;
     }
 
-    //try catch로 
+    //try catch로
     private String[] getSocialNumbers(String socialNumber) {
         String[] socialNumbers = new String[2];
 
@@ -181,10 +187,10 @@ public class UploadService {
 
         return socialNumbers;
     }
-    
+
     private String[] getLicenseNumbers(String licenseNo) {
-    	String[] licenseNumbers = licenseNo.split("-");
-		return licenseNumbers;
+        String[] licenseNumbers = licenseNo.split("-");
+        return licenseNumbers;
     }
 
 }
