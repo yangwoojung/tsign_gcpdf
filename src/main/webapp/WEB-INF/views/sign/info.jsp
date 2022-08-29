@@ -59,7 +59,15 @@
                                       autocomplete="off" required></textarea>
                         </dd>
                     </dl>
-                    <%--                    <dl class="list">--%>
+                    <dl class="list">
+                        <dt>상세주소</dt>
+                        <dd>
+                            <textarea id="addr2" name="address" type="text" class="input_ty"
+                                      placeholder="상세주소 입력"
+                                      autocomplete="off" required></textarea>
+                        </dd>
+                    </dl>
+                <%--                    <dl class="list">--%>
                     <%--                        <dt>은행 선택</dt>--%>
                     <%--                        <dd class="half03">--%>
                     <%--                            <p>--%>
@@ -180,6 +188,7 @@
 </footer>
 
 <script src="${pageContext.request.contextPath}/resources/sign/js/fabric.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 
     $(function () {
@@ -265,4 +274,20 @@
 
     }
 
+    //다음 주소 API
+    $("#addr1").on("click", function() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    var addr = '';
+
+                    if (data.userSelectedType === 'R') {
+                        addr = data.roadAddress + " " + data.buildingName;
+                    } else {
+                        addr = data.jibunAddress + " " + data.buildingName;
+                    }
+                    document.getElementById("addr1").value = addr;
+                    document.getElementById("addr2").focus();
+                }
+            }).open();
+    });
 </script>
