@@ -1,22 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="google" content="notranslate">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>PDF.js viewer</title>
-    <%--    <link rel="stylesheet" type="text/css" href="/resources/sign/pdfjs/pdfviewer.css">--%>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
     <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-
-    <!-- This snippet is used in production (included from viewer.html) -->
     <link rel="resource" type="application/l10n" href="/resources/sign/pdfjs/locale/locale.properties">
     <script type='text/javascript' src="/resources/sign/pdfjs/build/pdf.js"></script>
-    <%--    <script type='text/javascript' src="/resources/sign/pdfjs/build/pdf.worker.js"></script>--%>
-    <%--    <script type='text/javascript' src="/resources/sign/pdfjs/pdfviewer.js"></script>--%>
-    <script src="/resources/sign/js/jquery-1.12.4.min.js"></script>
 
     <style>
 
@@ -98,6 +84,7 @@
             color: #999999;
             font-size: 13px;
         }
+
         #dataBinding {
             width: 595px;
             height: 841px;
@@ -143,8 +130,6 @@
             width: 135px;
         }
     </style>
-
-</head>
 <body>
 
 <div id="pdf-main-container">
@@ -155,7 +140,7 @@
         <div id="password-message"></div>
     </div>
     <div id="pdf-contents">
-        <div id="pdf-meta">
+        <%--<div id="pdf-meta">
             <div id="pdf-buttons">
                 <button id="pdf-prev">Previous</button>
                 <button id="pdf-next">Next</button>
@@ -165,13 +150,12 @@
                 of
                 <div id="pdf-total-pages"></div>
             </div>
-        </div>
-        <canvas id="pdf-canvas" width="500%"></canvas>
+        </div>--%>
+        <canvas id="pdf-canvas"></canvas>
         <div id="page-loader">Loading page ...</div>
     </div>
 </div>
 
-</body>
 <script>
 
     var __PDF_DOC,
@@ -204,24 +188,23 @@
             // Show the first page
             showPage(1);
 
-            // Custom Data
             var box_w = $(".page").css("width");
             var box_h = $(".page").css("height");
             console.log("box_w==" + box_w);
             console.log("box_h==" + box_h);
-            var encodingSigImg = '${info.signCanvasDataUrl}';
+            <%--var encodingSigImg = '${info.signCanvasDataUrl}';--%>
             // var encodingSigImg64 = 'data:image/jpeg;base64,' + encodingSigImg
-            $("#pdf-main-container").eq(0).append("<div class='insertDataBox0' style='width:" + box_w + ";height:" + box_h + "'><div class='insertBox_inner'></div></div>")
+            $(".page").eq(0).append("<div class='insertDataBox0' style='width:" + box_w + ";height:" + box_h + "'><div class='insertBox_inner'></div></div>")
             //주민등록번호
-            $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 560px;top: 829px;'>${info.residentNo1}-${info.residentNo2}</em>")
+            $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 560px;top: 829px;'>${user.socialNo1}-${user.socialNo2}</em>")
             //주소
-            $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 854px;'>${info.address}</em>")
+            $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 854px;'>${user.address}</em>")
             //계좌
-            $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 915px;'>${info.bankName}/${info.bankAccountNo}</em>")
+            $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 915px;'>${user.bankName}/${user.bankAccountNo}</em>")
             //성명
             $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 941px;'>${user.userNm}</em>")
             //사인 이미지
-            $(".insertDataBox0 .insertBox_inner").append("<img class='insertData' src='" + encodingSigImg + "' style='position:absolute;right: 56px;top: 926px;'/>")
+            // $(".insertDataBox0 .insertBox_inner").append("<img class='insertData' src='" + encodingSigImg + "' style='position:absolute;right: 56px;top: 926px;'/>")
 
         }).catch(function (error) {
             console.log(error)
@@ -252,13 +235,33 @@
 
         // Fetch the page
         __PDF_DOC.getPage(page_no).then(function (page) {
+
             // As the canvas is of a fixed width we need to set the scale of the viewport accordingly
-            var scale_required = __CANVAS.width / page.getViewport({scale : 1}).width;
+
+            __CANVAS.style.height = window.innerHeight + 'px'
+            __CANVAS.style.width = window.innerWidth + 'px'
+
+            console.log("canvas.style.height=" + __CANVAS.style.height);
+            console.log("canvas.style.width=" + __CANVAS.style.width);
+
+            console.log("canvas.height=" + __CANVAS.height);
+            console.log("canvas.width=" + __CANVAS.width);
+
+            console.log("canvas.width=" + page.getViewport({scale: 1}).width);
+
+            var scale_required = __CANVAS.width / page.getViewport({scale: 1}).width;
+
             // Get viewport of the page at required scale
-            var viewport = page.getViewport({scale : scale_required});
+            var viewport = page.getViewport({scale: 1});
+
+            __CANVAS.height = viewport.height;
+            __CANVAS.width = viewport.width;
 
             // Set canvas height
-            __CANVAS.height = viewport.height;
+            // __CANVAS.height = viewport.height;
+
+            console.log("canvas.height=" + __CANVAS.height);
+            console.log("canvas.width=" + __CANVAS.width);
 
             var renderContext = {
                 canvasContext: __CANVAS_CTX,
@@ -280,6 +283,29 @@
         });
     }
 
+    //데이터 바인딩 (jsp에서 할일)
+    //위치조정, font조정
+    /*$("#htmlexport").on("click", function () {
+       var box_w = $(".page").css("width");
+                    var box_h = $(".page").css("height");
+                    console.log("box_w==" + box_w);
+                    console.log("box_h==" + box_h);
+                    <%--var encodingSigImg = '${info.signCanvasDataUrl}';--%>
+                    // var encodingSigImg64 = 'data:image/jpeg;base64,' + encodingSigImg
+                    $(".page").eq(0).append("<div class='insertDataBox0' style='width:" + box_w + ";height:" + box_h + "'><div class='insertBox_inner'></div></div>")
+                    //주민등록번호
+                    $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 560px;top: 829px;'>${user.socialNo1}-${user.socialNo2}</em>")
+                    //주소
+                    $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 854px;'>${user.address}</em>")
+                    //계좌
+                    $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 915px;'>${user.bankName}/${user.bankAccountNo}</em>")
+                    //성명
+                    $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 941px;'>${user.userNm}</em>")
+                    //사인 이미지
+                    // $(".insertDataBox0 .insertBox_inner").append("<img class='insertData' src='" + encodingSigImg + "' style='position:absolute;right: 56px;top: 926px;'/>")
+
+    });*/
+
     $("#submit-password").on('click', function () {
         showPDF($("#pdf-password").val());
     });
@@ -296,28 +322,8 @@
             showPage(++__CURRENT_PAGE);
     });
 
-    $(document).on('ready', function(){
-        //데이터 바인딩 (jsp에서 할일)
-        //위치조정, font조정
-        $("#htmlexport").on("click", function () {
-            var box_w = $(".page").css("width");
-            var box_h = $(".page").css("height");
-            console.log("box_w==" + box_w);
-            console.log("box_h==" + box_h);
+    $(document).on('ready', function () {
 
-            $(".page").eq(0).append("<div class='insertDataBox0' style='width:" + box_w + ";height:" + box_h + "'><div class='insertBox_inner'></div></div>")
-
-            //주민등록번호
-            $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 700px;top: 1032px;'>${user.residentNo}</em>")
-            //주소
-            $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 620px;top: 1070px;'>${info.address}</em>")
-            //계좌
-            $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 620px;top: 1144px;'>${info.bankName}/${info.bankAccountNo}</em>")
-            //성명
-            $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 620px;top: 1180px;'>${user.userNm}</em>")
-
-        });
     })
 
 </script>
-</html>

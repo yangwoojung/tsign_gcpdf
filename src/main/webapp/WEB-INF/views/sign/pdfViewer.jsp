@@ -96,9 +96,10 @@ See https://github.com/adobe-type-tools/cmap-resources
 
             const loadingTask = pdfjsLib.getDocument(PDF_FILE_PATH);
             loadingTask.promise.then(function (pdf) {
-                PDFViewerApplication.open(PDF_FILE_PATH).then(function () {
+                PDFViewerApplication.open(PDF_FILE_PATH).then(function (res) {
 
-                    console.log("pdf==" + pdf);
+                    console.log(pdf);
+                    console.log("res==" + res);
                     pdfPageCount = pdf.numPages;
                     console.log("pdfPageCount==" + pdfPageCount);
                     var pages = [];
@@ -107,7 +108,7 @@ See https://github.com/adobe-type-tools/cmap-resources
                     }
                     return Promise.all(pages); // wait for all of them to be done
                 }).then(function (results) {
-                    console.log("results==" + results);
+                    console.log(results);
                     // you can access all the results here
                     // containing all pages
                     var box_w = $(".page").css("width");

@@ -73,7 +73,7 @@ public class PdfController {
         mv.addObject("file", formInfoInDB);
         mv.addObject("user", user);
 
-        mv.setViewName("sign/pdfViewer");
+        mv.setViewName("sign/pdfViewer_bak");
 
         return mv;
     }
