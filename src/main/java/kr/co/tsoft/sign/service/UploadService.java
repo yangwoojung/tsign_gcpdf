@@ -3,7 +3,6 @@ package kr.co.tsoft.sign.service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -61,12 +60,23 @@ public class UploadService {
 
         CommonResponse<?> response = null;
 
-        //Info - ocr : Y, scrap : Y
-        if(Constant.REQUIRED_VALUE.equals(attachInfoInDB.getOcrYn()) && Constant.REQUIRED_VALUE.equals(attachInfoInDB.getScrapYn())) {
+        boolean requiredOcr = Constant.REQUIRED_VALUE.equals(attachInfoInDB.getOcrYn());
+        boolean requiredScrap = Constant.REQUIRED_VALUE.equals(attachInfoInDB.getScrapYn());
+        
+        //ocr 필수 && scrap 필수
+        if(requiredOcr && requiredScrap) {
             response = verifyTheFile(uploadedFile, user);
-            logger.debug("uploadAttachFile > response : {}", response);
-        }
-        //TODO:구비서류 업로드 완료 처리
+        } 
+        logger.debug("[uploadAttachFile > response : {} ]", response);
+    	//TODO:구비서류 업로드 완료 처리
+    	ContractAttachmentDTO updateContractAttachment = ContractAttachmentDTO.builder()
+															        			.contractNo(contractNo)
+															        			.attachmentCd(attachmentCd)
+															        			.uploadedFile(uploadedFile.getAbsolutePath())
+															        			.uploadedYn("Y")
+															        			.build();
+    	updateContractAttachment(updateContractAttachment);
+    	
         return response;
     }
 
@@ -100,16 +110,16 @@ public class UploadService {
                 }
             }
             RequiredApiResponseDTO response = requiredApiResponseDtoMapper.of(ocrData);
-            logger.debug(" ### response : {} ###",response);
 
             if(ocrData != null) {
-                if("1".equals(response.getIdType())) {
+            	String idType = ocrData.getIdType();
+                if("1".equals(idType)) {
                     String[] socialNumbers = getSocialNumbers(ocrData.getSocialNo());
 
                     response.setSocialNo1(socialNumbers[0]);
                     response.setSocialNo2(socialNumbers[1]);
 
-                } else if("3".equals(response.getIdType())) {
+                } else if("3".equals(idType)) {
                     String[] licenseNumbers = getLicenseNumbers(ocrData.getLicenseNo());
 
                     response.setLicenseNo1(licenseNumbers[0]);
@@ -121,12 +131,12 @@ public class UploadService {
             } else {
                 return CommonResponse.fail("OCR 데이터 미존재", "0002");
             }
-
+            
             //스크래핑 성공
-            if(scrapData != null) {
-                return CommonResponse.success();
+            if("Y".equals(scrapData.getOutB0001().getTruthYn()) || "Y".equals(scrapData.getOutB0001().getLicenceTruthYn())) {
+                return CommonResponse.success(response);
             } else {
-                return CommonResponse.fail("scrap 데이터 미존재","0003");
+                return CommonResponse.fail(response, "Scrap 실패");
             }
         }
     }
@@ -171,26 +181,40 @@ public class UploadService {
 
         return destFile;
     }
-
-    //try catch로
+    
     private String[] getSocialNumbers(String socialNumber) {
         String[] socialNumbers = new String[2];
-
-
-        if(socialNumber.length() >= 6) {
-            socialNumbers[0] = socialNumber.substring(0,6);
-            socialNumbers[1] = socialNumber.substring(6,socialNumber.length() -1);
-        } else {
-            socialNumbers[0] = socialNumber;
-            socialNumbers[1] = "";
-        }
-
+        try {
+			if(socialNumber.length() >= 6) {
+			    socialNumbers[0] = socialNumber.substring(0,6);
+			    socialNumbers[1] = socialNumber.substring(6,socialNumber.length() -1);
+			} else {
+			    socialNumbers[0] = socialNumber;
+			    socialNumbers[1] = "";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         return socialNumbers;
     }
 
     private String[] getLicenseNumbers(String licenseNo) {
-        String[] licenseNumbers = licenseNo.split("-");
+    	String[] licenseNumbers = new String[4];
+    	if(licenseNo.contains("-")) {
+    		licenseNumbers = licenseNo.split("-");
+    	} else {
+    		licenseNumbers[0] = licenseNo.substring(0,2);
+    		licenseNumbers[1] = "";
+    		licenseNumbers[2] = "";
+    		licenseNumbers[3] = "";
+    	}
         return licenseNumbers;
     }
 
+    /**
+     * 계약자의 구비서류 업로드 상태 업데이트
+     */
+    public void updateContractAttachment(ContractAttachmentDTO dto) {
+        contractAttachmentMapper.updateUploadedAttachment(dto);
+    }
 }
