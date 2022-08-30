@@ -286,6 +286,7 @@
                         addr = data.jibunAddress + " " + data.buildingName;
                     }
                     document.getElementById("addr1").value = addr;
+                    $('#addr1').keyup();
                     document.getElementById("addr2").focus();
                 }
             }).open();
