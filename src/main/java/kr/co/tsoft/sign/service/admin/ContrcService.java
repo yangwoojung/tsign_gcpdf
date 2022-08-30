@@ -1,21 +1,26 @@
 package kr.co.tsoft.sign.service.admin;
 
-import kr.co.tsoft.sign.mapper.admin.ContrcMapper;
-import kr.co.tsoft.sign.util.MailHandler;
-import kr.co.tsoft.sign.util.SecurityUtil;
-import kr.co.tsoft.sign.util.SendMessage;
-import kr.co.tsoft.sign.vo.admin.ContractGridDTO;
-import kr.co.tsoft.sign.vo.common.TotalRowCount;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import kr.co.tsoft.sign.config.security.CommonUserDetails;
+import kr.co.tsoft.sign.mapper.ContractAttachmentMapper;
+import kr.co.tsoft.sign.mapper.admin.ContrcMapper;
+import kr.co.tsoft.sign.util.MailHandler;
+import kr.co.tsoft.sign.util.SecurityUtil;
+import kr.co.tsoft.sign.util.SendMessage;
+import kr.co.tsoft.sign.util.SessionUtil;
+import kr.co.tsoft.sign.vo.ContractAttachmentDTO;
+import kr.co.tsoft.sign.vo.admin.ContractGridDTO;
+import kr.co.tsoft.sign.vo.common.TotalRowCount;
 
 @Service
 public class ContrcService {
@@ -24,9 +29,11 @@ public class ContrcService {
     @Autowired
     ContrcMapper ContrcMapper;
     @Value("${spring.profiles.active}")
-    private String active;
+    private String active;    
     @Autowired
     private SendMessage sendMessage;
+    @Autowired
+    ContractAttachmentMapper contractAttachmentMapper;
 
     public HashMap<String, Object> selectContrcInfo(HashMap<String, Object> paramMap) {
         return ContrcMapper.selectContrcInfo(paramMap);
@@ -68,6 +75,30 @@ public class ContrcService {
         if (ContrcMapper.insertContrcReg(paramVO) > 0) {
             Logger.debug("== 계약서 저장");
             resultMap.put("result", "success");
+            
+            ContractAttachmentDTO.ContractAttachmentDTOBuilder builder = ContractAttachmentDTO.builder();
+            
+            //구비서류 갯수 만큼 인서트 진행
+            for (int i = 0;i < paramVO.getSelectedAttach().size();i++) {
+            	ContractAttachmentDTO selectedItem = paramVO.getSelectedAttach().get(i);
+                builder.contractNo(contrNo);
+                builder.attachmentSeq(selectedItem.getAttachmentSeq());
+                builder.requiredYn(selectedItem.getRequiredYn());
+                builder.regId(su.getAdminUserDetails().getUsername());
+                builder.modId(su.getAdminUserDetails().getUsername());           
+                
+                ContractAttachmentDTO dto = builder.build();
+                Logger.debug(dto.toString());
+                if (contractAttachmentMapper.insertContractAttachmentList(dto) > 0) {
+                	Logger.debug("== 구비서류 저장 " + selectedItem.getAttachmentName());
+                    resultMap.put("result", "success");
+                } else {
+                	Logger.debug("== 구비서류 저장 실패");
+                	resultMap.put("result", "fail");
+                }
+            }
+
+            
         } else {
             Logger.debug("== 계약서 저장 실패 ");
             resultMap.put("insert", "fail");

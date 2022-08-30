@@ -1,5 +1,8 @@
 package kr.co.tsoft.sign.vo.admin;
 
+import java.util.List;
+
+import kr.co.tsoft.sign.vo.ContractAttachmentDTO;
 import kr.co.tsoft.sign.vo.common.GridRequest;
 import lombok.Data;
 
@@ -23,5 +26,7 @@ public class ContractGridDTO extends GridRequest {
 
     private String formNm;
     private String filePath;
+    
+    private List<ContractAttachmentDTO> selectedAttach;
 
 }

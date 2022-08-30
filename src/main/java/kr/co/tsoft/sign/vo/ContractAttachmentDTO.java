@@ -14,6 +14,7 @@ public class ContractAttachmentDTO {
     private Integer contractAttachmentSeq;
     private String contractNo;
     private Integer attachmentSeq;
+    private String requiredYn;
     private String uploadedDate;
     private String uploadedYn;
     private String uploadedFile;

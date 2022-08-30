@@ -76,6 +76,29 @@
                     />
                 </td>
             </tr>
+            <tr>
+                <th>구비서류<span class="star">*</span></th>
+                <td>
+                	<a href="javascript:;" onclick="fn_addAttachDiv();" style="vertical-align:top"
+                        class="btn_small type_01">추가</a>
+                        
+                	<div style="display:inline-block" id="atachAddBox">
+                		
+					</div>
+	                <div style="display:none" id="atachBox">
+		                <div style="width:100%;">
+		               		<input type="checkbox" name="atchRequired" value="필수">
+		               		<label for="atchRequired">필수</label>
+		                	<select>
+		                	
+		                		<c:forEach var="atchList" items="${attachmentList }">
+			                    	<option value="${atchList.ATTACHMENT_CD}">${atchList.ATTACHMENT_NAME}</option>
+								</c:forEach>
+							</select>
+						</div>
+					</div>	
+                    
+                </td>
             </tbody>
         </table>
 	
@@ -119,6 +142,9 @@
 
 <script>
 	
+	/* 기본이 되는 구비서류 리스트 */
+	let attachmentBaseArr = new Array();
+	
     $(function () {
         // 달력
         var seq = "<c:out value='${resultContract.contractSeq}'/>";
@@ -131,15 +157,115 @@
         //input validation
 	    initValidate();
         
+        //기본이 되는 구비서류 리스트 
+        <c:forEach items="${attachmentList }" var ="item">
+    	attachmentBaseArr.push(
+    			{attachmentCd: "${item.ATTACHMENT_CD }",
+    			attachmentName: "${item.ATTACHMENT_NAME }",
+    			attachmentSeq: "${item.ATTACHMENT_SEQ }"})    		
+    	</c:forEach>
+    	console.log(attachmentBaseArr);
+    	
+    	//신분증 필수 추가 !!!
+    	fn_addAttachDiv();
+    	
     })
     
+    /* 구비서류 추가버튼 클릭 */
+    const fn_addAttachDiv = () => {
+    	/* 이전 셀렉박스 disabled처리 */
+    	$("#atachAddBox select").last().attr("disabled", "disabled");
+    	
+    	var selectLen = $("#atachAddBox select").length;
+    	if (attachmentBaseArr.length == selectLen) {
+    		alert("더이상 추가할 구비서류가 없습니다.");
+    		return false;
+    	}
+    	
+    	var addHtml = ""
+        	addHtml += '<div style="width:100%;margin-bottom:5px">';
+    		addHtml += '<select style="width:200px" onchange="fn_changeAttachSelectbox();">';
+    		for (var i = 0; i < attachmentBaseArr.length; i++ ){
+    			if (selectLen > 0) {
+	    			for (var j = 0; j < selectLen; j++) {
+	       	    		if ($("#atachAddBox select").eq(j).val() == attachmentBaseArr[i].attachmentCd) {
+							console.log("같은 구비서류가 있어서 스킵")
+	       	    		} else {
+			    			addHtml += '<option value="'+attachmentBaseArr[i].attachmentCd+'">'+attachmentBaseArr[i].attachmentName+'</option>';
+	       	    		}
+	       	    	}
+    			} else {
+    				addHtml += '<option value="'+attachmentBaseArr[i].attachmentCd+'">'+attachmentBaseArr[i].attachmentName+'</option>';    				
+    			}    	    		
+        	}
+       		addHtml += '</select>';
+    		addHtml += '<input type="checkbox" name="attachReq" value="1">';
+    		addHtml += '<label for="attachReq">필수</label>';
+       		addHtml += '<em class="delBtn" style="display:inline-block;width:18px;height:18px;text-align:center;cursor:pointer;border:1px solid #dcdcdc;margin:5px;">X</em></div>';
+   		$("#atachAddBox").append(addHtml);
+   		
+        /* 삭제버튼 이벤트 추가 */
+    	$(".delBtn").last().on("click", function() {
+    		$(this).parent().remove();
+    	})
+    	/* 첫번째 셀렉박스 이벤트 주기  */
+    	if ($("#atachAddBox select").length == 1) {
+    		$("#atachAddBox select").first().trigger("change");
+    	}
+    }
+    
+    /* 구비서류 셀렉박스 체인지 이벤트 */
+   	const fn_changeAttachSelectbox = () => {
+   		var selectLen = $("#atachAddBox select").length;
+   		for (var i = 0 ;i < selectLen; i++) {
+   			if($("#atachAddBox select").eq(i).attr("disabled") != "disabled") {
+   				if ($("#atachAddBox select").eq(i).val() == "001") {
+   					//신분증 필수 
+   					$("#atachAddBox input[type='checkbox']").eq(i).prop("checked", true);
+   					$("#atachAddBox input[type='checkbox']").eq(i).attr("disabled", "disabled");
+   					$("#atachAddBox select").eq(i).attr("disabled", "disabled");
+   					$("#atachAddBox em.delBtn").eq(i).remove();
+	   				break;
+   				}
+   			}
+   		}
+   	} 
+   	
+   	/* 선택한 구비서류 jsonObj  */
+    const fn_selectedAttachJson = () => {
+    	var selectLen = $("#atachAddBox select").length;
+    	/* 사용자가 선택하는 구비서류 셀렉박스 선택시 push */
+    	let usrAttachList = new Array();//초기화
+    	for (var i = 0 ;i < attachmentBaseArr.length; i++) {
+	    	var atachObj = {};
+    		for (var j = 0; j < selectLen; j++) {
+	    		if ($("#atachAddBox select").eq(j).val() == attachmentBaseArr[i].attachmentCd) {
+	    			atachObj["attachmentCd"] = attachmentBaseArr[i].attachmentCd;
+	    			atachObj["attachmentName"] = attachmentBaseArr[i].attachmentName;
+	    			atachObj["attachmentSeq"] = attachmentBaseArr[i].attachmentSeq;
+	    			if($("#atachAddBox input[name='attachReq']").eq(i).prop('checked')) {
+	    				atachObj["requiredYn"] = "Y";
+	    			} else {
+	    				atachObj["requiredYn"] = "N";
+	    			}   
+	    			usrAttachList.push(atachObj);
+	    		}   		
+    		}
+    	}
+    	return usrAttachList;
+    }
     const fn_submit = (btnType) => {
+    	
 		var formJsonObj = $('#insertForm').serializeObject();
 		if (btnType == "등록") {
 			btnUrl = "reg_insert"; 
 		} else if (btnType == "수정") {
 			btnUrl = "reg_update";
 		}
+		/* 계약정보 + 선택된 구비서류 */
+		formJsonObj["selectedAttach"] = fn_selectedAttachJson();
+		console.log("formJsonObj : " + JSON.stringify(formJsonObj));
+		alert(1)
         $.ajax({
             url: '/admin/contract/' + btnUrl,
             data: JSON.stringify(formJsonObj),
@@ -172,13 +298,15 @@
            */
            submitHandler: function(form) {
         	   console.log("submitHandler")
-               var f = confirm(btnType +"을 하시겠습니까?");
         	   var btnType = $("input[type='submit']").val();
+               var f = confirm(btnType +"을 하시겠습니까?");
+
                if(f){
-            	   fn_submit(btnType);
+             	   fn_submit(btnType);
                } else {
                    return false;
                }
+           		
            },
            ignore : "", 
            // 체크할 항목들의 룰 설정
@@ -209,6 +337,9 @@
                    required : true,
                    minlength : 2,
                    email : true
+               },
+               attachReq: {
+                   required : true
                }
            },
            //규칙체크 실패시 출력될 메시지
@@ -231,6 +362,9 @@
                    minlength : "최소 {0}글자이상이어야 합니다",
                    email : "메일규칙에 어긋납니다"
                },
+               attachReq: {
+                   required : "구비서류는 필수 입니다."
+               }
            }
        });
     }
@@ -249,19 +383,19 @@
                     'Content-Type': 'application/json'
                 },
 		    	data: function (data, settings) {
-		    		 let orderBy = "";
-	                    for (let i = 0; i < data?.order.length; i++) {
-	                        const {column, dir} = data?.order[i];
-	                        orderBy = data?.columns[column].name + " " + dir
-	                    }
-	                    data.orderBy = orderBy;
+		    		let orderBy = "";
+                    for (let i = 0; i < data?.order.length; i++) {
+                        const {column, dir} = data?.order[i];
+                        orderBy = data?.columns[column].name + " " + dir
+                    }
+                    data.orderBy = orderBy;
 
-	                    return {
-	                        fileTp: '100',
-	                        draw: data.draw,
-	                        orderBy: orderBy,
-	                        searchWord: data.search.value
-	                    };
+                    return {
+                        fileTp: '100',
+                        draw: data.draw,
+                        orderBy: orderBy,
+                        searchWord: data.search.value
+                    };
 				},//END data
 				cache: false,
 				contentType: 'application/json;charset=UTF-8',

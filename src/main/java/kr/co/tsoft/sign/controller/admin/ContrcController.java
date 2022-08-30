@@ -1,19 +1,25 @@
 package kr.co.tsoft.sign.controller.admin;
 
+import java.util.HashMap;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import kr.co.tsoft.sign.service.admin.AttachmentService;
 import kr.co.tsoft.sign.service.admin.ContrcService;
 import kr.co.tsoft.sign.service.admin.FormService;
 import kr.co.tsoft.sign.vo.admin.ContractGridDTO;
 import kr.co.tsoft.sign.vo.common.GridResponse;
 import kr.co.tsoft.sign.vo.common.TotalRowCount;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.HashMap;
-import java.util.List;
 
 @Controller
 public class ContrcController {
@@ -25,6 +31,9 @@ public class ContrcController {
 
     @Autowired
     FormService formService;
+    
+    @Autowired
+    AttachmentService attachmentService;
 
     @RequestMapping(value = "/admin/contract/list")
     public ModelAndView adminFormList() throws Exception {
@@ -69,6 +78,8 @@ public class ContrcController {
             	mav.addObject("resultContract",resultContract);
             }
         }
+        //구비서류 리스트 조회            
+        mav.addObject("attachmentList",attachmentService.selectAttachmentList());
 
         return mav;
     }

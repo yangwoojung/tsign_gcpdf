@@ -68,5 +68,24 @@
 			and
 			attachment.USE_YN = 'Y'
     </select>
+    
+    <insert id="insertContractAttachmentList" parameterType="kr.co.tsoft.sign.vo.ContractAttachmentDTO">
+    	/** [ADMIN].[ContractAttachmentMapper.insertContractAttachmentList] */
+    	insert into contract_attachment
+	    	(
+			CONTRACT_NO
+			,ATTACHMENT_SEQ
+			,REQUIRED_YN
+			,REG_ID
+			,MOD_ID
+		)values(
+			#{contractNo}
+			,#{attachmentSeq}
+			,#{requiredYn} 
+			,#{regId}
+			,MOD_DATE 
+		)
+    
+    </insert>
 
 </mapper>
