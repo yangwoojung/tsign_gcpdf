@@ -45,6 +45,12 @@ public class PdfController {
 
         CommonUserDetails user = SessionUtil.getUser();
 
+        user.setBankName("국민은행");
+        user.setBankAccountNo("593502-01-238928");
+        user.setAddress("서울 구로구 개봉동 170-1 개봉대상아파트 101동 104호");
+        user.setSocialNo1("910710");
+        user.setSocialNo2("1063131");
+
         //서식 원본 조회
         FileDTO fileDTO = FileDTO.builder()
                 .contractNo(user.getContractNo())
@@ -73,7 +79,7 @@ public class PdfController {
         mv.addObject("file", formInfoInDB);
         mv.addObject("user", user);
 
-        mv.setViewName("sign/pdfViewer_bak");
+        mv.setViewName("sign/pdfViewer");
 
         return mv;
     }

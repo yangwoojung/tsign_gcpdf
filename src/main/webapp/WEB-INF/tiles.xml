@@ -9,6 +9,11 @@
         <put-attribute name="footer" value="/WEB-INF/views/layout/sign/footer.jsp"/>
     </definition>
 
+    <!-- pdf 레이아웃 -->
+    <definition name="sign/pdfViewer" template="/WEB-INF/views/layout/sign/single.jsp">
+        <put-attribute name="container" expression="/WEB-INF/views/sign/pdfViewer.jsp"/>
+    </definition>
+
     <definition name="sign/*" extends="sign">
         <put-attribute name="container" expression="/WEB-INF/views/sign/{1}.jsp"/>
     </definition>
