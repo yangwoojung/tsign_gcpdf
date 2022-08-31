@@ -36,6 +36,7 @@
                  INNER JOIN attachment attachment on contractAttachmnet.ATTACHMENT_SEQ = attachment.ATTACHMENT_SEQ
         WHERE CONTRACT_NO = #{contractNo}
           AND UPLOADED_YN = 'N'
+          AND SKIP_YN = 'N'
         <if test="attachmentCd != null and attachmentCd != ''">
             AND attachment.ATTACHMENT_CD = #{attachmentCd}
         </if>
@@ -87,5 +88,14 @@
 		)
     
     </insert>
+    
+     <update id="updateSkipAttachment" parameterType="kr.co.tsoft.sign.vo.ContractAttachmentDTO">
+        UPDATE contract_attachment
+        SET SKIP_YN = 'Y'
+        WHERE CONTRACT_NO = #{contractNo}
+          AND ATTACHMENT_SEQ = (SELECT ATTACHMENT_SEQ FROM attachment WHERE ATTACHMENT_CD = #{attachmentCd})
+    </update>
+    
+    
 
 </mapper>

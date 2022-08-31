@@ -18,6 +18,7 @@ public class ContractAttachmentDTO {
     private String uploadedDate;
     private String uploadedYn;
     private String uploadedFile;
+    private String skipYn;
     private String regDate;
     private String regId;
     private String modDate;

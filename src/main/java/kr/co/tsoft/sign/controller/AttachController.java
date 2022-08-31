@@ -82,6 +82,13 @@ public class AttachController {
 
         return result;
     }
+    
+    @GetMapping("/skip")
+    @ResponseBody
+    public CommonResponse<?> skipAttachment(ContractAttachmentDTO input) {
+        return attachService.updateSkipAttachment(input);
+    }
+
 
     @GetMapping("/find")
     @ResponseBody
