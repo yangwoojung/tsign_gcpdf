@@ -89,17 +89,15 @@ See https://github.com/adobe-type-tools/cmap-resources
     </style>
     <script>
         $(function () {
-            let pdfPageCount = 0;
-            const PDF_FILE_PATH = "/upload/temp/" + '${file.savFileNm}';
-            console.log("openFileName == " + PDF_FILE_PATH);
-            const contractNo = '${user.contractNo}';
+            var pdfPageCount = 0;
+            var openFileName = '${user.pdfPath}' + '${user.pdfFileNm}';
+            console.log("openFileName == " + openFileName);
+            var contrcNo = '${user.contrcNo}';
 
-            const loadingTask = pdfjsLib.getDocument(PDF_FILE_PATH);
+            var loadingTask = pdfjsLib.getDocument(openFileName);
             loadingTask.promise.then(function (pdf) {
-                PDFViewerApplication.open(PDF_FILE_PATH).then(function (res) {
-
-                    console.log(pdf);
-                    console.log("res==" + res);
+                PDFViewerApplication.open(openFileName).then(function () {
+                    console.log("pdf==" + pdf);
                     pdfPageCount = pdf.numPages;
                     console.log("pdfPageCount==" + pdfPageCount);
                     var pages = [];
@@ -108,26 +106,26 @@ See https://github.com/adobe-type-tools/cmap-resources
                     }
                     return Promise.all(pages); // wait for all of them to be done
                 }).then(function (results) {
-                    console.log(results);
+                    console.log("results==" + results);
                     // you can access all the results here
                     // containing all pages
                     var box_w = $(".page").css("width");
                     var box_h = $(".page").css("height");
                     console.log("box_w==" + box_w);
                     console.log("box_h==" + box_h);
-                    <%--var encodingSigImg = '${info.signCanvasDataUrl}';--%>
-                    // var encodingSigImg64 = 'data:image/jpeg;base64,' + encodingSigImg
+                    var encodingSigImg = '${user.encodedSignCan}';
+                    var encodingSigImg64 = 'data:image/jpeg;base64,' + encodingSigImg
                     $(".page").eq(0).append("<div class='insertDataBox0' style='width:" + box_w + ";height:" + box_h + "'><div class='insertBox_inner'></div></div>")
                     //주민등록번호
-                    $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 560px;top: 829px;'>${user.socialNo1}-${user.socialNo2}</em>")
+                    $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 560px;top: 829px;'>${user.inputResidentNo1}-${user.inputResidentNo2}</em>")
                     //주소
-                    $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 854px;'>${user.address}</em>")
+                    $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 854px;'>${user.inputAddr}</em>")
                     //계좌
-                    $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 915px;'>${user.bankName}/${user.bankAccountNo}</em>")
+                    $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 915px;'>${user.inputBankNm}/${user.inputAcnutNo}</em>")
                     //성명
                     $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 500px;top: 941px;'>${user.userNm}</em>")
                     //사인 이미지
-                    // $(".insertDataBox0 .insertBox_inner").append("<img class='insertData' src='" + encodingSigImg + "' style='position:absolute;right: 56px;top: 926px;'/>")
+                    $(".insertDataBox0 .insertBox_inner").append("<img class='insertData' src='" + encodingSigImg64 + "' style='position:absolute;right: 56px;top: 926px;'/>")
                 });
             });
 
@@ -141,11 +139,11 @@ See https://github.com/adobe-type-tools/cmap-resources
 
                 $(".page").eq(0).append("<div class='insertDataBox0' style='width:" + box_w + ";height:" + box_h + "'><div class='insertBox_inner'></div></div>")
                 //주민등록번호
-                $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 700px;top: 1032px;'>${user.socialNo1}</em>")
+                //$(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 700px;top: 1032px;'>${user.pdfAcno}</em>")
                 //주소
-                $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 620px;top: 1070px;'>${user.address}</em>")
+                //$(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 620px;top: 1070px;'>${user.pdfAddr}</em>")
                 //계좌
-                $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 620px;top: 1144px;'>${user.bankName}/${user.bankAccountNo}</em>")
+                $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 620px;top: 1144px;'>${user.inBankNm}/${user.inAcnutNo}</em>")
                 //성명
                 $(".insertDataBox0 .insertBox_inner").append("<em class='insertData' style='left: 620px;top: 1180px;'>${user.userNm}</em>")
 
@@ -174,8 +172,8 @@ See https://github.com/adobe-type-tools/cmap-resources
                         //마지막장
                         if ((pdfPageX + 1) == pdfPageCount) {
                             console.log("save");
-                            <%--var fileName = '${user.af10Sname}';--%>
-                            <%--var savedNewPdfFileNm = '${user.savedNewPdfFileNm}';--%>
+                            var fileName = '${user.af10Sname}';
+                            var savedNewPdfFileNm = '${user.savedNewPdfFileNm}';
                             var pdf = doc.output("datauristring");
                             var base64 = "base64,";
                             var idx = pdf.indexOf(base64) + base64.length;
@@ -185,7 +183,7 @@ See https://github.com/adobe-type-tools/cmap-resources
                                 url: "/sign/pdf/createPdfUpload",
                                 data: {
                                     "fileString": pdf,
-                                    "contrcNo": contractNo,
+                                    "contrcNo": contrcNo,
                                     "savedNewPdfFileNm": savedNewPdfFileNm
                                 },
                             }).done(function (data) {
@@ -210,7 +208,7 @@ See https://github.com/adobe-type-tools/cmap-resources
                 $.ajax({
                     method: "POST",
                     url: "/sign/pdf/completeContract",
-                    data: {"contrcNo": contractNo},
+                    data: {"contrcNo": contrcNo},
                 }).done(function (data) {
                     alert(data.message);
                 });

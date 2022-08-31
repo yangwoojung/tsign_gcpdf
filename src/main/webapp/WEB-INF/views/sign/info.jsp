@@ -62,14 +62,14 @@
 					<dl class="list">
 						<dt>주소</dt>
 						<dd>
-							<textarea id="addr1" name="address" class="input_ty"
+							<textarea id="addr1" name="address1" class="input_ty"
 								placeholder="도로명 주소/동,호수까지 입력" autocomplete="off" required></textarea>
 						</dd>
 					</dl>
 					<dl class="list">
 						<dt>상세주소</dt>
 						<dd>
-							<textarea id="addr2" name="address" class="input_ty"
+							<textarea id="addr2" name="address2" class="input_ty"
 								placeholder="상세주소 입력" autocomplete="off" required></textarea>
 						</dd>
 					</dl>

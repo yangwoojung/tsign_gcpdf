@@ -47,7 +47,7 @@ public class InfoController {
         user.setSocialNo2("1063131");
         user.setBankName("국민은행");
         user.setBankAccountNo("59350201238928");
-        user.setAddress(infoDTO.getAddress());
+        user.setAddress(infoDTO.getAddress1() + infoDTO.getAddress2());
         user.setSignCanvasDataUrl(infoDTO.getSignCanvasDataUrl());
 
         return CommonResponse.success();

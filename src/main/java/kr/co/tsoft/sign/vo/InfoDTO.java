@@ -10,7 +10,8 @@ public class InfoDTO {
     private String socialNo1;
     private String socialNo2;
     private String signCanvasDataUrl;
-    private String address;
+    private String address1;
+    private String address2;
     private String bankName;
     private String bankAccountNo;
 

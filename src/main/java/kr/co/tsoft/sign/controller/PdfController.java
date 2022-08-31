@@ -7,6 +7,7 @@ import kr.co.tsoft.sign.service.ComService;
 import kr.co.tsoft.sign.service.admin.FormService;
 import kr.co.tsoft.sign.util.SessionUtil;
 import kr.co.tsoft.sign.vo.FileDTO;
+import kr.co.tsoft.sign.vo.common.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -88,42 +89,20 @@ public class PdfController {
      * 생성된 계약서 업로드 */
     @RequestMapping("/createPdfUpload")
     @ResponseBody
-    public HashMap<String, Object> upload(@RequestParam Map<String, String> parameter
-    ) throws Exception {
-        HashMap<String, Object> resultMap = new HashMap<String, Object>();
-        //base64 인코딩 된 파일 스트링
-        String fileString = parameter.get("fileString");
-        resultMap.put("fileString", parameter.get("fileString"));
+    public CommonResponse<?> upload(@RequestParam String base64File) throws Exception {
+    	
+    	CommonUserDetails user = SessionUtil.getUser();
+    	String contractNo = user.getContractNo();
+    	String userNm = user.getUserNm();
 
-        byte[] decodedBytes = Base64.decodeBase64(fileString.getBytes());
-        String contrcNo = parameter.get("contrcNo");
-        //계약번호에 해당하는 폴더 생성
-        mkdir(contrcNo);
-        //디코딩후 파일로
-        String savedNewPdfFileNm = parameter.get("savedNewPdfFileNm");
-        String filePath = uploadDir + File.separatorChar + contrcNo;
-        File base64ToImgFile = new File(filePath + File.separatorChar + savedNewPdfFileNm);
+        String filePath = uploadDir + File.separatorChar + contractNo;
+        File file = new File(filePath + File.separatorChar + userNm + ".pdf");
+        
+        logger.info("### 계약서 경로 " + file.getAbsoluteFile());
 
-        FileUtils.writeByteArrayToFile(base64ToImgFile, decodedBytes);
-//        try {
-//            FileOutputStream fos = new FileOutputStream(base64ToImgFile);
-//
-//            fos.write(decodedBytes);
-//            HashMap<String, String> fileInfo = new HashMap<String, String>();
-////			fileInfo.put("FILE_TP", "102");
-////			fileInfo.put("CONTRC_NO", su.getSignUserDetails().getContractNo());
-////			fileInfo.put("ORG_FILE_NM", savedNewPdfFileNm);
-////			fileInfo.put("SAV_FILE_NM", savedNewPdfFileNm);
-////			fileInfo.put("FILE_PATH", filePath);
-////			fileInfo.put("user", su.getSignUserDetails().getUsername());
-//            if (comService.insertFileUpload(fileInfo) > 0) {
-//                resultMap.put("message", "계약서 생성을 완료했습니다.");
-//            }
-//        } catch (Exception e) {
-//            resultMap.put("message", "계약서 생성에 실패했습니다.");
-//        }
+        FileUtils.writeByteArrayToFile(file, Base64.decodeBase64(base64File.getBytes()));
 
-        return resultMap;
+        return CommonResponse.success();
     }
 
     @RequestMapping("/completeContract")
