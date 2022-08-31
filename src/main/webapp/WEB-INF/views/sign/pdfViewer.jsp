@@ -30,7 +30,7 @@ See https://github.com/adobe-type-tools/cmap-resources
 <!--#if GENERIC || CHROME-->
 <meta name="google" content="notranslate">
 <!--#endif-->
-<title>PDF.js viewer</title>
+	<title>(주)티소프트 전자계약</title>
 
 <!--#if MOZCENTRAL-->
 <!--#include viewer-snippet-firefox-extension.html-->
@@ -135,6 +135,11 @@ a {
 	width: calc(100% - 20px);
 	margin: 0 10px;
 }
+
+.toolbar {
+	display: none !important;
+}
+
 </style>
 <script>
 
