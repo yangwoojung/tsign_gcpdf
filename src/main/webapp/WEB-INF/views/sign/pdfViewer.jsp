@@ -42,7 +42,7 @@ See https://github.com/adobe-type-tools/cmap-resources
 <link rel="stylesheet" href="/resources/sign/pdfjs/web/viewer.css">
 <!--#if !PRODUCTION-->
 <link rel="resource" type="application/l10n"
-	href="/resources/sign/pdfjs/locale/locale.properties">
+	href="/resources/sign/pdfjs/web/locale/locale.properties">
 <!--#endif-->
 <script type='text/javascript'
 	src="/resources/sign/pdfjs/build/pdf.js"></script>
