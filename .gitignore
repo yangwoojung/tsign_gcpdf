@@ -40,3 +40,5 @@ local.properties
 
 # CLIPREPORT
 /src/main/webapp/WEB-INF/clipreport5/temp/
+/.apt_generated/
+/.apt_generated_tests/

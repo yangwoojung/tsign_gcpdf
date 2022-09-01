@@ -31,6 +31,7 @@ import kr.co.tsoft.sign.vo.RequiredApiResponseDTO;
 import kr.co.tsoft.sign.vo.RequiredApiResponseDTOMapper;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
 import kr.co.tsoft.sign.vo.common.Constant;
+import kr.co.tsoft.sign.vo.common.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -130,5 +131,26 @@ public class AttachService {
 
         return CommonResponse.success(contractAttachmentInDB);
     }
+
+    /**
+     * 필수가 아닌 구비서류 스킵  
+     */
+	public CommonResponse<?> updateSkipAttachment(ContractAttachmentDTO input) {
+		CommonUserDetails user = SessionUtil.getUser();
+		
+		ContractAttachmentDTO dto = ContractAttachmentDTO.builder()
+				.contractNo(user.getContractNo())
+				.attachmentCd(input.getAttachmentCd())
+				.build();
+		
+		ContractAttachmentDTO contractAttachmentInDB = contractAttachmentMapper.selectOneAttachmentToBeUploaded(dto);
+		
+		// DB에 있는 계약자의 구비서류 필수 여부 확인
+		if(Constant.REQUIRED_VALUE.equals(contractAttachmentInDB.getRequiredYn())) return CommonResponse.fail(ErrorCode.COMMON_ILLEGAL_STATUS);
+		
+		contractAttachmentMapper.updateSkipAttachment(contractAttachmentInDB);
+			
+		return CommonResponse.success();
+	}
 
 }

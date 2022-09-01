@@ -73,6 +73,11 @@
     <input type="hidden" id="attachmentCd"/>
 </form>
 
+<div class="btn_area" id="skipArea" style="display: none">
+        <a href="javascript:" id="skipBtn" class="btn_m btn_ty02">스킵하기</a>
+</div>
+
+
 <footer>
     <div class="btn_area">
         <a href="javascript:" id="nextBtn" class="btn_m btn_ty02">촬영하기</a>
@@ -105,8 +110,16 @@
         if (!contractAttachment) submitAttachment();
 
         // 3. 우선순위에 따라 첫번째 구비서류에 대한 내용 표출
-        const {attachmentCd, attachmentName, attachmentDescription} = contractAttachment;
+        const {attachmentCd, attachmentName, attachmentDescription, requiredYn} = contractAttachment;
+        
 
+        if(requiredYn === 'N') {
+        	$('#skipArea').	show()
+        } else {
+        	$('#skipArea').	hide()        	
+        }
+        
+        
         $('#attachment_title').html(attachmentDescription);
         $('#nextBtn').html(attachmentName + " 촬영하기");
 
@@ -139,6 +152,10 @@
         // 촬영하기 클릭 이벤트
         $('#nextBtn').on('click', function () {
             $('#file').trigger('click');
+        });
+        
+        $('#skipBtn').on('click', function() {
+        	updateSkipAttachment($('#attachmentCd').val());
         });
 
         // 파일 업로드
@@ -410,6 +427,35 @@
         });
 
     }
+    
+    /**
+     *  구비서류 스킵
+     */
+    const updateSkipAttachment = (attachmentCd) => {
+
+        const data = {
+            attachmentCd: attachmentCd
+        }
+
+        $.ajax({
+            url: cpath + '/sign/attach/skip',
+            data: data,
+            type: 'GET',
+            async: false,
+            success: function (response) {
+                console.log(response)
+                if (response.result === 'SUCCESS') {
+                	location.reload();
+//                 	fetchContractAttachment
+                }
+            },
+            error: function (jqXHR) {
+                console.error(jqXHR);
+            }
+        });
+
+    }
+
 
     // 구비서류 제출
     const submitAttachment = () => {

@@ -13,4 +13,6 @@ public interface ContractAttachmentMapper {
 	ContractAttachmentDTO selectAttachInfoByAttachCd(String attachmentCd);
 	
 	int insertContractAttachmentList(ContractAttachmentDTO dto);
+
+	void updateSkipAttachment(ContractAttachmentDTO contractAttachmentInDB);
 }
