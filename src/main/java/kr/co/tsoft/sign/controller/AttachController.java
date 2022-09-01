@@ -19,6 +19,7 @@ import kr.co.tsoft.sign.service.AttachService;
 import kr.co.tsoft.sign.util.SessionUtil;
 import kr.co.tsoft.sign.vo.ApiResponse;
 import kr.co.tsoft.sign.vo.ApiResponseData;
+import kr.co.tsoft.sign.vo.AttachCheckDTO;
 import kr.co.tsoft.sign.vo.ContractAttachmentDTO;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
 import kr.co.tsoft.sign.vo.common.Constant;
@@ -104,9 +105,9 @@ public class AttachController {
 
     @PostMapping("/scrap")
     @ResponseBody
-    public ApiResponse<ApiResponseData.Scrap> scrapping(@RequestParam Map<String, Object> param) {
+    public ApiResponse<ApiResponseData.Scrap> scrapping(AttachCheckDTO attachCheckDTO) {
         logger.info(" ##### [ attach/scrap] start scrap #####");
-        return attachService.scrapping(param);
+        return attachService.scrapping(attachCheckDTO);
     }
 
     @PostMapping("/submission")

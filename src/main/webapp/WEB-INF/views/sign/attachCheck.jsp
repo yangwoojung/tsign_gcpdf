@@ -10,9 +10,7 @@
 <div id="container">
     <!-- cont_area -->
     <div class="cont_area">
-    <form id="reportForm" method="post" action="/sign/attach/scrap" onsubmit="return fnMoveNext()">
-    <input type="hidden" id="idType" value=""/>
-    <input type="submit" id="submitReportForm" class="hidden"/>
+<!--     <input type="submit" id="submitReportForm" class="hidden"/> -->
         <div class="txt_msg_box cont">
             본인의 신분증에 정보와
             아래의 <span class="point">정보가 일치하는지 확인</span>해 주세요.
@@ -25,55 +23,58 @@
                 <span class="active">3</span>/3
             </div>
         </div>--%>
-        <div id="type1" style="display: none;">
-            <div class="exImg-wrap check">
-                <div class="exImg">
-                    <div class="imgConts">
-                        <div class="left">
-                            <div>주민등록증</div>
-                            <div class="name">
-                                <span id="userNmOnCard">박유진</span>
-                            </div>
-                            <div class="description">
-                                <span id="socialNo1OnCard">910710</span>-<span id="socialNo2OnCard">1063131</span>
-                            </div>
-                        </div>
-                        <div class="right">
-                            <span>😎</span>
-                        </div>
-                    </div>
-                    <div class="imgFooter">
-                        <span id="issueDtOnCard">2017. 11. 24</span>
-                    </div>
-                </div>
-            </div>
-            <div class="form_box typeSide">
-                <dl class="list">
-                    <dt>성명</dt>
-                    <dd>
-                        <%-- 대표자명, 대리인명 고정 삽입 --%>
-                        <input type="text" class="input_ty" placeholder="성명" name="userNm" id="userNm"/>
-                    </dd>
-                </dl>
-                <dl class="list">
-                    <dt>주민등록번호</dt>
-                    <dd class="half">
-                        <input type="text" class="input_ty" placeholder="앞 6자리" maxlength="6" id="socialNo1"
-                               onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" name="socialNo1">
-                        <input type="password" class="input_ty" placeholder="뒷 7자리" maxlength="7" id="socialNo2"
-                               onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" name="socialNo2">
-                    </dd>
-                </dl>
-                <dl class="list">
-                    <dt>발급일자</dt>
-                    <dd>
-                        <input type="text" class="input_ty" placeholder="발급일자 (예 : 20200306)" maxlength="8" id="issueDt"
-                               onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" name="issueDt">
-                    </dd>
-                </dl>
-            </div>
-        </div>
-        <div id="type2" style="display: none;">
+	    <form id="idType1Form" method="post" action="/sign/attach/scrap" onsubmit="return">
+	        <div id="type1" style="display: none;">
+	            <div class="exImg-wrap check">
+	                <div class="exImg">
+	                    <div class="imgConts">
+	                        <div class="left">
+	                            <div>주민등록증</div>
+	                            <div class="name">
+	                                <span id="userNmOnCard">박유진</span>
+	                            </div>
+	                            <div class="description">
+	                                <span id="socialNo1OnCard">910710</span>-<span id="socialNo2OnCard">1063131</span>
+	                            </div>
+	                        </div>
+	                        <div class="right">
+	                            <span>😎</span>
+	                        </div>
+	                    </div>
+	                    <div class="imgFooter">
+	                        <span id="issueDtOnCard">2017. 11. 24</span>
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="form_box typeSide">
+	                <dl class="list">
+	                    <dt>성명</dt>
+	                    <dd>
+	                        <%-- 대표자명, 대리인명 고정 삽입 --%>
+	                        <input type="text" class="input_ty" placeholder="성명" name="userNm" id="userNm"/>
+	                    </dd>
+	                </dl>
+	                <dl class="list">
+	                    <dt>주민등록번호</dt>
+	                    <dd class="half">
+	                        <input type="text" class="input_ty" placeholder="앞 6자리" maxlength="6" id="socialNo1"
+	                               onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" name="socialNo1">
+	                        <input type="password" class="input_ty" placeholder="뒷 7자리" maxlength="7" id="socialNo2"
+	                               onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" name="socialNo2">
+	                    </dd>
+	                </dl>
+	                <dl class="list">
+	                    <dt>발급일자</dt>
+	                    <dd>
+	                        <input type="text" class="input_ty" placeholder="발급일자 (예 : 20200306)" maxlength="8" id="issueDt"
+	                               onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" name="issueDt">
+	                    </dd>
+	                </dl>
+	            </div>
+	        </div>
+	    </form>
+	    <form id="idType2Form" method="post" action="/sign/attach/scrap" onsubmit="return">
+	        <div id="type2" style="display: none;">
             <div class="exImg-wrap check">
                 <div class="exImg">
                     <div class="imgConts">
@@ -123,7 +124,7 @@
                     <dt>운전면허번호</dt>
                     <dd class="driver">
                         <p>
-                            <select name="licence01">
+                            <select name="license01">
                                 <option value="" selected>선택</option>
                                 <option value="11">서울</option>
                                 <option value="13">경기</option>
@@ -165,31 +166,31 @@
                         <p>
                             <input type="text" class="input_ty customPadding" placeholder="2자리" maxlength="2"
                                    onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)"
-                                   name="licence02">
+                                   name="license02">
                         </p>
                         <p>
                             <input type="text" class="input_ty customPadding" placeholder="6자리" maxlength="6"
                                    onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)"
-                                   name="licence03">
+                                   name="license03">
                         </p>
                         <p>
                             <input type="text" class="input_ty customPadding" placeholder="2자리" maxlength="2"
                                    onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)"
-                                   name="licence04">
+                                   name="license04">
                         </p>
                     </dd>
                 </dl>
             </div>
         </div>
-    </form>
+   		</form>
     </div>
     <!-- //cont_area -->
 </div>
 <!-- //container -->
-<form id="form" style="display: none">
-    <input type="file" id="file" accept="image/jpg, image/jpeg">
-    <input type="hidden" id="attachmentCd"/>
-</form>
+<!-- <form id="form" style="display: none"> -->
+<!--     <input type="file" id="file" accept="image/jpg, image/jpeg"> -->
+<!--     <input type="hidden" id="attachmentCd"/> -->
+<!-- </form> -->
 
 <footer>
     <div class="btn_area">
@@ -202,16 +203,16 @@
     $(document).on('ready', function(){
 
         const USER = ${user};
-
         console.log(USER)
 
         if(!USER.idType) {
             location.href = '/sign/error/401';
         }
+        
+        let data = $('#idType1Form').serializeObject();
+        console.log(data);
 
         $('#type' + USER.idType).show();
-        
-        $('#idType').val(USER.idType);
 
         const userNmEl = $('#userNm');
         userNmEl.on('input', function(){
@@ -240,7 +241,34 @@
     });
     
     $('#nextBtn').on('click', function () {
-        $('#submitReportForm').trigger('click');
+    	updateInfo();
     });
+    
+    
+    //session update 진행 후 성공하면 scrap 호출
+   // OCR 정보 세션에 업데이트
+    const updateInfo = () => {
+    	
+    	let data = $('#idType1Form').serializeObject();
+        console.log(data);
 
+        $.ajax({
+            url: cpath + '/sign/attach/scrap',
+            data: data,
+            type: 'POST',
+            async: false,
+            success: function (response) {
+                if (response.result === 'SUCCESS') {
+                	console.log(response);
+//                     location.href = '/sign/attach/check';
+                } else {
+//                     location.reload();
+                }
+            },
+            error: function (jqXHR) {
+                console.error(jqXHR);
+            }
+        });
+
+    }
 </script>

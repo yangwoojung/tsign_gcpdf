@@ -1,36 +1,29 @@
 package kr.co.tsoft.sign.service;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Optional;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.clipsoft.org.apache.commons.io.FileUtils;
-
 import kr.co.tsoft.sign.config.security.CommonUserDetails;
 import kr.co.tsoft.sign.mapper.ContractAttachmentMapper;
-import kr.co.tsoft.sign.service.admin.ContrcService;
 import kr.co.tsoft.sign.util.FileUtil;
 import kr.co.tsoft.sign.util.MailHandler;
 import kr.co.tsoft.sign.util.SessionUtil;
 import kr.co.tsoft.sign.vo.ApiRequest;
 import kr.co.tsoft.sign.vo.ApiResponse;
 import kr.co.tsoft.sign.vo.ApiResponseData;
+import kr.co.tsoft.sign.vo.AttachCheckDTO;
 import kr.co.tsoft.sign.vo.ContractAttachmentDTO;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
 import kr.co.tsoft.sign.vo.common.Constant;
 import kr.co.tsoft.sign.vo.common.ErrorCode;
 import lombok.RequiredArgsConstructor;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 
 @Service
 @RequiredArgsConstructor
@@ -61,18 +54,16 @@ public class AttachService {
         return response;
      }
 
-    public ApiResponse<ApiResponseData.Scrap> scrapping(Map<String, Object> param) {
+    public ApiResponse<ApiResponseData.Scrap> scrapping(AttachCheckDTO attachCheckDTO) {
         logger.info("#### [attachService > scrapping] start ##### ");
-        logger.info("#### [attachService > scrapping] param : {} ##### ", param);
+        logger.info("#### [attachService > scrapping] AttachCheckDTO : {} ##### ", attachCheckDTO);
 
         CommonUserDetails user = SessionUtil.getUser();
         
         String idType = "00" + user.getIdType();
         
-        logger.info("#### idType : {}", idType);
-        
-        String socialNo1 = (String) param.get("socialNo1");
-        String socialNo2 = (String) param.get("socialNo2");
+        String socialNo1 = attachCheckDTO.getSocialNo1();
+        String socialNo2 = attachCheckDTO.getSocialNo2();
         
 		ApiRequest.Scrap.ScrapBuilder builder = ApiRequest.Scrap.builder()
 																.token("fc2yilEkhclyP1xGnWRNVFFIptXTLd")
@@ -80,24 +71,19 @@ public class AttachService {
 		  
 		if("001".equals(idType)) {
 			
-			builder.col1((String) param.get("userNm"))
+			builder.col1(attachCheckDTO.getUserNm())
 				   .col2(socialNo1 + socialNo2)
-				   .col3((String) param.get("issueDt"));
+				   .col3(attachCheckDTO.getIssueDt());
 			
 		} else if("003".equals(idType)) {
 			
-		  	builder.col1((String) param.get("type2_ownerNm"))
-		  		    .col2((String) param.get("socialNo1"))
-		  		    .col3((String) param.get("licence01"))
-		  			.col4((String) param.get("licence02"))
-		  			.col5((String) param.get("licence03"))
-		  			.col6((String) param.get("licence04"));
+		  	builder.col1(attachCheckDTO.getType2_ownerNm())
+		  		    .col2(attachCheckDTO.getSocialNo1())
+		  		    .col3(attachCheckDTO.getLicense01())
+		  			.col4(attachCheckDTO.getLicense02())
+		  			.col5(attachCheckDTO.getLicense03())
+		  			.col6(attachCheckDTO.getLicense04());
 		  }
-		
-		//      ApiRequest.Scrap request = ApiRequest.Scrap.builder().token("fc2yilEkhclyP1xGnWRNVFFIptXTLd")
-		//              .type("").col1((String) param.get("col1")).col2((String) param.get("col2"))
-		//              .col3((String) param.get("col3")).col4((String) param.get("col4")).col5((String) param.get("col5"))
-		//              .col6((String) param.get("col6")).build();
 		  
 		ApiRequest.Scrap request = builder.build();
 	
