@@ -24,6 +24,7 @@ import kr.co.tsoft.sign.vo.RequiredApiResponseDTOMapper;
 import kr.co.tsoft.sign.vo.SessionDTOMapper;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
 import kr.co.tsoft.sign.vo.common.Constant;
+import kr.co.tsoft.sign.vo.common.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -57,26 +58,33 @@ public class UploadService {
         //경로 지정 및 파일  업로드
         String savePath = CONTRACT_PATH + contractNo + File.separator + "attach";
         File uploadedFile = transferDecryptDataToDestFile(savePath, contractNo + "_" + attachmentCd, contractAttachmentDTO.getFile());
-
-        CommonResponse<?> response = null;
-
-        boolean requiredOcr = Constant.REQUIRED_VALUE.equals(attachInfoInDB.getOcrYn());
-        boolean requiredScrap = Constant.REQUIRED_VALUE.equals(attachInfoInDB.getScrapYn());
         
-        //ocr 필수 && scrap 필수
-        if(requiredOcr && requiredScrap) {
-            response = verifyTheFile(uploadedFile, user);
-        } 
-        logger.debug("[uploadAttachFile > response : {} ]", response);
-    	//TODO:구비서류 업로드 완료 처리
-    	ContractAttachmentDTO updateContractAttachment = ContractAttachmentDTO.builder()
-															        			.contractNo(contractNo)
-															        			.attachmentCd(attachmentCd)
-															        			.uploadedFile(uploadedFile.getAbsolutePath())
-															        			.uploadedYn("Y")
-															        			.build();
-    	updateContractAttachment(updateContractAttachment);
-    	
+        CommonResponse<?> response = null;
+        	
+        try {
+			boolean requiredOcr = Constant.REQUIRED_VALUE.equals(attachInfoInDB.getOcrYn());
+			boolean requiredScrap = Constant.REQUIRED_VALUE.equals(attachInfoInDB.getScrapYn());
+
+				//ocr 필수 && scrap 필수
+			    if(requiredOcr && requiredScrap) {
+			        response = verifyTheFile(uploadedFile, user);
+			    } 
+			    
+			    ContractAttachmentDTO.ContractAttachmentDTOBuilder builder = ContractAttachmentDTO.builder()
+			    																					.contractNo(contractNo)
+			    																					.attachmentCd(attachmentCd)
+			    																					.uploadedFile(uploadedFile.getAbsolutePath())
+			    																					.uploadedYn("N");
+			    if(!"FAIL".equals(response.getMessage())) {
+			    	builder.uploadedYn("Y");
+			    }
+
+		        ContractAttachmentDTO updateContractAttachment = builder.build();
+		        updateContractAttachment(updateContractAttachment);
+			    
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         return response;
     }
 
@@ -86,15 +94,15 @@ public class UploadService {
             okhttp3.RequestBody.create(MediaType.parse("image/*"), uploadedFile));
 
         ApiRequest.Verify verifyRequest = ApiRequest.Verify.builder()
-            .token("yBnwrSX4mGfOMd11IUf4KyuwnsVZ5I")
-            .file(filePart).build();
+												            .token("yBnwrSX4mGfOMd11IUf4KyuwnsVZ5I")
+												            .file(filePart).build();
 
         ApiResponse<ApiResponseData.Verify> verifyResponse = apiService.processVerify(verifyRequest);
         logger.info("### Verify API Response : {} ", verifyResponse);
 
         //API 통신 실패
         if(!"0000".equals(verifyResponse.getCode())) {
-            return CommonResponse.fail("API 통신 실패", "0001");
+            return CommonResponse.fail(ErrorCode.COMMON_SYSTEM_ERROR, "FAIL");
         } else {
             //ocr / scrap 데이터 구분
             Verify ocrData = null;
@@ -106,10 +114,13 @@ public class UploadService {
                 } else if("S".equals(list.getModule())) {
                     scrapData = list.getData();
                 } else {
-                    return CommonResponse.fail("module 미지정","0002");
+                    return CommonResponse.fail(ErrorCode.COMMON_SYSTEM_ERROR,"FAIL");
                 }
             }
             RequiredApiResponseDTO response = requiredApiResponseDtoMapper.of(ocrData);
+            
+            logger.info(" ##### ocrData : {}" , ocrData);
+            logger.info(" ##### RequiredApiResponseDTO response : {}", response);
 
             if(ocrData != null) {
             	String idType = ocrData.getIdType();
@@ -127,16 +138,19 @@ public class UploadService {
                     response.setLicenseNo3(licenseNumbers[2]);
                     response.setLicenseNo4(licenseNumbers[3]);
                 }
+                response.setIssueDt(ocrData.getIssueDt().replaceAll("-", ""));
                 sessionDTOMapper.updateUserDetails(user, response);
+                logger.info(" ##### RequiredApiResponseDTO response : {}", response);
+                logger.info(" ##### user : {}", user);
             } else {
-                return CommonResponse.fail("OCR 데이터 미존재", "0002");
+                return CommonResponse.fail(ErrorCode.COMMON_INVALID_PARAMETER, "FAIL");
             }
             
             //스크래핑 성공
             if("Y".equals(scrapData.getOutB0001().getTruthYn()) || "Y".equals(scrapData.getOutB0001().getLicenceTruthYn())) {
                 return CommonResponse.success(response);
             } else {
-                return CommonResponse.fail(response, "Scrap 실패");
+                return CommonResponse.fail(response, "FAIL");
             }
         }
     }
