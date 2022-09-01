@@ -10,6 +10,9 @@
 <div id="container">
     <!-- cont_area -->
     <div class="cont_area">
+    <form id="reportForm" method="post" action="/sign/attach/scrap" onsubmit="return fnMoveNext()">
+    <input type="hidden" id="idType" value=""/>
+    <input type="submit" id="submitReportForm" class="hidden"/>
         <div class="txt_msg_box cont">
             본인의 신분증에 정보와
             아래의 <span class="point">정보가 일치하는지 확인</span>해 주세요.
@@ -40,7 +43,7 @@
                         </div>
                     </div>
                     <div class="imgFooter">
-                        <span>2017</span>. <span>11</span>. <span>24</span>.
+                        <span id="issueDtOnCard">2017. 11. 24</span>
                     </div>
                 </div>
             </div>
@@ -178,6 +181,7 @@
                 </dl>
             </div>
         </div>
+    </form>
     </div>
     <!-- //cont_area -->
 </div>
@@ -206,6 +210,8 @@
         }
 
         $('#type' + USER.idType).show();
+        
+        $('#idType').val(USER.idType);
 
         const userNmEl = $('#userNm');
         userNmEl.on('input', function(){
@@ -227,10 +233,14 @@
 
         const issueDtEl = $('#issueDt');
         issueDtEl.on('input', function(){
-            // $('#issueDtOnCard').html($(this).val());
+        	var text = $(this).val();
+            $('#issueDtOnCard').html($(this).val());
         });
         issueDtEl.val(USER.issueDt).trigger('input');
-
+    });
+    
+    $('#nextBtn').on('click', function () {
+        $('#submitReportForm').trigger('click');
     });
 
 </script>

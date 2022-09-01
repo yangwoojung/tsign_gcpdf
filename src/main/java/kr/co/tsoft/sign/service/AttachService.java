@@ -70,16 +70,31 @@ public class AttachService {
         logger.info("#### [attachService > scrapping] start ##### ");
         logger.info("#### [attachService > scrapping] param : {} ##### ", param);
 
-        ApiRequest.Scrap request = ApiRequest.Scrap.builder().token("fc2yilEkhclyP1xGnWRNVFFIptXTLd")
-                .type((String) param.get("type")).col1((String) param.get("col1")).col2((String) param.get("col2"))
-                .col3((String) param.get("col3")).col4((String) param.get("col4")).col5((String) param.get("col5"))
-                .col6((String) param.get("col6")).build();
+	//      String type = (String) param.get("idType");
+		String type = "1";
+		String socialNo = (String) param.get("socailNo1") + (String) param.get("socailNo2");
+		  
+		ApiRequest.Scrap.ScrapBuilder builder = ApiRequest.Scrap.builder().token("fc2yilEkhclyP1xGnWRNVFFIptXTLd").type(type);
+		  
+		if("1".equals(type)) {
+			builder.col1((String) param.get("userNm")).col2(socialNo).col3((String) param.get("issueDt"));
+		} else if("3".equals(type)) {
+		  	builder.col1((String) param.get("type2_ownerNm")).col2((String) param.get("socialNo1")).col3((String) param.get("licence01"))
+		  			.col4((String) param.get("licence02")).col5((String) param.get("licence03")).col6((String) param.get("licence04"));
+		  }
+		
+		//      ApiRequest.Scrap request = ApiRequest.Scrap.builder().token("fc2yilEkhclyP1xGnWRNVFFIptXTLd")
+		//              .type("").col1((String) param.get("col1")).col2((String) param.get("col2"))
+		//              .col3((String) param.get("col3")).col4((String) param.get("col4")).col5((String) param.get("col5"))
+		//              .col6((String) param.get("col6")).build();
+		  
+		ApiRequest.Scrap request = builder.build();
+	
+	    logger.info("#### Scrap API Request : {} ", request);
+	    ApiResponse<ApiResponseData.Scrap> response = apiService.processScrap(request);
+	    logger.info("#### Scrap API Response : {} ", response);
 
-        logger.info("#### Scrap API Request : {} ", request);
-        ApiResponse<ApiResponseData.Scrap> response = apiService.processScrap(request);
-        logger.info("#### Scrap API Response : {} ", response);
-
-        return response;
+	    return response;
     }
 
     public CommonResponse<?> submission() {
