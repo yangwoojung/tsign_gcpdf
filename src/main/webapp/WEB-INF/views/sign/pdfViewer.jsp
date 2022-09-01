@@ -39,17 +39,17 @@ See https://github.com/adobe-type-tools/cmap-resources
 <!--#include viewer-snippet-chrome-extension.html-->
 <!--#endif-->
 
-<link rel="stylesheet" href="/resources/sign/pdfjs_test/web/viewer.css">
+<link rel="stylesheet" href="/resources/sign/pdfjs/web/viewer.css">
 <!--#if !PRODUCTION-->
 <link rel="resource" type="application/l10n"
 	href="/resources/sign/pdfjs/locale/locale.properties">
 <!--#endif-->
 <script type='text/javascript'
-	src="/resources/sign/pdfjs_test/build/pdf.js"></script>
+	src="/resources/sign/pdfjs/build/pdf.js"></script>
 <script type='text/javascript'
-	src="/resources/sign/pdfjs_test/build/pdf.worker.js"></script>
+	src="/resources/sign/pdfjs/build/pdf.worker.js"></script>
 <script type='text/javascript'
-	src="/resources/sign/pdfjs_test/web/viewer.js"></script>
+	src="/resources/sign/pdfjs/web/viewer.js"></script>
 <script src="/resources/sign/js/jquery-1.12.4.min.js"></script>
 <!--#endif-->
 
@@ -63,7 +63,7 @@ See https://github.com/adobe-type-tools/cmap-resources
 <!--#include viewer-snippet-minified.html-->
 <!--#endif-->
 <style>
-.insertDataBox0 {
+.insertDataBox {
 	position: absolute;
 	width: 34%;
 	top: 74%;
@@ -90,7 +90,7 @@ See https://github.com/adobe-type-tools/cmap-resources
 }
 
 @media all and (max-width:560px) {
-	.insertDataBox0 {
+	.insertDataBox {
 		width: 41%;
 		top: 70%;
 	}
@@ -166,16 +166,16 @@ a {
                         // console.log("box_h==" + box_h);
                         var encodingSigImg = '${user.signCanvasDataUrl}';
                         // var encodingSigImg64 = 'data:image/jpeg;base64,' + encodingSigImg
-                        // $(".page:eq(0) .textLayer").append("<div class='insertDataBox0' style='width:" + box_w + ";height:" + box_h + "'><div class='insertBox_inner'></div></div>")
-                        $(".page:eq(0) .textLayer").append("<div class='insertDataBox0'><div class='insertBox_inner'></div></div>")
+                        // $(".page:eq(0) .textLayer").append("<div class='insertDataBox' style='width:" + box_w + ";height:" + box_h + "'><div class='insertBox_inner'></div></div>")
+                        $(".page:eq(0) .textLayer").append("<div class='insertDataBox'><div class='insertBox_inner'></div></div>")
                         //주민등록번호
-                        $(".insertDataBox0 .insertBox_inner").append("<em class='socialNo'>${user.socialNo1}-${user.socialNo2}</em>")
+                        $(".insertDataBox .insertBox_inner").append("<em class='socialNo'>${user.socialNo1}-${user.socialNo2}</em>")
                         //주소
-                        $(".insertDataBox0 .insertBox_inner").append("<em class='address'>${user.address}</em>")
+                        $(".insertDataBox .insertBox_inner").append("<em class='address'>${user.address}</em>")
                         //계좌
-                        $(".insertDataBox0 .insertBox_inner").append("<em class='bankAccount'>${user.bankName}/${user.bankAccountNo}</em>")
+                        $(".insertDataBox .insertBox_inner").append("<em class='bankAccount'>${user.bankName}/${user.bankAccountNo}</em>")
                         //성명 //사인 이미지
-                        $(".insertDataBox0 .insertBox_inner").append("<div class='userInfo'><em class='userName'>${user.userNm}</em><img class='sign' src='" + encodingSigImg + "'/></div>")
+                        $(".insertDataBox .insertBox_inner").append("<div class='userInfo'><em class='userName'>${user.userNm}</em><img class='sign' src='" + encodingSigImg + "'/></div>")
                     }
 
                 });
