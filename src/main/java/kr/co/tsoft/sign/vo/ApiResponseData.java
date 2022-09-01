@@ -1,5 +1,8 @@
 package kr.co.tsoft.sign.vo;
 
+import com.google.gson.annotations.JsonAdapter;
+
+import kr.co.tsoft.sign.util.retrofit.AlwaysListTypeAdapterFactory;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -8,6 +11,8 @@ import lombok.ToString;
 @Data
 public class ApiResponseData<T> {
     private String code;
+    
+    @JsonAdapter(AlwaysListTypeAdapterFactory.class)
     private T data;
     private String message;
     private String module;

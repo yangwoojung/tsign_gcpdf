@@ -75,7 +75,10 @@ public class UploadService {
 			    																					.attachmentCd(attachmentCd)
 			    																					.uploadedFile(uploadedFile.getAbsolutePath())
 			    																					.uploadedYn("N");
-			    if(!"FAIL".equals(response.getMessage())) {
+			    
+			    logger.info("#### 진위여부 결과 : {} ", response.getResult().name());
+			    
+			    if(!"FAIL".equals(response.getResult().name())) {
 			    	builder.uploadedYn("Y");
 			    }
 
@@ -102,7 +105,7 @@ public class UploadService {
 
         //API 통신 실패
         if(!"0000".equals(verifyResponse.getCode())) {
-            return CommonResponse.fail(ErrorCode.COMMON_SYSTEM_ERROR, "FAIL");
+            return CommonResponse.fail(ErrorCode.API_OCR_IMAGE_NOT_VALID);
         } else {
             //ocr / scrap 데이터 구분
             Verify ocrData = null;
@@ -114,7 +117,7 @@ public class UploadService {
                 } else if("S".equals(list.getModule())) {
                     scrapData = list.getData();
                 } else {
-                    return CommonResponse.fail(ErrorCode.COMMON_SYSTEM_ERROR,"FAIL");
+                    return CommonResponse.fail(ErrorCode.API_OCR_IMAGE_NOT_VALID);
                 }
             }
             RequiredApiResponseDTO response = requiredApiResponseDtoMapper.of(ocrData);
@@ -143,7 +146,7 @@ public class UploadService {
                 logger.info(" ##### RequiredApiResponseDTO response : {}", response);
                 logger.info(" ##### user : {}", user);
             } else {
-                return CommonResponse.fail(ErrorCode.COMMON_INVALID_PARAMETER, "FAIL");
+                return CommonResponse.fail(ErrorCode.COMMON_INVALID_PARAMETER);
             }
             
             //스크래핑 성공

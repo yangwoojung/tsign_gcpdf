@@ -1,13 +1,10 @@
 package kr.co.tsoft.sign.service;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,18 +20,11 @@ import kr.co.tsoft.sign.util.SessionUtil;
 import kr.co.tsoft.sign.vo.ApiRequest;
 import kr.co.tsoft.sign.vo.ApiResponse;
 import kr.co.tsoft.sign.vo.ApiResponseData;
-import kr.co.tsoft.sign.vo.ApiResponseData.Verify;
 import kr.co.tsoft.sign.vo.ContractAttachmentDTO;
-import kr.co.tsoft.sign.vo.RequiredApiRequestDTO;
-import kr.co.tsoft.sign.vo.RequiredApiRequestDTO.RequiredApiRequestDTOBuilder;
-import kr.co.tsoft.sign.vo.RequiredApiResponseDTO;
-import kr.co.tsoft.sign.vo.RequiredApiResponseDTOMapper;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
 import kr.co.tsoft.sign.vo.common.Constant;
 import kr.co.tsoft.sign.vo.common.ErrorCode;
 import lombok.RequiredArgsConstructor;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +33,6 @@ public class AttachService {
     private final Logger logger = LoggerFactory.getLogger(AttachService.class);
 
     private final ApiService apiService;
-    private final ContrcService contrcService;
     private final ContractAttachmentMapper contractAttachmentMapper;
     private final UploadService uploadService;
 
@@ -70,18 +59,33 @@ public class AttachService {
         logger.info("#### [attachService > scrapping] start ##### ");
         logger.info("#### [attachService > scrapping] param : {} ##### ", param);
 
-        String type = "001";
+        CommonUserDetails user = SessionUtil.getUser();
+        
+        String idType = "00" + user.getIdType();
+        
+        logger.info("#### idType : {}", idType);
         
         String socialNo1 = (String) param.get("socialNo1");
         String socialNo2 = (String) param.get("socialNo2");
         
-		ApiRequest.Scrap.ScrapBuilder builder = ApiRequest.Scrap.builder().token("fc2yilEkhclyP1xGnWRNVFFIptXTLd").type(type);
+		ApiRequest.Scrap.ScrapBuilder builder = ApiRequest.Scrap.builder()
+																.token("fc2yilEkhclyP1xGnWRNVFFIptXTLd")
+																.type(idType);
 		  
-		if("1".equals(type)) {
-			builder.col1((String) param.get("userNm")).col2(socialNo1 + socialNo2).col3((String) param.get("issueDt"));
-		} else if("3".equals(type)) {
-		  	builder.col1((String) param.get("type2_ownerNm")).col2((String) param.get("socialNo1")).col3((String) param.get("licence01"))
-		  			.col4((String) param.get("licence02")).col5((String) param.get("licence03")).col6((String) param.get("licence04"));
+		if("001".equals(idType)) {
+			
+			builder.col1((String) param.get("userNm"))
+				   .col2(socialNo1 + socialNo2)
+				   .col3((String) param.get("issueDt"));
+			
+		} else if("003".equals(idType)) {
+			
+		  	builder.col1((String) param.get("type2_ownerNm"))
+		  		    .col2((String) param.get("socialNo1"))
+		  		    .col3((String) param.get("licence01"))
+		  			.col4((String) param.get("licence02"))
+		  			.col5((String) param.get("licence03"))
+		  			.col6((String) param.get("licence04"));
 		  }
 		
 		//      ApiRequest.Scrap request = ApiRequest.Scrap.builder().token("fc2yilEkhclyP1xGnWRNVFFIptXTLd")

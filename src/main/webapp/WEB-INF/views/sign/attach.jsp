@@ -107,7 +107,7 @@
         console.log(contractAttachment)
 
         // 2. 업로드 해야할 구비서류가 더 이상 없다면 제출하기 시도 (유효성 검사는 서버에서 진행)
-        if (!contractAttachment) submitAttachment();
+        if (!contractAttachment) return submitAttachment();
 
         // 3. 우선순위에 따라 첫번째 구비서류에 대한 내용 표출
         const {attachmentCd, attachmentName, attachmentDescription, requiredYn} = contractAttachment;
@@ -296,13 +296,12 @@
                     if (response.result === 'SUCCESS') {
                         location.href = '/sign/info'
                     } else {
-                        alert(response.message);
-
-                        if(response.type){
+						                        
+                        if(response?.data?.idType){
                             updateInfo(response.data);
                         } else {
-                            updateInfo(response.data);
-//                             setupContractAttachmentByType();
+                        	alert(response.message);
+                            setupContractAttachmentByType();
                         }
 
                     }

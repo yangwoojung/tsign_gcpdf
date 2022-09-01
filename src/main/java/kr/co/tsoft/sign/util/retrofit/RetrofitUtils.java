@@ -2,6 +2,8 @@ package kr.co.tsoft.sign.util.retrofit;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import kr.co.tsoft.sign.vo.ApiResponseData;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -26,8 +28,10 @@ public class RetrofitUtils {
             .connectTimeout(3, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS);
 
-    private static final Gson gson = new GsonBuilder()
+    @SuppressWarnings("rawtypes")
+	private static final Gson gson = new GsonBuilder()
             .setLenient()
+            .registerTypeAdapterFactory(new AlwaysListTypeAdapterFactory())
             .create();
 
     public static Retrofit initRetrofit(String baseUrl) {

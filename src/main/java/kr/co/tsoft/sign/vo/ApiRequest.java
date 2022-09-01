@@ -1,9 +1,11 @@
 package kr.co.tsoft.sign.vo;
 
+import com.google.gson.annotations.JsonAdapter;
+
+import kr.co.tsoft.sign.util.retrofit.AlwaysListTypeAdapterFactory;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import lombok.Value;
 import okhttp3.MultipartBody;
 
 public class ApiRequest {
