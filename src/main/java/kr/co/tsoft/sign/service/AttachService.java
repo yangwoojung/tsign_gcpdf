@@ -1,15 +1,19 @@
 package kr.co.tsoft.sign.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.clipsoft.org.apache.commons.io.FileUtils;
 
 import kr.co.tsoft.sign.config.security.CommonUserDetails;
 import kr.co.tsoft.sign.mapper.ContractAttachmentMapper;
@@ -25,6 +29,8 @@ import kr.co.tsoft.sign.vo.common.CommonResponse;
 import kr.co.tsoft.sign.vo.common.Constant;
 import kr.co.tsoft.sign.vo.common.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 
 @Service
 @RequiredArgsConstructor
@@ -110,6 +116,26 @@ public class AttachService {
         // 전부 업로드 되었는지 해당 파일이 존재하는지 확인
 
         String filePath = CONTRACT_PATH + contNo;
+        
+        // TODO: TSA 적용 필요 
+//        String tsaFile = CONTRACT_PATH + "TSA_" + contNo + ".pdf";
+//        
+//        File file = new File(filePath);
+//		MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", contNo, okhttp3.RequestBody.create(MediaType.parse("application/pdf"), file));
+//
+//		ApiRequest.Tsa requst = ApiRequest.Tsa.builder()
+//				.token("vL9adtaTYkphP3vChWoKAkvLH2Ffxv")
+//				.file(filePart)
+//				.build();
+//
+//		logger.info("#### API requst : {} ", requst);
+//		ApiResponse<ApiResponseData.Tsa> response = apiService.processTsa(requst);
+//		logger.info("#### API response : {} ", response);
+//		ApiResponseData<ApiResponseData.Tsa> tsaApiResponseData = response.getData().get(0);
+//		ApiResponseData.Tsa data = tsaApiResponseData.getData();
+//		logger.info("#### API encodeTsaFile : {} ", data);
+//		FileUtils.writeByteArrayToFile(new File(tsaFile), Base64.decodeBase64(data.getEncodeTsaFile()));
+        
         String zipFileName = filePath + ".zip";
 
         try {
