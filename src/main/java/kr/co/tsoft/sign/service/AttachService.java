@@ -70,14 +70,15 @@ public class AttachService {
         logger.info("#### [attachService > scrapping] start ##### ");
         logger.info("#### [attachService > scrapping] param : {} ##### ", param);
 
-	//      String type = (String) param.get("idType");
-		String type = "1";
-		String socialNo = (String) param.get("socailNo1") + (String) param.get("socailNo2");
-		  
+        String type = "001";
+        
+        String socialNo1 = (String) param.get("socialNo1");
+        String socialNo2 = (String) param.get("socialNo2");
+        
 		ApiRequest.Scrap.ScrapBuilder builder = ApiRequest.Scrap.builder().token("fc2yilEkhclyP1xGnWRNVFFIptXTLd").type(type);
 		  
 		if("1".equals(type)) {
-			builder.col1((String) param.get("userNm")).col2(socialNo).col3((String) param.get("issueDt"));
+			builder.col1((String) param.get("userNm")).col2(socialNo1 + socialNo2).col3((String) param.get("issueDt"));
 		} else if("3".equals(type)) {
 		  	builder.col1((String) param.get("type2_ownerNm")).col2((String) param.get("socialNo1")).col3((String) param.get("licence01"))
 		  			.col4((String) param.get("licence02")).col5((String) param.get("licence03")).col6((String) param.get("licence04"));

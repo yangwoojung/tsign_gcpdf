@@ -301,7 +301,8 @@
                         if(response.type){
                             updateInfo(response.data);
                         } else {
-                            setupContractAttachmentByType();
+                            updateInfo(response.data);
+//                             setupContractAttachmentByType();
                         }
 
                     }

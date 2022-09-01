@@ -51,11 +51,11 @@ public class AttachController {
 
         CommonUserDetails user = SessionUtil.getUser();
         //TODO: 추후 API 수정완료시 제거
-        user.setSocialNo1("910710");
-        user.setSocialNo2("1063131");
-        user.setBankName("국민은행");
-        user.setBankAccountNo("59350201238928");
-        user.setIdType("1");
+//        user.setSocialNo1("910710");
+//        user.setSocialNo2("1063131");
+//        user.setBankName("국민은행");
+//        user.setBankAccountNo("59350201238928");
+//        user.setIdType("1");
 
         model.addAttribute("user", gs.toJson(user));
         return "sign/attachCheck";
