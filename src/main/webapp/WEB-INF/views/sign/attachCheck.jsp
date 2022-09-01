@@ -23,7 +23,7 @@
                 <span class="active">3</span>/3
             </div>
         </div>--%>
-	    <form id="idType1Form" method="post" action="/sign/attach/scrap" onsubmit="return">
+	    <form id="idType1Form" method="post" action="/sign/info/update" onsubmit="return">
 	        <div id="type1" style="display: none;">
 	            <div class="exImg-wrap check">
 	                <div class="exImg">
@@ -73,7 +73,7 @@
 	            </div>
 	        </div>
 	    </form>
-	    <form id="idType2Form" method="post" action="/sign/attach/scrap" onsubmit="return">
+	    <form id="idType2Form" method="post" action="/sign/info/update" onsubmit="return">
 	        <div id="type2" style="display: none;">
             <div class="exImg-wrap check">
                 <div class="exImg">
@@ -248,27 +248,52 @@
     //session update 진행 후 성공하면 scrap 호출
    // OCR 정보 세션에 업데이트
     const updateInfo = () => {
+    	const USER = ${user};
+    	let data;
     	
-    	let data = $('#idType1Form').serializeObject();
+    	if(USER.idType === '1') {
+    		data = $('#idType1Form').serializeObject();
+    	} else if(USER.idType === '3') {
+    		data = $('#idType2Form').serializeObject();
+    	}
         console.log(data);
 
         $.ajax({
-            url: cpath + '/sign/attach/scrap',
+            url: cpath + '/sign/info/update',
             data: data,
             type: 'POST',
             async: false,
             success: function (response) {
                 if (response.result === 'SUCCESS') {
-                	console.log(response);
-//                     location.href = '/sign/attach/check';
+                	scrapInfo(response);
                 } else {
-//                     location.reload();
+                    location.reload();
                 }
             },
             error: function (jqXHR) {
                 console.error(jqXHR);
             }
         });
-
+    }
+    
+    //scrap 실행 함수
+    const scrapInfo = (data) => {
+    	$.ajax({
+    		url : cpath + '/sign/attach/scrap',
+    		data : data,
+    		type: 'POST',
+            async: false,
+            success: function (response) {
+                if (response.result === 'SUCCESS') {
+                	console.log(response);
+                    location.href = '/sign/info';
+                } else {
+                    location.reload();
+                }
+            },
+            error: function (jqXHR) {
+                console.error(jqXHR);
+            }
+    	});
     }
 </script>

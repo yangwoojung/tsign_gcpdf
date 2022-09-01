@@ -7,8 +7,6 @@ import lombok.ToString;
 
 @Data
 @ToString
-@AllArgsConstructor
-@NoArgsConstructor
 public class AttachCheckDTO {
 	private String userNm;
 	private String socialNo1;

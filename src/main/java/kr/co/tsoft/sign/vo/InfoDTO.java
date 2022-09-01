@@ -14,6 +14,14 @@ public class InfoDTO {
     private String address2;
     private String bankName;
     private String bankAccountNo;
-
+    
+	private String userNm;
+	private String issueDt;
+	private String type2_ownerNm;
+	private String juminNo;
+	private String license01;
+	private String license02;
+	private String license03;
+	private String license04;
 
 }
