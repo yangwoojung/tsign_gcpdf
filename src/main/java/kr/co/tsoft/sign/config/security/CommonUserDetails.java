@@ -30,6 +30,10 @@ public class CommonUserDetails implements UserDetails {
     // 사용자 입력
     private String socialNo1;      //주민번호 앞자리
     private String socialNo2;      //주민번호 뒷자리
+    private String licenseNo1;
+    private String licenseNo2;
+    private String licenseNo3;
+    private String licenseNo4;
     private String issueDt;        // 주민발급일자
     private String bankName;        //은행명
     private String bankAccountNo;   //계좌번호
