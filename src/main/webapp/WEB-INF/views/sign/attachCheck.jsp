@@ -80,11 +80,12 @@
                     <div class="imgConts">
                         <div class="top">
                             <div>자동차운전면허증</div>
-                            <div class="no">11-12-051449-11</div>
-                        </div>
+                            <div class="no">
+                            	<span id="type3_license01OnCard">11</span>-<span id="type3_license02OnCard">12</span>-<span id="type3_license03OnCard">051449</span>-<span id="type3_license04OnCard">11</span></div>
+                        	</div>
                         <div>
                             <div class="right">
-                                <span>😎</span>
+                                <span>🤔</span>
                             </div>
                             <div class="left">
                                 <div class="name">
@@ -197,7 +198,6 @@
     $(document).on('ready', function(){
 
         const USER = ${user};
-        console.log(USER)
 
         if(!USER.idType) {
             location.href = '/sign/error/401';
@@ -205,57 +205,30 @@
 
         $('#type' + USER.idType).show();
         
+        const linkedTextOnCard = (el, cardId, sessionData) => {
+        	const item = $('#'+el);
+        	item.on('input', function() {
+        		$('#'+cardId).html($(this).val());
+        	});
+        	item.val(sessionData).trigger('input');
+        }
+        
         if(USER.idType === '1') {
         	$('form').remove('#idType3Form');
-	        const userNmEl = $('#userNm');
-	        userNmEl.on('input', function(){
-	            $('#userNmOnCard').html($(this).val());
-	        });
-	        userNmEl.val(USER.userNm).trigger('input');
-	
-	        const socialNo1El = $('#socialNo1');
-	        socialNo1El.on('input', function(){
-	            $('#socialNo1OnCard').html($(this).val());
-	        });
-	        socialNo1El.val(USER.socialNo1).trigger('input');
-	
-	        const socialNo2El = $('#socialNo2');
-	        socialNo2El.on('input', function(){
-	            $('#socialNo2OnCard').html($(this).val());
-	        });
-	        socialNo2El.val(USER.socialNo2).trigger('input');
-	
-	        const issueDtEl = $('#issueDt');
-	        issueDtEl.on('input', function(){
-	        	var text = $(this).val();
-	            $('#issueDtOnCard').html($(this).val());
-	        });
-	        issueDtEl.val(USER.issueDt).trigger('input');
+	        linkedTextOnCard('userNm','userNmOnCard',USER.userNm);
+	        linkedTextOnCard('socialNo1','socialNo1OnCard',USER.socialNo1);
+	        linkedTextOnCard('socialNo2','socialNo2OnCard',USER.socialNo2);
+	        linkedTextOnCard('issueDt','issueDtEl',USER.issueDt);
 
         } else if(USER.idType === '3') {
         	$('form').remove('#idType1Form');
-        	const type3_ownerNmEl = $('#type3_ownerNm');
-        	type3_ownerNmEl.on('input', function() {
-        		$('#type3_userNmOnCard').html($(this).val());
-        	});
-        	type3_ownerNmEl.val(USER.userNm).trigger('input');
-        	
-        	const juminNoEl = $('#juminNo');
-        	juminNoEl.on('input', function() {
-        		$('#type3_socialNo1OnCard').html($(this).val());
-        	});
-        	juminNoEl.val(USER.socialNo1).trigger('input');
-        	
-        	const socialNo2El = $('#socialNo2');
-	        socialNo2El.on('input', function(){
-	            $('#type3_socialNo2OnCard').html($(this).val());
-	        });
-	        socialNo2El.val(USER.socialNo2).trigger('input');
-
-	        $('#license01').val(USER.licenseNo1);
-	        $('#license02').val(USER.licenseNo2);
-	        $('#license03').val(USER.licenseNo3);
-	        $('#license04').val(USER.licenseNo4);
+        	linkedTextOnCard('type3_ownerNm','type3_userNmOnCard',USER.userNm);
+        	linkedTextOnCard('juminNo','type3_socialNo1OnCard',USER.socialNo1);
+	        linkedTextOnCard('socialNo2','type3_socialNo2OnCard',USER.socialNo2);
+	        linkedTextOnCard('license01', 'type3_license01OnCard', USER.licenseNo1);
+	        linkedTextOnCard('license02', 'type3_license02OnCard', USER.licenseNo2);
+	        linkedTextOnCard('license03', 'type3_license03OnCard', USER.licenseNo3);
+	        linkedTextOnCard('license04', 'type3_license04OnCard', USER.licenseNo4);
         }
 
     });
