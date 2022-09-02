@@ -59,7 +59,7 @@
 	                    <dd class="half">
 	                        <input type="text" class="input_ty" placeholder="앞 6자리" maxlength="6" id="socialNo1"
 	                               onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" name="socialNo1">
-	                        <input type="password" class="input_ty" placeholder="뒷 7자리" maxlength="7" id="socialNo2"
+	                        <input type="text" class="input_ty" placeholder="뒷 7자리" maxlength="7" id="socialNo2"
 	                               onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" name="socialNo2">
 	                    </dd>
 	                </dl>
@@ -73,8 +73,8 @@
 	            </div>
 	        </div>
 	    </form>
-	    <form id="idType2Form" method="post" action="/sign/info/update" onsubmit="return">
-	        <div id="type2" style="display: none;">
+	    <form id="idType3Form" method="post" action="/sign/info/update" onsubmit="return">
+	        <div id="type3" style="display: none;">
             <div class="exImg-wrap check">
                 <div class="exImg">
                     <div class="imgConts">
@@ -88,10 +88,10 @@
                             </div>
                             <div class="left">
                                 <div class="name">
-                                    <span id="type2_userNmOnCard">박유진</span>
+                                    <span id="type3_userNmOnCard">박유진</span>
                                 </div>
                                 <div class="description">
-                                    <span id="type2_socialNo1OnCard">910710</span>-<span id="type2_socialNo2OnCard">1063131</span>
+                                    <span id="type3_socialNo1OnCard">910710</span>-<span id="type3_socialNo2OnCard">*******</span>
                                 </div>
                             </div>
                         </div>
@@ -102,29 +102,23 @@
                 <dl class="list">
                     <dt>성명</dt>
                     <dd>
-                        <!--0830 대표자명, 대리인명 고정으로 넣는 부분  -->
-                        <input type="text" class="input_ty" placeholder="성명" name="type2_ownerNm"
-                        <%-- 									<c:if test="${doc.docCd eq '008' && not empty repNm}">
-                                                                   value="<c:out value="${repNm}" />"
-                                                            </c:if>
-                                                            <c:if test="${doc.docCd eq '009' && not empty contNm}">
-                                                                   value="<c:out value="${contNm}" />"
-                                                            </c:if> --%>
-                        >
+                   		<input type="text" class="input_ty" placeholder="성명" name="type3_ownerNm" id="type3_ownerNm"/>
                     </dd>
                 </dl>
                 <dl class="list">
                     <dt>주민등록번호</dt>
-                    <dd>
-                        <input type="text" class="input_ty" placeholder="주민번호 앞6자리" maxlength="6"
+                    <dd class="half">
+                        <input type="text" class="input_ty" placeholder="주민번호 앞6자리" maxlength="6" id="juminNo"
                                onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" name="juminNo">
+                        <input type="text" class="input_ty" placeholder="뒷 7자리" maxlength="7" id="socialNo2"
+	                               onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)" name="socialNo2">
                     </dd>
                 </dl>
                 <dl class="list">
                     <dt>운전면허번호</dt>
                     <dd class="driver">
                         <p>
-                            <select name="license01">
+                            <select name="license01" id="license01">
                                 <option value="" selected>선택</option>
                                 <option value="11">서울</option>
                                 <option value="13">경기</option>
@@ -164,19 +158,19 @@
                             </select>
                         </p>
                         <p>
-                            <input type="text" class="input_ty customPadding" placeholder="2자리" maxlength="2"
+                            <input type="text" class="input_ty customPadding" placeholder="2자리" maxlength="2" 
                                    onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)"
-                                   name="license02">
+                                   name="license02" id="license02">
                         </p>
                         <p>
                             <input type="text" class="input_ty customPadding" placeholder="6자리" maxlength="6"
                                    onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)"
-                                   name="license03">
+                                   name="license03" id="license03">
                         </p>
                         <p>
                             <input type="text" class="input_ty customPadding" placeholder="2자리" maxlength="2"
                                    onkeydown="return onlyNumber(event)" onkeyup="removeChar(event)"
-                                   name="license04">
+                                   name="license04" id="license04">
                         </p>
                     </dd>
                 </dl>
@@ -208,36 +202,62 @@
         if(!USER.idType) {
             location.href = '/sign/error/401';
         }
-        
-        let data = $('#idType1Form').serializeObject();
-        console.log(data);
 
         $('#type' + USER.idType).show();
+        
+        if(USER.idType === '1') {
+        	$('form').remove('#idType3Form');
+	        const userNmEl = $('#userNm');
+	        userNmEl.on('input', function(){
+	            $('#userNmOnCard').html($(this).val());
+	        });
+	        userNmEl.val(USER.userNm).trigger('input');
+	
+	        const socialNo1El = $('#socialNo1');
+	        socialNo1El.on('input', function(){
+	            $('#socialNo1OnCard').html($(this).val());
+	        });
+	        socialNo1El.val(USER.socialNo1).trigger('input');
+	
+	        const socialNo2El = $('#socialNo2');
+	        socialNo2El.on('input', function(){
+	            $('#socialNo2OnCard').html($(this).val());
+	        });
+	        socialNo2El.val(USER.socialNo2).trigger('input');
+	
+	        const issueDtEl = $('#issueDt');
+	        issueDtEl.on('input', function(){
+	        	var text = $(this).val();
+	            $('#issueDtOnCard').html($(this).val());
+	        });
+	        issueDtEl.val(USER.issueDt).trigger('input');
 
-        const userNmEl = $('#userNm');
-        userNmEl.on('input', function(){
-            $('#userNmOnCard').html($(this).val());
-        });
-        userNmEl.val(USER.userNm).trigger('input');
+        } else if(USER.idType === '3') {
+        	$('form').remove('#idType1Form');
+        	const type3_ownerNmEl = $('#type3_ownerNm');
+        	type3_ownerNmEl.on('input', function() {
+        		$('#type3_userNmOnCard').html($(this).val());
+        	});
+        	type3_ownerNmEl.val(USER.userNm).trigger('input');
+        	
+        	const juminNoEl = $('#juminNo');
+        	juminNoEl.on('input', function() {
+        		$('#type3_socialNo1OnCard').html($(this).val());
+        	});
+        	juminNoEl.val(USER.socialNo1).trigger('input');
+        	
+        	const socialNo2El = $('#socialNo2');
+	        socialNo2El.on('input', function(){
+	            $('#type3_socialNo2OnCard').html($(this).val());
+	        });
+	        socialNo2El.val(USER.socialNo2).trigger('input');
 
-        const socialNo1El = $('#socialNo1');
-        socialNo1El.on('input', function(){
-            $('#socialNo1OnCard').html($(this).val());
-        });
-        socialNo1El.val(USER.socialNo1).trigger('input');
+	        $('#license01').val(USER.licenseNo1);
+	        $('#license02').val(USER.licenseNo2);
+	        $('#license03').val(USER.licenseNo3);
+	        $('#license04').val(USER.licenseNo4);
+        }
 
-        const socialNo2El = $('#socialNo2');
-        socialNo2El.on('input', function(){
-            $('#socialNo2OnCard').html($(this).val());
-        });
-        socialNo2El.val(USER.socialNo2).trigger('input');
-
-        const issueDtEl = $('#issueDt');
-        issueDtEl.on('input', function(){
-        	var text = $(this).val();
-            $('#issueDtOnCard').html($(this).val());
-        });
-        issueDtEl.val(USER.issueDt).trigger('input');
     });
     
     $('#nextBtn').on('click', function () {
@@ -247,6 +267,7 @@
     
     //session update 진행 후 성공하면 scrap 호출
    // OCR 정보 세션에 업데이트
+   //제출 전 유효성 검사
     const updateInfo = () => {
     	const USER = ${user};
     	let data;
@@ -254,9 +275,8 @@
     	if(USER.idType === '1') {
     		data = $('#idType1Form').serializeObject();
     	} else if(USER.idType === '3') {
-    		data = $('#idType2Form').serializeObject();
+    		data = $('#idType3Form').serializeObject();
     	}
-        console.log(data);
 
         $.ajax({
             url: cpath + '/sign/info/update',
@@ -265,7 +285,7 @@
             async: false,
             success: function (response) {
                 if (response.result === 'SUCCESS') {
-                	scrapInfo(response);
+                	scrapInfo(response.data);
                 } else {
                     location.reload();
                 }
@@ -285,7 +305,6 @@
             async: false,
             success: function (response) {
                 if (response.result === 'SUCCESS') {
-                	console.log(response);
                     location.href = '/sign/info';
                 } else {
                     location.reload();

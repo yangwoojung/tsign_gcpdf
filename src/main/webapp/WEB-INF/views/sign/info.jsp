@@ -54,7 +54,7 @@
 									id="inResidentNo2" name="residentNo2" type="tel"
 									class="input_ty" placeholder="7자리숫자" maxlength="7"
 									onkeydown="return onlyNumber(event)"
-									onkeyup="removeChar(event)" autocomplete="off" required />
+									onkeyup="removeChar(event)" autocomplete="off" value="${user.socialNo2}" required />
 							</dd>
 						</dl>
 					</c:if>

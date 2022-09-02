@@ -123,24 +123,26 @@ public class UploadService {
             RequiredApiResponseDTO response = requiredApiResponseDtoMapper.of(ocrData);
             
             logger.info(" ##### ocrData : {}" , ocrData);
-            logger.info(" ##### RequiredApiResponseDTO response : {}", response);
 
             if(ocrData != null) {
             	String idType = ocrData.getIdType();
-                if("1".equals(idType)) {
+                if("1".equals(idType) || "3".equals(idType)) {
+                	if("3".equals(idType)) {
+                        String[] licenseNumbers = getLicenseNumbers(ocrData.getLicenseNo());
+                        
+                        response.setLicenseNo1(licenseNumbers[0]);
+                        response.setLicenseNo2(licenseNumbers[1]);
+                        response.setLicenseNo3(licenseNumbers[2]);
+                        response.setLicenseNo4(licenseNumbers[3]);
+                    }
                     String[] socialNumbers = getSocialNumbers(ocrData.getSocialNo());
 
                     response.setSocialNo1(socialNumbers[0]);
                     response.setSocialNo2(socialNumbers[1]);
-
-                } else if("3".equals(idType)) {
-                    String[] licenseNumbers = getLicenseNumbers(ocrData.getLicenseNo());
-
-                    response.setLicenseNo1(licenseNumbers[0]);
-                    response.setLicenseNo2(licenseNumbers[1]);
-                    response.setLicenseNo3(licenseNumbers[2]);
-                    response.setLicenseNo4(licenseNumbers[3]);
+                } else {
+                	return CommonResponse.fail(ErrorCode.COMMON_INVALID_PARAMETER);
                 }
+                
                 response.setIssueDt(ocrData.getIssueDt().replaceAll("-", ""));
                 sessionDTOMapper.updateUserDetails(user, response);
                 logger.info(" ##### RequiredApiResponseDTO response : {}", response);

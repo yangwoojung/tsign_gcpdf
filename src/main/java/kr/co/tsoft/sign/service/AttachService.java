@@ -2,6 +2,7 @@ package kr.co.tsoft.sign.service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -18,8 +19,10 @@ import kr.co.tsoft.sign.util.SessionUtil;
 import kr.co.tsoft.sign.vo.ApiRequest;
 import kr.co.tsoft.sign.vo.ApiResponse;
 import kr.co.tsoft.sign.vo.ApiResponseData;
-import kr.co.tsoft.sign.vo.AttachCheckDTO;
+import kr.co.tsoft.sign.vo.ApiResponseData.OutB001;
+import kr.co.tsoft.sign.vo.ApiResponseData.Scrap;
 import kr.co.tsoft.sign.vo.ContractAttachmentDTO;
+import kr.co.tsoft.sign.vo.InfoDTO;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
 import kr.co.tsoft.sign.vo.common.Constant;
 import kr.co.tsoft.sign.vo.common.ErrorCode;
@@ -54,44 +57,55 @@ public class AttachService {
         return response;
      }
 
-    public ApiResponse<ApiResponseData.Scrap> scrapping(AttachCheckDTO attachCheckDTO) {
+    public CommonResponse<?> scrapping(InfoDTO infoDTO) {
         logger.info("#### [attachService > scrapping] start ##### ");
-        logger.info("#### [attachService > scrapping] AttachCheckDTO : {} ##### ", attachCheckDTO);
+        logger.info("#### [attachService > scrapping] AttachCheckDTO : {} ##### ", infoDTO);
 
         CommonUserDetails user = SessionUtil.getUser();
         
-        String idType = "00" + user.getIdType();
-        
-        String socialNo1 = attachCheckDTO.getSocialNo1();
-        String socialNo2 = attachCheckDTO.getSocialNo2();
+        String socialNo1 = infoDTO.getSocialNo1();
+        String socialNo2 = infoDTO.getSocialNo2();
         
 		ApiRequest.Scrap.ScrapBuilder builder = ApiRequest.Scrap.builder()
-																.token("fc2yilEkhclyP1xGnWRNVFFIptXTLd")
-																.type(idType);
+																.token("fc2yilEkhclyP1xGnWRNVFFIptXTLd");
 		  
-		if("001".equals(idType)) {
+		if("1".equals(user.getIdType())) {
 			
-			builder.col1(attachCheckDTO.getUserNm())
-				   .col2(socialNo1 + socialNo2)
-				   .col3(attachCheckDTO.getIssueDt());
+			builder	.type("001")
+					.col1(infoDTO.getUserNm())
+				    .col2(socialNo1 + socialNo2)
+				    .col3(infoDTO.getIssueDt());
 			
-		} else if("003".equals(idType)) {
+		} else if("3".equals(user.getIdType())) {
 			
-		  	builder.col1(attachCheckDTO.getType2_ownerNm())
-		  		    .col2(attachCheckDTO.getSocialNo1())
-		  		    .col3(attachCheckDTO.getLicense01())
-		  			.col4(attachCheckDTO.getLicense02())
-		  			.col5(attachCheckDTO.getLicense03())
-		  			.col6(attachCheckDTO.getLicense04());
+		  	builder .type("002")
+		  	        .col1(infoDTO.getType3_ownerNm())
+		  		    .col2(infoDTO.getJuminNo())
+		  		    .col3(infoDTO.getLicense01())
+		  			.col4(infoDTO.getLicense02())
+		  			.col5(infoDTO.getLicense03())
+		  			.col6(infoDTO.getLicense04());
 		  }
 		  
 		ApiRequest.Scrap request = builder.build();
 	
-	    logger.info("#### Scrap API Request : {} ", request);
-	    ApiResponse<ApiResponseData.Scrap> response = apiService.processScrap(request);
-	    logger.info("#### Scrap API Response : {} ", response);
+		logger.info("#### Scrap API Request : {} ", request);
+		
+		ApiResponse<ApiResponseData.Scrap> response = null;
+			response = apiService.processScrap(request);
+			logger.info("#### Scrap API Response : {} ", response);
 
-	    return response;
+			if(!"0000".equals(response.getCode())) {
+				return CommonResponse.fail(ErrorCode.COMMON_SYSTEM_ERROR);
+			} else {
+				OutB001 getDataInresponse = response.getData().get(0).getData().getOutB0001();
+				
+				if("Y".equals(getDataInresponse.getTruthYn()) || "Y".equals(getDataInresponse.getLicenceTruthYn())) {
+					return CommonResponse.success();
+				} else {
+					return CommonResponse.fail(response, "FAIL");
+				}
+			}
     }
 
     public CommonResponse<?> submission() {
