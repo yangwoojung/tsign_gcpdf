@@ -1469,43 +1469,43 @@ footer .lang_select a:after {
     margin: 0 15%;
     animation: barAnimation 1.2s ease-in-out infinite alternate;
 }
-#type2 .exImg-wrap.check .imgConts {
+#type3 .exImg-wrap.check .imgConts {
     flex-direction: column;
     margin: 0;
     padding: 12px 0 0 5%;
     width: 95%;
     height: 93%;
 }
-#type2 .exImg-wrap.check .imgConts > div:last-of-type {
+#type3 .exImg-wrap.check .imgConts > div:last-of-type {
     display: flex;
     height: 100%;
 }
-#type2 .exImg-wrap.check .imgConts .top {
+#type3 .exImg-wrap.check .imgConts .top {
     padding: 0 10px 12px 0;
     text-align: center;
 }
-#type2 .exImg-wrap.check .imgConts .top .no {
+#type3 .exImg-wrap.check .imgConts .top .no {
     font-size: 18px;
 }
-#type2 .exImg-wrap.check .imgConts .left {
+#type3 .exImg-wrap.check .imgConts .left {
     text-align: left;
     padding-left: 15px;
 }
-#type2 .exImg-wrap.check .left .name {
+#type3 .exImg-wrap.check .left .name {
     justify-content: flex-start;
     padding-top: 20px;
 }
-#type2 .exImg-wrap.check .left .name > span {
+#type3 .exImg-wrap.check .left .name > span {
     letter-spacing: 1px;
 }
-#type2 .exImg-wrap.check .left .name > span:after {
+#type3 .exImg-wrap.check .left .name > span:after {
     content: '';
 }
-#type2 .exImg-wrap.check .left .description {
+#type3 .exImg-wrap.check .left .description {
     letter-spacing: 1px;
     line-height: 14px;
 }
-#type2 .exImg-wrap.check .imgConts .right {
+#type3 .exImg-wrap.check .imgConts .right {
     height: 86px;
     width: 35%;
 }
