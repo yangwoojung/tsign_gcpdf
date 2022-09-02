@@ -1,10 +1,16 @@
 package kr.co.tsoft.sign.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class InfoDTO {
-
+	//info
     private String contractNo;
     private String email;
     private String socialNo1;
@@ -15,9 +21,10 @@ public class InfoDTO {
     private String bankName;
     private String bankAccountNo;
     
+    //attach-scrap info
 	private String userNm;
 	private String issueDt;
-	private String type2_ownerNm;
+	private String type3_ownerNm;
 	private String juminNo;
 	private String license01;
 	private String license02;

@@ -43,9 +43,8 @@ public class InfoController {
 
         CommonUserDetails user = SessionUtil.getUser();
         logger.debug("user : {}", user);
-        //TODO: 추후 API 수정완료시 제거
 
-        return CommonResponse.success();
+        return CommonResponse.success(infoDTO);
     }
 
 }

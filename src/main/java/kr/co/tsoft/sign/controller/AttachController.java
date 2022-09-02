@@ -1,7 +1,5 @@
 package kr.co.tsoft.sign.controller;
 
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -9,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
@@ -19,8 +16,8 @@ import kr.co.tsoft.sign.service.AttachService;
 import kr.co.tsoft.sign.util.SessionUtil;
 import kr.co.tsoft.sign.vo.ApiResponse;
 import kr.co.tsoft.sign.vo.ApiResponseData;
-import kr.co.tsoft.sign.vo.AttachCheckDTO;
 import kr.co.tsoft.sign.vo.ContractAttachmentDTO;
+import kr.co.tsoft.sign.vo.InfoDTO;
 import kr.co.tsoft.sign.vo.common.CommonResponse;
 import kr.co.tsoft.sign.vo.common.Constant;
 import kr.co.tsoft.sign.vo.common.ErrorCode;
@@ -57,13 +54,6 @@ public class AttachController {
         Gson gs = new Gson();
 
         CommonUserDetails user = SessionUtil.getUser();
-        //TODO: 추후 API 수정완료시 제거
-//        user.setSocialNo1("910710");
-//        user.setSocialNo2("1063131");
-//        user.setBankName("국민은행");
-//        user.setBankAccountNo("59350201238928");
-//        user.setIdType("1");
-
         model.addAttribute("user", gs.toJson(user));
         return "sign/attachCheck";
     }
@@ -105,9 +95,9 @@ public class AttachController {
 
     @PostMapping("/scrap")
     @ResponseBody
-    public ApiResponse<ApiResponseData.Scrap> scrapping(AttachCheckDTO attachCheckDTO) {
+    public CommonResponse<?> scrapping(InfoDTO infoDTO) {
         logger.info(" ##### [ attach/scrap] start scrap #####");
-        return attachService.scrapping(attachCheckDTO);
+        return attachService.scrapping(infoDTO);
     }
 
     @PostMapping("/submission")
