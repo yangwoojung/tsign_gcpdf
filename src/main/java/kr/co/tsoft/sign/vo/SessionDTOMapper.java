@@ -24,6 +24,7 @@ public interface SessionDTOMapper {
 
     // target method(Source source)
 	void updateUserDetails(@MappingTarget CommonUserDetails commonUserDetails, InfoDTO info);
+	void updateUserDetails(@MappingTarget CommonUserDetails commonUserDetails, CertificationDTO cert);
 	void updateUserDetails(@MappingTarget CommonUserDetails commonUserDetails, RequiredApiResponseDTO requiredApiResponse);
 	void updateUserDetails(@MappingTarget CommonUserDetails commonUserDetails, ContractAttachmentDTO contractAttachment);
 }

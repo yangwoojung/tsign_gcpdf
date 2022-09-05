@@ -38,6 +38,7 @@ public class CommonUserDetails implements UserDetails {
     private String bankName;        //은행명
     private String bankAccountNo;   //계좌번호
     private String phoneCert;       //휴대폰 인증
+    private String accountCert; 	//계좌번호 인증
     private String signCanvasDataUrl; //서명 base64 데이터
     private String address;         // 주소
     private String idType;       // ID TYPE (예: 1 - 주민등록증)

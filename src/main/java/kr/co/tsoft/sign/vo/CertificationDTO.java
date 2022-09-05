@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CertificationDTO {
+	//휴대폰 본인인증
 	private String reqNum;
 	private String reqInfo;
 	private String retUrl;
@@ -19,5 +20,11 @@ public class CertificationDTO {
 	private String di;
 	private String status;
 	private String type;
+	
+	private String userNm;
+	private String accountNo;
+	private String bankName;
+	private String bankCode;
+	private String callbackUrl;
 	
 }

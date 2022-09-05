@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -47,6 +48,17 @@ public class CertificationController {
         return certService.initPhoneCert();
     }
 
+    @RequestMapping(value = "/initAcc", method = {RequestMethod.POST, RequestMethod.POST})
+    @ResponseBody
+    public CertificationDTO getInitAccountCert(CertificationDTO certInfo) {
+    	try {
+    		return certService.initAccountCert(certInfo);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	return certInfo;
+    }
+
     @RequestMapping("/idseed")
     public ModelAndView getResultPhoneCert(@RequestParam("retInfo") String retInfo) {
     	CertificationDTO cert = certService.getResultPhoneCert(retInfo);
@@ -56,5 +68,9 @@ public class CertificationController {
 
         return mv;
     }
-
+    
+    @RequestMapping("/checkAccount")
+    public String certAccount() {
+    	return "sign/certAccount";
+    }
 }

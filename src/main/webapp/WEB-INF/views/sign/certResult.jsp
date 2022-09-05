@@ -16,10 +16,9 @@
                 } else {
                     alert('휴대폰 본인 인증이 실패 하였습니다.');
                 }
-                debugger;
                 window.opener.fnCertificationClose(status, type);
                 self.close();
-            } else {
+            } else if(type === 'acseed') {
                 if (status === '0000') {
                     alert('계좌인증이 완료 되었습니다.');
                 } else if (status === '0002') {

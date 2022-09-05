@@ -1,27 +1,40 @@
 package kr.co.tsoft.sign.service;
 
-import com.sci.v2.pcc.secu.SciSecuManager;
-import com.sci.v2.pcc.secu.hmac.SciHmac;
-import kr.co.tsoft.sign.config.security.CommonUserDetails;
-import kr.co.tsoft.sign.util.SessionUtil;
-import kr.co.tsoft.sign.vo.CertificationDTO;
-import kr.co.tsoft.sign.vo.common.CommonResponse;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
+import org.apache.commons.codec.net.URLCodec;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Random;
+import com.sci.v2.pcc.secu.SciSecuManager;
+import com.sci.v2.pcc.secu.hmac.SciHmac;
+
+import kr.co.tsoft.sign.config.security.CommonUserDetails;
+import kr.co.tsoft.sign.mapper.ContractAttachmentMapper;
+import kr.co.tsoft.sign.util.CompareUtil;
+import kr.co.tsoft.sign.util.SessionUtil;
+import kr.co.tsoft.sign.vo.CertificationDTO;
+import kr.co.tsoft.sign.vo.RequiredApiResponseDTOMapper;
+import kr.co.tsoft.sign.vo.SessionDTOMapper;
+import kr.co.tsoft.sign.vo.common.CommonResponse;
+import kr.co.tsoft.sign.vo.common.ErrorCode;
+import lombok.RequiredArgsConstructor;
+import net.ib.security.IBCipher;
 
 @Service
+@RequiredArgsConstructor
 public class CertificationService {
 
     private final Logger logger = LoggerFactory.getLogger(CertificationService.class);
+    
+    private final SessionDTOMapper sessionDTOMapper;
 
     @Value("${cert.phone.custid}")
     private String CERT_PHONE_CUSTID;
@@ -37,6 +50,13 @@ public class CertificationService {
 
     @Value("${service.url}")
     private String SERVICE_URL;
+    
+    
+    
+    /**
+     * 휴대폰 인증
+     * @return
+     */
 
     public CertificationDTO initPhoneCert() {
 
@@ -191,7 +211,7 @@ public class CertificationService {
         String userInput = (String) paramMap.get("cellNoLast");
 
         if(paramMap == null || StringUtils.isBlank(userInput)) {
-        	return CommonResponse.fail("오류가 발생하였습니다.", "0001");
+        	return CommonResponse.fail(ErrorCode.COMMON_SYSTEM_ERROR);
         }
         
         CommonUserDetails user =  SessionUtil.getUser();
@@ -199,9 +219,9 @@ public class CertificationService {
 
         if(user == null) {
         	if(StringUtils.isBlank(cellNo)) {
-        		return CommonResponse.fail("세션이 만료되었습니다.", "0003");
+        		return CommonResponse.fail(ErrorCode.COMMON_INVALID_PARAMETER);
         	}
-        	return CommonResponse.fail("세션이 만료되었습니다.", "0002");
+        	return CommonResponse.fail(ErrorCode.COMMON_INVALID_PARAMETER);
         }
 
         String lastFourDigits = cellNo.substring(cellNo.length() - 4);
@@ -209,7 +229,98 @@ public class CertificationService {
         if(userInput.equals(lastFourDigits)){
             return CommonResponse.success();
         } else {
-        	return CommonResponse.fail("뒤 4자리 번호가 일치하지 않습니다.", "0004");
+        	return CommonResponse.fail(ErrorCode.COMMON_INVALID_PARAMETER);
         }
     }
+
+
+    public CertificationDTO initAccountCert(CertificationDTO certInfo) throws Exception {
+		CommonUserDetails user = SessionUtil.getUser();
+		
+		IBCipher cipher = new IBCipher();
+		URLCodec codec = new URLCodec();
+		
+		Calendar today = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String day = sdf.format(today.getTime());
+		
+		Random rnd = new Random();
+		String reqNum = day + String.format("%06d", rnd.nextInt(999999));
+		
+		String requestParam = "id=" + CERT_ACC_CUSTID;
+		requestParam = requestParam + "&svc_code=" + CERT_ACC_SERVCD;
+		requestParam = requestParam + "&req_code=" + reqNum; // 요청번호-암호화된 결과의 복호화에 사용되는 값으로 요청시마다 발급되어야 함
+		requestParam = requestParam + "&bank_holder_number=" + certInfo.getAccountNo();
+		
+		String reqInfo = codec.encode(cipher.pubEncode(requestParam)); // 요청값들을 암호화 및 url encoding
+		
+		certInfo = CertificationDTO.builder()
+									.reqNum(reqNum)
+									.reqInfo(reqInfo)
+									.callbackUrl(SERVICE_URL + "/cert/idseed")
+									.build();
+		return certInfo;
+	}
+
+    public CertificationDTO getResultAccountCert(String retInfo) throws Exception {
+    	
+    	CommonUserDetails user = SessionUtil.getUser();
+    	String accCert = user.getAccountCert();
+    	
+    	IBCipher cipher = new IBCipher(accCert); // 요청시 생성한 요청코드 (복호화)
+		URLCodec codec = new URLCodec();
+		
+		String decData = cipher.aesDecode(codec.decode(retInfo)); // 복호화
+		
+		Map<String, String> map = new HashMap<>();
+		String[] datas = decData.split("&");
+		for (String data : datas) {
+			if(data.length() > 1) {
+				int idx = data.indexOf("=");
+				map.put(data.substring(0, idx), data.substring(idx + 1));
+			}
+		}
+    	
+		CertificationDTO cert = new CertificationDTO();
+		
+		if("1".equals(map.get("result"))) {
+			String userNm = user.getUsername();
+			String holderNm = map.get("holder_name");
+			
+			if(userNm == null || holderNm == null) {
+				logger.error("예금주 미존재");
+				cert = CertificationDTO.builder()
+										.type("acseed")
+										.status("0002")
+										.build();
+				
+				return cert;
+			}
+			CompareUtil compareUtil = new CompareUtil();
+			boolean compareState = compareUtil.compareAandB(userNm, holderNm, "contains", 3);
+			
+			if(!compareState) {
+				logger.error("이름 검증 오류");
+				cert = CertificationDTO.builder()
+										.type("acseed")
+										.status("0002")
+										.build();
+			} else {
+				cert = CertificationDTO.builder()
+										.bankName(map.get("bank_name"))
+										.bankCode(map.get("bank_code"))
+										.accountNo(map.get("holder_number"))
+										.type("acseed")
+										.status("0000")
+										.build();
+				
+				//세션 업데이트
+				sessionDTOMapper.updateUserDetails(user, cert);
+			}
+		}
+    	return cert;
+    }
+    /**
+     * 계좌 인증
+     */
 }
