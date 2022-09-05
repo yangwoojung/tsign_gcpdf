@@ -73,7 +73,8 @@
 	            </div>
 	        </div>
 	    </form>
-	    <form id="idType3Form" method="post" action="/sign/info/update" onsubmit="return">
+	    <!-- TODO : 폼 유효성검사 함수 추가 (onsubmit) -->
+	    <form id="idType3Form" method="post" action="/sign/info/update" onsubmit="return"> 
 	        <div id="type3" style="display: none;">
             <div class="exImg-wrap check">
                 <div class="exImg">
@@ -205,7 +206,7 @@
 
         $('#type' + USER.idType).show();
         
-        const linkedTextOnCard = (el, cardId, sessionData) => {
+        const linkTextOnCard = (el, cardId, sessionData) => {
         	const item = $('#'+el);
         	item.on('input', function() {
         		$('#'+cardId).html($(this).val());
@@ -215,20 +216,20 @@
         
         if(USER.idType === '1') {
         	$('form').remove('#idType3Form');
-	        linkedTextOnCard('userNm','userNmOnCard',USER.userNm);
-	        linkedTextOnCard('socialNo1','socialNo1OnCard',USER.socialNo1);
-	        linkedTextOnCard('socialNo2','socialNo2OnCard',USER.socialNo2);
-	        linkedTextOnCard('issueDt','issueDtEl',USER.issueDt);
+	        linkTextOnCard('userNm','userNmOnCard',USER.userNm);
+	        linkTextOnCard('socialNo1','socialNo1OnCard',USER.socialNo1);
+	        linkTextOnCard('socialNo2','socialNo2OnCard',USER.socialNo2);
+	        linkTextOnCard('issueDt','issueDtEl',USER.issueDt);
 
         } else if(USER.idType === '3') {
         	$('form').remove('#idType1Form');
-        	linkedTextOnCard('type3_ownerNm','type3_userNmOnCard',USER.userNm);
-        	linkedTextOnCard('juminNo','type3_socialNo1OnCard',USER.socialNo1);
-	        linkedTextOnCard('socialNo2','type3_socialNo2OnCard',USER.socialNo2);
-	        linkedTextOnCard('license01', 'type3_license01OnCard', USER.licenseNo1);
-	        linkedTextOnCard('license02', 'type3_license02OnCard', USER.licenseNo2);
-	        linkedTextOnCard('license03', 'type3_license03OnCard', USER.licenseNo3);
-	        linkedTextOnCard('license04', 'type3_license04OnCard', USER.licenseNo4);
+        	linkTextOnCard('type3_ownerNm','type3_userNmOnCard',USER.userNm);
+        	linkTextOnCard('juminNo','type3_socialNo1OnCard',USER.socialNo1);
+	        linkTextOnCard('socialNo2','type3_socialNo2OnCard',USER.socialNo2);
+	        linkTextOnCard('license01', 'type3_license01OnCard', USER.licenseNo1);
+	        linkTextOnCard('license02', 'type3_license02OnCard', USER.licenseNo2);
+	        linkTextOnCard('license03', 'type3_license03OnCard', USER.licenseNo3);
+	        linkTextOnCard('license04', 'type3_license04OnCard', USER.licenseNo4);
         }
 
     });
@@ -237,10 +238,10 @@
     	updateInfo();
     });
     
+	//TODO : 폼 제출 전 빈칸 유효성 검사
     
     //session update 진행 후 성공하면 scrap 호출
    // OCR 정보 세션에 업데이트
-   //제출 전 유효성 검사
     const updateInfo = () => {
     	const USER = ${user};
     	let data;
@@ -280,7 +281,7 @@
                 if (response.result === 'SUCCESS') {
                     location.href = '/sign/info';
                 } else {
-                    location.reload();
+                	alert(response.message);
                 }
             },
             error: function (jqXHR) {

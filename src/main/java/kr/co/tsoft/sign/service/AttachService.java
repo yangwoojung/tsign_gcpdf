@@ -102,8 +102,10 @@ public class AttachService {
 				
 				if("Y".equals(getDataInresponse.getTruthYn()) || "Y".equals(getDataInresponse.getLicenceTruthYn())) {
 					return CommonResponse.success();
+				} else if(getDataInresponse.getLicenceTruthYn() != null) {
+					return CommonResponse.fail(response, getDataInresponse.getLicenceTruthMsg());
 				} else {
-					return CommonResponse.fail(response, "FAIL");
+					return CommonResponse.fail(ErrorCode.COMMON_SYSTEM_ERROR);
 				}
 			}
     }

@@ -43,21 +43,21 @@
 						</dd>
 					</dl>
 
-					<c:if test="${user.idType eq '3'}"> 
-						<dl class="list">
-							<dt>주민등록번호</dt>
-							<dd class="half">
-								<input id="inResidentNo1" name="residentNo1" type="tel"
-									class="input_ty" placeholder="6자리숫자" maxlength="6"
-									onkeydown="return onlyNumber(event)"
-									onkeyup="removeChar(event)" autocomplete="off" value="${user.socialNo1}" required /> <input
-									id="inResidentNo2" name="residentNo2" type="tel"
-									class="input_ty" placeholder="7자리숫자" maxlength="7"
-									onkeydown="return onlyNumber(event)"
-									onkeyup="removeChar(event)" autocomplete="off" value="${user.socialNo2}" required />
-							</dd>
-						</dl>
-					</c:if>
+<%-- 					<c:if test="${user.idType eq '3'}">  --%>
+<!-- 						<dl class="list"> -->
+<!-- 							<dt>주민등록번호</dt> -->
+<!-- 							<dd class="half"> -->
+<!-- 								<input id="inResidentNo1" name="residentNo1" type="tel" -->
+<!-- 									class="input_ty" placeholder="6자리숫자" maxlength="6" -->
+<!-- 									onkeydown="return onlyNumber(event)" -->
+<%-- 									onkeyup="removeChar(event)" autocomplete="off" value="${user.socialNo1}" required /> <input --%>
+<!-- 									id="inResidentNo2" name="residentNo2" type="tel" -->
+<!-- 									class="input_ty" placeholder="7자리숫자" maxlength="7" -->
+<!-- 									onkeydown="return onlyNumber(event)" -->
+<%-- 									onkeyup="removeChar(event)" autocomplete="off" value="${user.socialNo2}" required /> --%>
+<!-- 							</dd> -->
+<!-- 						</dl> -->
+<%-- 					</c:if> --%>
 
 					<dl class="list">
 						<dt>주소</dt>
