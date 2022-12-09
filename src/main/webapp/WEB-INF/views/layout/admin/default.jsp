@@ -7,6 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=1280">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="shortcut icon" type="image/x-icon" href="../images/content/favicon.ico"/>
     <link rel="icon" href="../images/content/favicon.png">
 
@@ -16,7 +17,8 @@
     <link rel="stylesheet" type="text/css" href="/resources/admin/css/common.css" media="all">
 
     <!--     // jQuery UI CSS파일  -->
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css"/>
+<!--     <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css"/> -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" type="text/css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.28/dist/sweetalert2.min.css" type="text/css"/>
 
     <%--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">--%>
