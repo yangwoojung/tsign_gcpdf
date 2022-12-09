@@ -34,7 +34,7 @@
             </div>--%>
         </li>
         <li>
-            <a href="/admin/contracts">계약관리</a>
+            <a href="javascript:;">계약관리</a>
             <div class="snb">
                 <ul>
                     <li><a href="/admin/contract/list">계약리스트</a></li>
