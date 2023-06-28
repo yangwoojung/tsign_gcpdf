@@ -37,7 +37,7 @@
                     <fieldset>
                         <legend>로그인 입력 폼</legend>
                         <div class="login_input">
-                            <h1>ADMIN - JENKINS</h1>
+                            <h1>ADMIN</h1>
                             <p class="cell"><input type='text' name='i' value='' placeholder="아이디"></p>
                             <p class="cell"><input type='password' name='p' placeholder="비밀번호"/></p>
                             <p class="btn"><a id="submit" href="#">로그인</a></p>
