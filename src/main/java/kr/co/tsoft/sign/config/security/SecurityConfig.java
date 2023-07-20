@@ -46,6 +46,7 @@ public class SecurityConfig {
                     .antMatchers("/sign/cert/**").permitAll()
                     .antMatchers("/sign/pin/**").permitAll()
                     .antMatchers("/sign/complete").permitAll()
+                    .antMatchers("/test/**").permitAll()
                     .anyRequest().hasRole("SIGN")
                     .and()
                     .formLogin()

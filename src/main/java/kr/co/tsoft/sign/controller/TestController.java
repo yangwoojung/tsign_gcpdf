@@ -19,8 +19,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
@@ -127,5 +133,32 @@ public class TestController {
 		FileUtils.writeByteArrayToFile(new File("D:\\cmi\\test.pdf"), Base64.decodeBase64(data.getEncodeTsaFile()));
 	}
 
+	@RequestMapping(value = "/test/clustering")
+	public String clustering(HttpServletRequest request, HttpSession session) throws Exception {
+		String reqSessionId = request.getRequestedSessionId();
+		String sessionId = session.getId();
+		long lastTime = session.getLastAccessedTime();
+		long createdTime = session.getCreationTime();
+		long usedTime = (lastTime - createdTime) / 60000;
+		int inactive = session.getMaxInactiveInterval() / 60;
+		boolean bIsNew = session.isNew();
+		String hostName = InetAddress.getLocalHost().getHostName();
+		String addrIp = InetAddress.getLocalHost().getHostAddress();
+		
+		HashMap<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("reqSessionId", String.valueOf(reqSessionId));
+		paramMap.put("sessionId", String.valueOf(sessionId));
+		paramMap.put("lastTime", String.valueOf(new Date(lastTime)));
+		paramMap.put("createdTime", String.valueOf(new Date(createdTime)));
+		paramMap.put("usedTime", String.valueOf(usedTime));
+		paramMap.put("inactive", String.valueOf(inactive));
+		paramMap.put("bIsNew", String.valueOf(bIsNew));
+		paramMap.put("hostName", hostName);
+		paramMap.put("addrIp", addrIp);
+		
+		request.setAttribute("sessionInfo", paramMap);
+		
+		return "sample/clusteringTest";
+	}
 
 }
